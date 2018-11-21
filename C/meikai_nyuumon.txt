@@ -1,0 +1,19 @@
+* 第9章
+** 9-2 文字例の配列
+配列の作り方．
+名前[行][列]として宣言する．
+下の例では，行数は自動的に3になっている．
+列数は，最も文字数の多い"Turbo"に合わせ，6となっている（5 + ヌル文字1 = 6）．
+#+BEGIN_SRC C
+  #include <stdio.h>
+  int main(void)
+  {
+    int i;
+    char cs[][6] = {"Turbo", "NA", "DOHC"};
+
+    for (i = 0; i < 3; i++) {
+      printf("cs[%d] = \"%s\"\n", i, cs[i]);
+    }
+    return 0;
+  }
+#+END_SRC
