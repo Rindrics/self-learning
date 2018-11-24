@@ -1,9 +1,54 @@
+#+TITLE: 新・明解C言語 入門編 の勉強ノート
+* 第3章 プログラムの流れの分岐
+** 3-1 if文
+*** if文・その1
+*** 奇数の判定
+* 第5章 配列
+** 5-1 配列
+*** 配列による成績処理
+**** List5-9
+*** オブジェクト形式マクロ
+#define a b
+とすると，「この指令以降のaは全てbに置換せよ」という意味．
+定義が複数個所に分散しなくて済むので，定義を変更する必要が生じても一括して変えられる．
+**** List5-10
+#+BEGIN_SRC C
+/*
+        学生の点数を読み込んで合計点と平均点を表示（人数をマクロで定義）
+*/
+
+#include <stdio.h>
+
+#define NUMBER	5		/* 学生の人数 */
+
+int main(void)
+{
+        int i;
+        int tensu[NUMBER];	/* NUMBER人の学生の点数 */
+        int sum = 0;		/* 合計点 */
+
+        printf("%d人の点数を入力してください。\n", NUMBER);
+        for (i = 0; i < NUMBER; i++) {
+                printf("%2d番：", i + 1);
+                scanf("%d", &tensu[i]);
+                sum += tensu[i];
+        }
+
+        printf("合計点：%5d\n", sum);
+        printf("平均点：%5.1f\n", (double)sum / NUMBER);
+
+        return 0;
+}
+
+#+END_SRC
 * 第9章
 ** 9-2 文字例の配列
 配列の作り方．
 名前[行][列]として宣言する．
 下の例では，行数は自動的に3になっている．
 列数は，最も文字数の多い"Turbo"に合わせ，6となっている（5 + ヌル文字1 = 6）．
+*** 文字列の配列
+**** List9-6
 #+BEGIN_SRC C
   #include <stdio.h>
   int main(void)
@@ -17,3 +62,66 @@
     return 0;
   }
 #+END_SRC
+
+*** 文字列の配列への文字列の読み込み
+**** List9-7
+今度は，scanfでキーボードから読み込んで配列を作る．
+#+BEGIN_SRC C
+  /*
+          文字列の配列を読み込んで表示
+  ,*/
+
+  #include <stdio.h>
+
+  int main(void)
+  {
+          int  i;
+          char s[3][128];		/* 3は読み込む要素数．128は，何文字入力されるかわからないので，多めに用意している */
+                                  /* 実際にはヌル文字が最後にあるので，127文字しか読み込めない */
+          for (i = 0; i < 3; i++) {
+                  printf("s[%d] : ", i);
+                  scanf("%s", s[i]); /* scanfだけど，配列の要素なので&演算子をつけてはだめ． */
+          }
+
+          for (i = 0; i < 3; i++)
+                  printf("s[%d] = \"%s\"\n", i, s[i]);
+
+          return 0;
+  }
+#+END_SRC
+
+#+RESULTS:
+*** 演習9-3
+演習9-7を改変
+- 文字列の個数を3ではなく大きな数にし，それを[[*%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E5%BD%A2%E5%BC%8F%E3%83%9E%E3%82%AF%E3%83%AD][オブジェクト形式マクロ]]で定義
+- 最初のfor文で，"$$$$"を読みこんだら，その時点で読み込みを中断，終了する
+- 2番目のfor文では，"$$$$"より前に入力された前文字例を表示する．
+#+BEGIN_SRC C
+  #include <stdio.h>
+  #include <string.h>
+
+  #define NUMBER 128            /* ここにはセミコロンをつけてはいけない！！！！ */
+
+  int main(void)
+  {
+          int  i;
+          int  j;
+          char s[NUMBER][128];
+
+          for (i = 0; i < NUMBER; i++) {
+                  printf("s[%d] : ", i);
+                  scanf("%s", s[i]); /* scanfだけど，配列の要素なので&演算子をつけてはだめ． */
+                  if (strcmp(s[i], "$$$$$") == 0) { /* strcmpは本書ではまだ学んでいないのだけど，合っている？ */
+                    break;
+                  }
+          }
+
+          for (j = 0; j < i; j++) { /* 1つめのループで止まったiまで，jのループを回すのがポイント */
+            printf("s[%d] = \"%s\"\n", j, s[j]);
+          }
+
+          return 0;
+  }
+#+END_SRC
+
+#+RESULTS:
