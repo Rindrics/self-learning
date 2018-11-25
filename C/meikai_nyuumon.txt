@@ -125,3 +125,74 @@ int main(void)
 #+END_SRC
 
 #+RESULTS:
+** 9-3 文字例の操作
+*** 文字列の長さ
+**** List9-8
+#+BEGIN_SRC C
+  /*
+          文字列の長さを調べる
+  */
+
+  #include <stdio.h>
+  /*--- 文字列strの長さを返す ---*/
+  /* まず文字列の長さを取得する関数str_lengthを定義 */
+  int str_length(const char s[])	/* const は，定数．値を受け取るだけで，変更はしないことを宣言． */
+  {
+          int len = 0;
+
+          while (s[len])		/* s[len] が非ゼロである間繰り返す．ヌル文字はゼロなので，ループは文字列末尾で止まる．*/
+                  len++;
+          return len;
+  }
+
+  int main(void)
+  {
+          char str[128];	/* ナル文字を含めて128文字まで格納できる */
+
+          printf("文字列を入力してください：");
+          scanf("%s", str);
+
+          printf("文字列\"%s\"の長さは%dです。\n", str, str_length(str));
+
+          return 0;
+  }
+#+END_SRC
+
+#+RESULTS:
+**** 演習9-4
+文字列sを空文字列にする関数を作成せよ．
+#+BEGIN_SRC C
+  /*
+          文字列を空文字列にする
+  ,*/
+
+  #include <stdio.h>
+  void null_string(char s[])	/* void型の関数なので，returnはできない． */
+                                  /* 上手くいっているかを確認する手立てがないので気持ち悪い． */
+  {
+          int len = 0;
+
+          while (s[len]) {
+            len++;
+            s[len] = '\0';
+          }
+  }
+
+  int main(void)
+  {
+          char str[128];	/* ナル文字を含めて128文字まで格納できる */
+
+          printf("文字列を入力してください：");
+          scanf("%s", str);
+
+          printf("文字列\"%s\"を空文字列にしました。\n", str);
+
+          return 0;
+  }
+#+END_SRC
+*** 文字列の表示
+*** 数字文字の出現回数
+*** 大文字・小文字の変換
+
+*** 文字列の配列の受け渡し
+** まとめ
