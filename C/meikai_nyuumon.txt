@@ -98,29 +98,29 @@ int main(void)
 - 2番目のfor文では，"$$$$"より前に入力された前文字例を表示する．
 #+BEGIN_SRC C
   #include <stdio.h>
-  #include <string.h>
 
   #define NUMBER 128            /* ここにはセミコロンをつけてはいけない！！！！ */
 
   int main(void)
   {
-          int  i;
-          int  j;
-          char s[NUMBER][128];
+    int  i, j;
+    char s[NUMBER][128];
 
-          for (i = 0; i < NUMBER; i++) {
-                  printf("s[%d] : ", i);
-                  scanf("%s", s[i]); /* scanfだけど，配列の要素なので&演算子をつけてはだめ． */
-                  if (strcmp(s[i], "$$$$$") == 0) { /* strcmpは本書ではまだ学んでいないのだけど，合っている？ */
-                    break;
-                  }
-          }
+    for (i = 0; i < NUMBER; i++) {
+      printf("s[%d] : ", i);
+      scanf("%s", s[i]); /* scanfだけど，配列の要素なので&演算子をつけてはだめ． */
 
-          for (j = 0; j < i; j++) { /* 1つめのループで止まったiまで，jのループを回すのがポイント */
-            printf("s[%d] = \"%s\"\n", j, s[j]);
-          }
+      for (j = 0; s[i][j] != '\0'; j++) {
+        if (s[i][j] != '$') break;
+      }
+      if (j == 5) break;
+    }
 
-          return 0;
+    for (j = 0; j < i; j++) { /* 1つめのループで止まったiまで，jのループを回すのがポイント */
+      printf("s[%d] = \"%s\"\n", j, s[j]);
+    }
+
+    return 0;
   }
 #+END_SRC
 
