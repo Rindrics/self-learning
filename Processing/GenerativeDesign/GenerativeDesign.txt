@@ -1,0 +1,130 @@
+#+TITLE: Generative Design
+* Introduction
+** Contents
+** Preface
+** Image overview
+** How to read this book
+** How to use www.generative-gestaltung.de
+** How to use the programs
+* Project Selection
+* Basic Principles
+** Introduction to Processing
+*** Processing--an overview
+#+BEGIN_SRC processing
+ellipse(50, 50, 60, 60);
+#+END_SRC
+*** Language elements
+- 楕円を描く
+- 長方形を描く
+- 点を打つ
+#+BEGIN_SRC processing
+  ellipse(50, 50, 60, 60);
+#+END_SRC
+*** Programming beautifully
+** Color
+*** Hello, color
+*** Color spectrum
+**** Color spectrum in a grid
+**** Color spectrum in a circle
+*** Color palettes
+**** Color palettes through interpolation
+**** Color palettes from images
+**** Color palettes from rules
+** Shape
+*** Hello, shape
+*** Grid
+**** Alignment in a grid
+**** Movement in a grid
+**** Complex modules in a grid
+*** Agents
+**** Dumb agents
+**** Intelligent agents
+**** Shapes from agents
+**** Growth structure from agents
+**** Structural density form agents
+*** Drawing
+**** Drawing with animated brushes
+**** Relation and distance
+**** Drawing with type
+**** Drawing with dynamic brushes
+**** Drawing with the pen tablet
+**** Drawing with complex modules
+** Type
+*** Hello, type
+*** Text
+**** Writing time-based text
+**** Text as blueprint
+**** Text image
+**** Text diagram
+*** Font outline
+**** Dissolving the font outline
+**** Varying the font outline
+**** Font outline from agents
+** Image
+*** Hello, image
+*** Image cutouts
+**** Image cutouts in a grid
+**** Feedback of image cutouts
+*** Image collection
+**** Collage from image collection
+**** Time-based image collection
+*** Pixel values
+**** Graphic from pixel values
+**** Type from pixel values
+**** Real-time pixel values
+* Complex Methods
+** Randomness and noise
+*** Randomness and noise--an overview
+*** Randomness and starting conditions
+*** Randomness and order
+*** Noise vs. randomness
+*** Noisy landscapes
+*** Noisy motion
+*** Agents in space
+** Oscillation figures
+*** Oscillation figures--an overview
+*** Harmonic oscillations
+*** Lissajous figures
+*** Modulated figures
+*** Three-dimensional Lissajous figures
+*** Drawing Lissajous figures
+*** A drawing tool
+** Formulated bodies
+*** Formulated bodies--an overwview
+*** Creating a grid
+*** Bending the grid
+*** Mesh class
+*** Deconstructing the mesh
+*** Defining custom shapes
+*** Mesh class--a short reference
+** Attractors
+*** Attractors--an overview
+*** Nodes
+*** Attractor
+*** The attractor tool
+*** Attractors in space
+*** Node class--a short reference
+*** Attractor class--a short reference
+** Tree diagrams
+*** Tree diagrams--an overview
+*** Recursion
+*** Reading data from the hard drive
+*** Sunburst diagrams
+*** Sunburst trees
+*** The sunburst tool
+** Dynamic data structure
+*** Dynamic data structures--an overview
+*** Force-directed layout
+*** Data from internet
+*** Force-directed layout with data
+*** Visualizing proportions
+*** Semantic text analysis
+*** fish-eye view
+* Appendix
+** Reflections
+** Index
+** Bibliography
+** The authors
+** We thank
+** Address index
+* Copyright
