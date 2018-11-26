@@ -190,6 +190,38 @@ int main(void)
           return 0;
   }
 #+END_SRC
+**** 演習9-5
+文字列の中に文字cが含まれていれば，その添字を返し，
+含まれていなければ-1を返す関数を作成せよ
+#+BEGIN_SRC C
+  #include <stdio.h>
+
+  int str_char(const char s[], int c) /* cをintとして扱うことに注意 */
+  {
+    for (int i = 0; s[i] != '\0'; i++) {
+      if (s[i] == c) return i;	/* 整数として扱うのでstr_compしなくていい */
+    }
+    return -1;
+  }
+
+  int main(void)
+  {
+    char str[128];
+    int index;
+
+    printf("文字列を入力してください: ");  scanf("%s", str);
+
+    index = str_char(str, 'c');	/* 文字を整数として扱うときは単引用付！ */
+
+    if (index == -1) {
+      printf("文字cは含まれていません\n");
+    } else {
+      printf("文字cは配列の%d番目にあります", index);
+    }
+
+    return 0;
+  }
+#+END_SRC
 *** 文字列の表示
 *** 数字文字の出現回数
 *** 大文字・小文字の変換
