@@ -1,4 +1,6 @@
 #+TITLE: 新・明解C言語 入門編 の勉強ノート
+* 解説
+http://meikaicansewer.blogspot.com
 * 第3章 プログラムの流れの分岐
 ** 3-1 if文
 *** if文・その1
@@ -222,9 +224,103 @@ int main(void)
     return 0;
   }
 #+END_SRC
+**** 演習9-6
+文字列sの中に，文字cが含まれている個数（含まれていなければ0とする）を返す関数をら作成せよ
+#+BEGIN_SRC C
+  #include<stdio.h>
+
+  int str_chnum(const char s[], int c) /* const とcharの間にはコンマを入れてはいけない！ */
+  {
+    int cnum = 0;
+    for (int i = 0; s[i] != '\0'; i++) {
+      if (s[i] == c) cnum = cnum + 1;
+    }
+    return cnum;
+  }
+
+  int main(void)
+  {
+    char str[128];		/*要素数の指定を忘れないこと!*/
+    int cnum;
+
+    printf("文字列を入力してください: ");
+    scanf("%s", str);
+
+    cnum = str_chnum(str, 'c');
+    printf("文字列\"%s\"の中に含まれる\"c\"の数は%d個です．\n", str, cnum);
+
+    return 0;
+  }
+#+END_SRC
 *** 文字列の表示
+**** List9-9
+#+BEGIN_SRC C
+  /*
+          文字列を走査して表示する
+  ,*/
+
+  #include <stdio.h>
+
+  /*--- 文字列sを表示（改行はしない）---*/
+  void put_string(const char s[])
+  {
+    int i = 0;
+    while (s[i])
+            putchar(s[i++]); /* こんな短縮表記もできるのか...あまりよくないと思うけど．*/
+                             /*そしてputcharは値を返すわけではないので void型でもいいんだな．*/
+  }
+
+  int main(void)
+  {
+    char str[128];
+
+    printf("文字列を入力してください：");
+    scanf("%s", str);
+
+    printf("あなたは");
+    put_string(str);
+    printf("と入力しました。\n");
+
+    return 0;
+  }
+**** 演習9-7
+文字列sをn回だけ連続して表示する関数を作成せよ
+#+BEGIN_SRC C
+  #include <stdio.h>
+
+  void put_stringn(const char s[], int n)
+  {
+    int j;
+    for (j = 0; j < n; j++) {
+      int i = 0;
+      while (s[i] != '\0') {
+        putchar(s[i]);
+        i = i + 1;
+      }
+    }
+  }
+  int main(void)
+  {
+    char str[128];
+    int n;
+
+    printf("文字列を入力してください:");
+    scanf("%s", str);
+    printf("\n繰り返したい数を入力してください:");
+    scanf("%d", &n);
+
+    printf("文字列\"%s\"を%d回繰り返すと", str, n);
+    put_stringn(str, n);
+    printf("となります．\n");
+
+    return 0;
+  }
+#+END_SRC
+
+#+END_SRC
 *** 数字文字の出現回数
 *** 大文字・小文字の変換
+
 
 *** 文字列の配列の受け渡し
 ** まとめ
