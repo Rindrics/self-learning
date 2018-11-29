@@ -319,6 +319,38 @@ int main(void)
 #+END_SRC
 
 #+END_SRC
+**** 演習9-8
+文字列を後ろから逆に表示する関数を作成せよ
+#+BEGIN_SRC C
+  #include <stdio.h>
+
+  void put_stringn(const char s[])
+  {
+    int i = 0;
+    int j;
+    while(s[i] != '\0') {
+      i++;
+    }
+    for (j = i -1; j >= 0; j--) {
+      putchar(s[j]);
+    }
+
+  }
+
+  int main(void)
+  {
+    char str[128];
+
+    printf("文字列を入力してください: ");
+    scanf("%s", str);
+
+    printf("あなたが入力した文字列を逆順に表示すると");
+    put_stringn(str);
+    printf("です．\n");
+
+    return 0;
+  }
+#+END_SRC
 *** 数字文字の出現回数
 *** 大文字・小文字の変換
 
