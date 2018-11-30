@@ -5,8 +5,10 @@
 
 * 勉強中の言語
 ** C
-*** [[./C/meikai_nyuumon.md][新・明解C言語 入門編]]
+何の役に立つのかわからないが，一種の教養のために勉強中．
 
+*** 新・明解C言語 入門編
+[[./C/meikai_nyuumon.md][勉強ノート]]
 ** Fortarn
 ** Julia
 ** Lisp
@@ -14,3 +16,14 @@
 [[http://www.generative-gestaltung.de/1/][公式HP]]
 ** Python
 ** bash
+* Materials and methods
+本ページの作り方
+- EmacsのOrg-modeで作成
+- .mdファイル形式でエクスポート
+- GitHubへpush
+#+BEGIN_SRC elisp
+("本当はここに")
+(org-export-dispatch)
+("のように，md変換からGitHubへのプッシュまで，Emacsのコマンドを書いてしまいたいが")
+("コマンド履歴にorg-export-dispatchが出てこないので困っている")
+#+END_SRC
