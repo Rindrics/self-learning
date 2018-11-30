@@ -1,4 +1,4 @@
-#+TITLE: Fromt page from org-mode
+#+TITLE: Front page from org-mode
 * Heading1
 ** test
 ** hoge
