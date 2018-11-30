@@ -1,20 +1,20 @@
 
 # Table of Contents
 
-1.  [このページは](#orgeb9ea39)
-2.  [勉強中の言語](#orgca55531)
-    1.  [C](#orgd00f255)
-        1.  [新・明解C言語 入門編](#orgcc19750)
-    2.  [Fortarn](#org0d026f2)
-    3.  [Julia](#orgd521555)
-    4.  [Lisp](#org2b4e8f3)
-    5.  [Processing](#org32c348a)
-    6.  [Python](#orgc64f51a)
-    7.  [bash](#orgaf0359f)
-3.  [Materials and methods](#org0f0fd8a)
+1.  [このページは](#org9148eb2)
+2.  [勉強中の言語](#org789871a)
+    1.  [C](#org6048cd2)
+        1.  [新・明解C言語 入門編](#orga764534)
+    2.  [Fortarn](#orgaf0dd54)
+    3.  [Julia](#org17d740b)
+    4.  [Lisp](#org1ab282a)
+    5.  [Processing](#orgd5a9f98)
+    6.  [Python](#org579513d)
+    7.  [bash](#org41bb9d7)
+3.  [Materials and methods](#org6ca67dc)
 
 
-<a id="orgeb9ea39"></a>
+<a id="org9148eb2"></a>
 
 # このページは
 
@@ -23,58 +23,81 @@
 "プログラミング"の勉強ノートはこちら
 
 
-<a id="orgca55531"></a>
+<a id="org789871a"></a>
 
 # 勉強中の言語
 
 
-<a id="orgd00f255"></a>
+<a id="org6048cd2"></a>
 
 ## C
 
-何の役に立つのかわからないが，一種の教養のために勉強中．
+具体的に日々の仕事でどう役立つのか，具体的なアイデアは特にないが，
+プログラムを書く者として，ある種の教養のために勉強中．
 
 
-<a id="orgcc19750"></a>
+<a id="orga764534"></a>
 
 ### 新・明解C言語 入門編
 
-[勉強ノート](./C/meikai_nyuumon.md)
+1.  [勉強ノート](./C/meikai_nyuumon.md)
+
+2.  勉強の参考にさせていただいているサイト
+
+    <http://meikaicansewer.blogspot.com>
 
 
-<a id="org0d026f2"></a>
+<a id="orgaf0dd54"></a>
 
 ## Fortarn
 
+古の言語
 
-<a id="orgd521555"></a>
+
+<a id="org17d740b"></a>
 
 ## Julia
 
+コンパイル言語だが，インタプリタのように使える．
 
-<a id="org2b4e8f3"></a>
+この先，重い計算をイチから書くならJuliaがいいかも．
+
+
+<a id="org1ab282a"></a>
 
 ## Lisp
 
+Emacsを自力で拡張したいので勉強中．
 
-<a id="org32c348a"></a>
+
+<a id="orgd5a9f98"></a>
 
 ## Processing
+
+グラフィック用途に強い言語．
 
 [公式HP](http://www.generative-gestaltung.de/1/)
 
 
-<a id="orgc64f51a"></a>
+<a id="org579513d"></a>
 
 ## Python
 
+自然言語処理に強いと聞いて，ミーハー心で飛びついたものの，
+理論の勉強が追いつかず頓挫中．
 
-<a id="orgaf0359f"></a>
+Operpyxlを装備させればExcel駆逐運動に役立ってくれそうな気もするが，
+Rと比較したときの具体的なパフォーマンスについては，検討が必要．
+
+
+<a id="org41bb9d7"></a>
 
 ## bash
 
+なんだかんだ必要．
 
-<a id="org0f0fd8a"></a>
+
+<a id="org6ca67dc"></a>
 
 # Materials and methods
 
@@ -84,8 +107,8 @@
 -   .mdファイル形式でエクスポート
 -   GitHubへpush
 
-    ("本当はここに")
+    ;; 本当はここに
     (org-export-dispatch)
-    ("のように，md変換からGitHubへのプッシュまで，Emacsのコマンドを書いてしまいたいが")
-    ("コマンド履歴にorg-export-dispatchが出てこないので困っている")
+    ;; のように，md変換からGitHubへのプッシュまで，Emacsのコマンドを書いてしまいたいが
+    ;; コマンド履歴にorg-export-dispatchが出てこないので困っている．
 
