@@ -352,6 +352,88 @@ int main(void)
   }
 #+END_SRC
 *** 数字文字の出現回数
+[2018-11-30 Fri]
+**** List9-10
+#+BEGIN_SRC C
+
+  /*
+      文字列内の数字文字をカウントする
+  ,*/
+
+  #include <stdio.h>
+
+  /*--- 文字列s内に含まれる数字文字の出現回数を配列cntに格納 ---*/
+  void str_dcount(const char s[], int cnt[])
+  {
+      int i = 0;
+      while (s[i]) {
+          if (s[i] >= '0' && s[i] <= '9')
+              cnt[s[i] - '0']++;
+          i++;
+      }
+  }
+
+  int main(void)
+  {
+      int  i;
+      int  dcnt[10] = {0};	/* {}で囲った数字は初期化子．本文p.114 */
+      char str[128];			/* 文字列 */
+
+      printf("文字列を入力してください：");
+      scanf("%s", str);
+
+      str_dcount(str, dcnt);
+
+      puts("数字文字の出現回数");
+      for (i = 0; i < 10; i++)
+          printf("'%d'：%d\n", i, dcnt[i]);
+
+      return 0;
+  }
+
+#+END_SRC
+**** 演習9-9
+文字列sの文字の並びを反転する関数を作成せよ．
+演習9-8では逆順で「表示するだけ」だったが，今度は書き換える．
+入力したものを書き換えるので危険性が高く，プログラムとしてはあまりよくない．
+#+BEGIN_SRC C
+  #include<stdio.h>
+
+  void rev_string(char s[])
+  {
+      int i, length = 0;
+      char tmp[128];
+      for (i = 0; s[i] != '\0'; i++) {
+          tmp[i] = s[i];
+          length++;
+      }
+
+      for (i = 0; i < length; i++) {
+          s[i] = tmp[length - i - 1];
+      }
+  }
+
+  int main (void)
+  {
+      char str[128];
+      int i = 0;
+      printf("文字列を入力してください:");
+      scanf("%s", str);
+      /* str = rev_string(str)  こうではなく*/
+      rev_string(str);             /* こう書く．*/
+
+      printf("あなたが入力した文字列を反転しました．\n");
+      printf("その結果は");
+      /* while (str[i]) { */
+      /*     printf("%s", str[i]); */
+      /*     i++; */
+      /* } わざわざループを使う必要はない．*/
+      printf("%s", str);          /* strを書き換えたのだから，そのまま表示すればいい． */
+      printf("です．\n");
+
+      return 0;
+  }
+#+END_SRC
 *** 大文字・小文字の変換
 
 
