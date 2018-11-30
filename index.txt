@@ -1,9 +1,16 @@
-林 晃のプログラム関連の勉強ノート
-* C
-** [[./C/meikai_nyuumon.md][新・明解C言語 入門編]]
+* このページは
+林 晃のプログラミング"言語"の勉強ノートです．
 
-* Fortarn
-* Julia
-* Lisp
-* Processing
-* Python
+"プログラミング"の勉強ノートはこちら
+
+* 勉強中の言語
+** C
+*** [[./C/meikai_nyuumon.md][新・明解C言語 入門編]]
+
+** Fortarn
+** Julia
+** Lisp
+** Processing
+[[http://www.generative-gestaltung.de/1/][公式HP]]
+** Python
+** bash

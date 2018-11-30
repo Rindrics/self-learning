@@ -1,48 +1,70 @@
 
 # Table of Contents
 
-1.  [C](#org1526a0e)
-    1.  [新・明解C言語 入門編](#org768d64d)
-2.  [Fortarn](#orgdef432e)
-3.  [Julia](#orgcb00a08)
-4.  [Lisp](#org1b463cd)
-5.  [Processing](#orgc33124b)
-6.  [Python](#org64f3bca)
-
-林 晃のプログラム関連の勉強ノート
-
-
-<a id="org1526a0e"></a>
-
-# C
+1.  [このページは](#org4e37044)
+2.  [勉強中の言語](#org484c44d)
+    1.  [C](#org89f9548)
+        1.  [新・明解C言語 入門編](#orga79c4e2)
+    2.  [Fortarn](#org55d2e69)
+    3.  [Julia](#orgf949c4d)
+    4.  [Lisp](#org558dbab)
+    5.  [Processing](#org1bbd876)
+    6.  [Python](#orgadb36e1)
+    7.  [bash](#orgd180d6d)
 
 
-<a id="org768d64d"></a>
+<a id="org4e37044"></a>
 
-## [新・明解C言語 入門編](./C/meikai_nyuumon.md)
+# このページは
 
+林 晃のプログラミング"言語"の勉強ノートです．
 
-<a id="orgdef432e"></a>
-
-# Fortarn
-
-
-<a id="orgcb00a08"></a>
-
-# Julia
+"プログラミング"の勉強ノートはこちら
 
 
-<a id="org1b463cd"></a>
+<a id="org484c44d"></a>
 
-# Lisp
-
-
-<a id="orgc33124b"></a>
-
-# Processing
+# 勉強中の言語
 
 
-<a id="org64f3bca"></a>
+<a id="org89f9548"></a>
 
-# Python
+## C
+
+
+<a id="orga79c4e2"></a>
+
+### [新・明解C言語 入門編](./C/meikai_nyuumon.md)
+
+
+<a id="org55d2e69"></a>
+
+## Fortarn
+
+
+<a id="orgf949c4d"></a>
+
+## Julia
+
+
+<a id="org558dbab"></a>
+
+## Lisp
+
+
+<a id="org1bbd876"></a>
+
+## Processing
+
+[公式HP](http://www.generative-gestaltung.de/1/)
+
+
+<a id="orgadb36e1"></a>
+
+## Python
+
+
+<a id="orgd180d6d"></a>
+
+## bash
 
