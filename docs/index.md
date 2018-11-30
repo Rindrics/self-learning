@@ -1,29 +1,34 @@
 
 # Table of Contents
 
-1.  [Heading1](#org946f2d4)
-    1.  [test](#org4c32eaa)
-    2.  [hoge](#orgcd23a0c)
-2.  [Fuga](#org632a554)
+1.  [Heading1](#org53e9c06)
+    1.  [test](#orgac96665)
+    2.  [hoge](#org3597fb6)
+2.  [Fuga](#orgc90fd68)
 
 
 
-<a id="org946f2d4"></a>
+<a id="org53e9c06"></a>
 
 # Heading1
 
 
-<a id="org4c32eaa"></a>
+<a id="orgac96665"></a>
 
 ## test
 
 
-<a id="orgcd23a0c"></a>
+<a id="org3597fb6"></a>
 
 ## hoge
 
 
-<a id="org632a554"></a>
+<a id="orgc90fd68"></a>
 
 # Fuga
+
+Load R script
+
+    data <- c("Hello, ", "world!!")
+    print(data)
 

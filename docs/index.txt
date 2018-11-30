@@ -3,3 +3,8 @@
 ** test
 ** hoge
 * Fuga
+Load R script
+#+BEGIN_SRC R
+data <- c("Hello, ", "world!!")
+print(data)
+#+END_SRC
