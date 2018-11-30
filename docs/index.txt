@@ -1,5 +1,5 @@
 #+TITLE: Front page from org-mode
-* [[~/Documents/GitHub/study/C/meikai_nyuumon.txt][C]]
+* [[~../C/meikai_nyuumon.txt][C]]
 ** test
 ** hoge
 * Fuga
