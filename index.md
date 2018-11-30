@@ -1,29 +1,29 @@
 
 # Table of Contents
 
-1.  [C](#org0e36828)
-    1.  [test](#org4ab1166)
-    2.  [hoge](#orgbd8414d)
-2.  [Fuga](#org74bf81d)
+1.  [C](#orgee4b98b)
+    1.  [test](#org031f394)
+    2.  [hoge](#orge86d653)
+2.  [Fuga](#org088d13e)
 
 
 
-<a id="org0e36828"></a>
+<a id="orgee4b98b"></a>
 
-# [C](file:///Users/ahayashi/Documents/GitHub/study/docs/~../C/meikai_nyuumon.txt)
+# [C](file:///Users/ahayashi/Documents/GitHub/study/~./C/meikai_nyuumon.txt)
 
 
-<a id="org4ab1166"></a>
+<a id="org031f394"></a>
 
 ## test
 
 
-<a id="orgbd8414d"></a>
+<a id="orge86d653"></a>
 
 ## hoge
 
 
-<a id="org74bf81d"></a>
+<a id="org088d13e"></a>
 
 # Fuga
 
