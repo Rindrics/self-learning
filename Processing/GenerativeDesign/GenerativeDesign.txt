@@ -1,4 +1,5 @@
 #+TITLE: Generative Design
+Run code with C-c C-p r
 * Introduction
 ** Contents
 ** Preface
@@ -10,16 +11,104 @@
 * Basic Principles
 ** Introduction to Processing
 *** Processing--an overview
-#+BEGIN_SRC processing
-ellipse(50, 50, 60, 60);
-#+END_SRC
 *** Language elements
+**** HELLO, ELLIPSE
 - 楕円を描く
-- 長方形を描く
-- 点を打つ
-#+BEGIN_SRC processing
+#+BEGIN_SRC processing :mkdirp yes :tangle "./GenerativeDesign.pde"
   ellipse(50, 50, 60, 60);
 #+END_SRC
+- 長方形を描く
+#+BEGIN_SRC processing :mkdirp yes :tangle "./GenerativeDesign.pde"
+  ellipse(50, 50, 60, 60);
+  strokeWeight(4);
+  fill(128);
+  rect(50, 50, 40, 30);
+#+END_SRC
+- 点を打つ
+#+BEGIN_SRC processing :mkdirp yes :tangle "./GenerativeDesign.pde"
+  point(60, 50);
+#+END_SRC
+**** SETUP AND DRAW
+void drawを使うと，静止画でなく動画として表示する．
+#+BEGIN_SRC processing :mkdirp yes :tangle "./GenerativeDesign.pde"
+  void draw() {
+    println(frameCount);
+  }
+#+END_SRC
+フレームレートの設定
+#+BEGIN_SRC processing :mkdirp yes :tangle "./GenerativeDesign.pde"
+  void setup() {
+      frameRate(30);
+  }
+#+END_SRC
+**** DISPLAY AND RENDERER
+キャンバスのサイズ設定
+#+BEGIN_SRC processing :mkdirp yes :tangle "./GenerativeDesign.pde"
+  void setup() {
+      size(640, 480);
+  }
+#+END_SRC
+キャンバス形式，いろいろある
+#+BEGIN_SRC processing :mkdirp yes :tangle "./GenerativeDesign.pde"
+  void setup() {
+      size(640, 480, JAVA2D);     // standard
+      size(640, 480, P2D);        // Processing 2D 
+      size(640, 480, P3D);        // Processing 3D
+      size(640, 480, OPENGL);     // OpenGL
+  }
+#+END_SRC
+**** TRANSFORMATIONS
+キャンバスの基準点を移動したり，回転，拡大縮小もできる．
+#+BEGIN_SRC processing :mkdirp yes :tangle "./GenerativeDesign.pde"
+  void setup() {
+      translate(40, 20);
+      rotate(0.5);
+      scale(1.5);
+  }
+#+END_SRC
+角度は基本的にラジアンで指定．正の数は時計回り．
+**** VARIABLES AND DATA TYPES
+論理，整数，実数，文字，文字列がある．
+#+BEGIN_SRC processing :mkdirp yes :tangle "./GenerativeDesign.pde"
+  int myVariable;
+  myVariable = 5;
+  boolean myBoolean = true;
+  int myInteger = 7;
+  float myFloat = -3.219;
+  char myChar = 'A';
+  String myString = "This is text.";
+#+END_SRC
+**** ARRAYS
+配列もある．
+**** OPERATORS AND MATHEMATICS
+計算もできる．
+
+計算を文字列のあいだに挟むこともできる．
+
+10〜20の間にある数字を，0〜1の間に割当て直すこともできる
+#+BEGIN_SRC processing :mkdirp yes :tangle "./GenerativeDesign.pde"
+  float convertedValue = map(aValue, 10,20, 0,1);
+#+END_SRC
+数値の丸め
+
+乱数
+
+三角関数
+**** MOUSE AND KEYBOARD
+マウスの動き，マウスのボタンの押下，開放
+
+キーボードが押されたどうか，もしくは特定のキーの入力
+**** 条件
+ifやelse使える．
+
+1行しかない時には{}を省略可能．
+**** LOOPS
+for文，while文
+**** FUNCTIONS
+何回も使うプログラムは関数化せよ．
+
+- int型関数: 数値を返す
+- void型関数: 数値は返さない（表示するだけ，など）
 *** Programming beautifully
 ** Color
 *** Hello, color
