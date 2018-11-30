@@ -1,29 +1,31 @@
 
 # Table of Contents
 
-1.  [C](#orgee4b98b)
-    1.  [test](#org031f394)
-    2.  [hoge](#orge86d653)
-2.  [Fuga](#org088d13e)
+1.  [C](#orge20ba5a)
+    1.  [test](#org9c3d54d)
+    2.  [hoge](#orga7897e6)
+2.  [Fuga](#org936b323)
 
 
 
-<a id="orgee4b98b"></a>
+<a id="orge20ba5a"></a>
 
-# [C](file:///Users/ahayashi/Documents/GitHub/study/~./C/meikai_nyuumon.txt)
+# [C](file:///Users/ahayashi/Documents/GitHub/study/~./C/meikai_nyuumon.md)
+
+新・明解C言語の勉強ノート
 
 
-<a id="org031f394"></a>
+<a id="org9c3d54d"></a>
 
 ## test
 
 
-<a id="orge86d653"></a>
+<a id="orga7897e6"></a>
 
 ## hoge
 
 
-<a id="org088d13e"></a>
+<a id="org936b323"></a>
 
 # Fuga
 

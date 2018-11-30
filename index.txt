@@ -1,5 +1,6 @@
 #+TITLE: Front page from org-mode
-* [[~./C/meikai_nyuumon.txt][C]]
+* [[~./C/meikai_nyuumon.md][C]]
+新・明解C言語の勉強ノート
 ** test
 ** hoge
 * Fuga
