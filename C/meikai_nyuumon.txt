@@ -482,5 +482,43 @@ int main(void)
       return 0;
   }
 #+END_SRC
+入力された文字列を変更してしまっている点では，恐ろしいプログラムといえる．
+しかも2回も．
+**** 解答を見て理解できた 演習9-10
+文字列s内の全ての数字文字を削除する関数を作成せよ．
+例えば，"AB1C9"を受け取ったら，"ABC"に変換する．
+ネットの解答例を見てしまった．
+結構難しい．
+#+BEGIN_SRC C
+  #include<ctype.h>
+  #include<stdio.h>
+
+  void del_digit(char s[])
+  {
+      int i, j;
+
+      for(i = 0; s[i] != '\0'; i++){
+          if('0' <= s[i] && s[i] <= '9'){
+              for(j = i; s[j] != '\0'; j++){
+                  s[j] = s[j + 1];
+              }
+              i--;
+          }
+      }
+  }
+
+  int main(void)
+  {
+      char str[128];
+      printf("文字列を入力してください:");
+      scanf("%s", str);
+      printf("数字を取り除くと");
+      del_digit(str);
+      printf("%s", str);
+      printf("となります\n");
+
+      return 0;
+  }
+#+END_SRC
 *** 文字列の配列の受け渡し
 ** まとめ
