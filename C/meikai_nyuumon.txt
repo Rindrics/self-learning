@@ -617,4 +617,130 @@ List9-12を以下のように書き換えたプログラムを作成せよ．
       return 0;
   }
 #+END_SRC
+**** 演習9-12
+受け取った文字列の配列に格納されているn個の文字列の並びを反転する関数を作成せよ．
+たとえば，sに{"SEC", "ABC"}を受け取ったら，その配列を{"CES", "CBA"}に更新せよ．
+***** 林の答案
+#+BEGIN_SRC C
+  #include <stdio.h>
+
+  void rev_string(char s[][128], int n)
+  {
+      char tmp[n][128];
+      int i, j, length;
+      for (i = 0; i < n; i++) {
+          length = 0;
+          for (j = 0; s[i][j] != '\0'; j++) {
+              tmp[i][j] = s[i][j];
+              length++;
+          }
+          for (j = 0; j < length; j++) {
+            s[i][length - j - 1] = tmp[i][j];
+          }
+      }
+  }
+
+  int main(void) {
+      int i, n;
+      char str[n][128];
+      printf("文字列をいくつ入力しますか？");
+      scanf("%d", &n);
+      for (i = 0; i < n; i++) {
+          printf("%d個目の文字列を入力してください:", i+1);
+          scanf("%s", str[n]);
+          puts("\n");
+      }
+
+      rev_string(str, n);
+
+      printf("その文字列をそれぞれ反転すると");
+      for (i = 0; i < n; i++) printf("%s\n", str[i]);
+      printf("となります．\n");
+
+      return 0;
+  }
+#+END_SRC
+***** Web模範解答
+#+BEGIN_SRC C
+#include <stdio.h>
+#define row 128
+
+void rev_string(char s[][128], int n){
+    int i, j, length;
+    char tmp[128]; /*そうか，tmpは1次元でいいことに気づかなかった*/
+
+    for(j = 0; j < n; j++){
+
+        length = 0;
+        for(i = 0; s[j][i] != '\0'; i++){
+            tmp[i] = s[j][i];
+            length++;
+        }
+
+        for(i = 0; i < length; i++){
+            s[j][i] = tmp[length - 1 - i];      
+        }
+
+        printf("s[%d] = \"%s\"\n", j, s[j]);　/*printまでこの関数でやってしまう*/
+    }
+}
+
+int main(){
+
+    int i, j;
+    char cs[row][128];
+
+    for(i = 0; i < row; i++){
+        printf("文字列を入力してください：");    scanf("%s", cs[i]);
+
+        for(j = 0; cs[i][j] != '\0'; j++){
+            if(cs[i][j] != '$') break;
+        }
+        if(j == 5) break;
+    }
+
+    rev_string(cs, i); /*値の更新，表示をすべてここで*/
+
+    return 0;
+}
+#+END_SRC
+***** 改訂版の答案
+#+BEGIN_SRC C
+  #include <stdio.h>
+
+  void rev_string(char s[][128], int n)
+  {
+      char tmp[128];
+      int i, j, length;
+      for (i = 0; i < n; i++) {
+          length = 0;
+          for (j = 0; s[i][j] != '\0'; j++) {
+              tmp[j] = s[i][j];
+              length++;
+          }
+          for (j = 0; j < length; j++) {
+            s[i][j] = tmp[length - j - 1];
+          }
+          printf("%d個目の文字列: %s\n", i+1, s[i]);
+      }
+  }
+
+  int main(void) {
+      int i, n;
+      char str[n][128];
+      printf("文字列をいくつ入力しますか？");
+      scanf("%d", &n);
+      for (i = 0; i < n; i++) {
+          printf("%d個目の文字列を入力してください:", i+1);
+          scanf("%s", str[i]);
+          puts("\n");
+      }
+
+      printf("その文字列をそれぞれ反転すると\n");
+      rev_string(str, n);
+      printf("となります．\n");
+
+      return 0;
+  }
+#+END_SRC
 ** まとめ
