@@ -1,75 +1,75 @@
 
 # Table of Contents
 
-1.  [解説](#org1045964)
-2.  [第3章 プログラムの流れの分岐](#org2024f10)
-    1.  [3-1 if文](#orgd86ecac)
-        1.  [if文・その1](#org58983a7)
-        2.  [奇数の判定](#orgfa35659)
-3.  [第5章 配列](#org80b6222)
-    1.  [5-1 配列](#orgcf38be1)
-        1.  [配列による成績処理](#orge13fb8b)
-        2.  [オブジェクト形式マクロ](#org537c467)
-4.  [第9章](#org37c3628)
-    1.  [9-2 文字例の配列](#orgd6ab9b9)
-        1.  [文字列の配列](#orga9ed1b2)
-        2.  [文字列の配列への文字列の読み込み](#org6711354)
-        3.  [演習9-3](#org39f6ad7)
-    2.  [9-3 文字例の操作](#org54f3aeb)
-        1.  [文字列の長さ](#org289db9a)
-        2.  [文字列の表示](#org10d307d)
-        3.  [数字文字の出現回数](#orgfdf12a2)
-        4.  [大文字・小文字の変換](#orgd9c621c)
-        5.  [文字列の配列の受け渡し](#org2b08497)
-    3.  [まとめ](#org96b4dba)
+1.  [解説](#org32edcd8)
+2.  [第3章 プログラムの流れの分岐](#org2d96acd)
+    1.  [3-1 if文](#orge4c7a5d)
+        1.  [if文・その1](#org21b1ad3)
+        2.  [奇数の判定](#org0322aca)
+3.  [第5章 配列](#org0d405c7)
+    1.  [5-1 配列](#org1f9082b)
+        1.  [配列による成績処理](#org8845179)
+        2.  [オブジェクト形式マクロ](#orge83b789)
+4.  [第9章](#org4880efb)
+    1.  [9-2 文字例の配列](#orga3cd73d)
+        1.  [文字列の配列](#org6136208)
+        2.  [文字列の配列への文字列の読み込み](#orgcc2b5d0)
+        3.  [演習9-3](#org8b09ee6)
+    2.  [9-3 文字例の操作](#org0fa8423)
+        1.  [文字列の長さ](#org17ff94f)
+        2.  [文字列の表示](#org7f84711)
+        3.  [数字文字の出現回数](#org5a585a2)
+        4.  [大文字・小文字の変換](#org99590fe)
+        5.  [文字列の配列の受け渡し](#org81b92b4)
+    3.  [まとめ](#org7555f79)
 
 
 
-<a id="org1045964"></a>
+<a id="org32edcd8"></a>
 
 # 解説
 
 <http://meikaicansewer.blogspot.com>
 
 
-<a id="org2024f10"></a>
+<a id="org2d96acd"></a>
 
 # 第3章 プログラムの流れの分岐
 
 
-<a id="orgd86ecac"></a>
+<a id="orge4c7a5d"></a>
 
 ## 3-1 if文
 
 
-<a id="org58983a7"></a>
+<a id="org21b1ad3"></a>
 
 ### if文・その1
 
 
-<a id="orgfa35659"></a>
+<a id="org0322aca"></a>
 
 ### 奇数の判定
 
 
-<a id="org80b6222"></a>
+<a id="org0d405c7"></a>
 
 # 第5章 配列
 
 
-<a id="orgcf38be1"></a>
+<a id="org1f9082b"></a>
 
 ## 5-1 配列
 
 
-<a id="orge13fb8b"></a>
+<a id="org8845179"></a>
 
 ### 配列による成績処理
 
 1.  List5-9
 
 
-<a id="org537c467"></a>
+<a id="orge83b789"></a>
 
 ### オブジェクト形式マクロ
 
@@ -107,12 +107,12 @@
         }
 
 
-<a id="org37c3628"></a>
+<a id="org4880efb"></a>
 
 # 第9章
 
 
-<a id="orgd6ab9b9"></a>
+<a id="orga3cd73d"></a>
 
 ## 9-2 文字例の配列
 
@@ -122,7 +122,7 @@
 列数は，最も文字数の多い"Turbo"に合わせ，6となっている（5 + ヌル文字1 = 6）．
 
 
-<a id="orga9ed1b2"></a>
+<a id="org6136208"></a>
 
 ### 文字列の配列
 
@@ -141,7 +141,7 @@
         }
 
 
-<a id="org6711354"></a>
+<a id="orgcc2b5d0"></a>
 
 ### 文字列の配列への文字列の読み込み
 
@@ -172,13 +172,13 @@
         }
 
 
-<a id="org39f6ad7"></a>
+<a id="org8b09ee6"></a>
 
 ### 演習9-3
 
 演習9-7を改変
 
--   文字列の個数を3ではなく大きな数にし，それを[オブジェクト形式マクロ](#org537c467)で定義
+-   文字列の個数を3ではなく大きな数にし，それを[オブジェクト形式マクロ](#orge83b789)で定義
 -   最初のfor文で，"\[\]"を読みこんだら，その時点で読み込みを中断，終了する
 -   2番目のfor文では，"\[\]"より前に入力された前文字例を表示する．
 
@@ -209,12 +209,12 @@
     }
 
 
-<a id="org54f3aeb"></a>
+<a id="org0fa8423"></a>
 
 ## 9-3 文字例の操作
 
 
-<a id="org289db9a"></a>
+<a id="org17ff94f"></a>
 
 ### 文字列の長さ
 
@@ -343,7 +343,7 @@
         }
 
 
-<a id="org10d307d"></a>
+<a id="org7f84711"></a>
 
 ### 文字列の表示
 
@@ -378,7 +378,7 @@
           return 0;
         }
 
-2.  演習9-7
+2.  OK 演習9-7
 
     文字列sをn回だけ連続して表示する関数を作成せよ
     
@@ -414,7 +414,7 @@
     
     \#+END<sub>SRC</sub>
 
-3.  演習9-8
+3.  OK 演習9-8
 
     文字列を後ろから逆に表示する関数を作成せよ
     
@@ -448,13 +448,13 @@
         }
 
 
-<a id="orgfdf12a2"></a>
+<a id="org5a585a2"></a>
 
 ### 数字文字の出現回数
 
 <span class="timestamp-wrapper"><span class="timestamp">[2018-11-30 Fri]</span></span>
 
-1.  List9-10
+1.  OK List9-10
 
         
         /*
@@ -492,7 +492,7 @@
             return 0;
         }
 
-2.  演習9-9
+2.  OK 演習9-9
 
     文字列sの文字の並びを反転する関数を作成せよ．
     演習9-8では逆順で「表示するだけ」だったが，今度は書き換える．
@@ -536,17 +536,330 @@
         }
 
 
-<a id="orgd9c621c"></a>
+<a id="org99590fe"></a>
 
 ### 大文字・小文字の変換
 
+1.  OK List9-11
 
-<a id="org2b08497"></a>
+    <span class="timestamp-wrapper"><span class="timestamp">[2018-12-02 Sun]</span></span>
+    
+        /*
+            文字列内の英字を大文字／小文字に変換
+        */
+        
+        #include <ctype.h>              /* 初めて出てきたライブラリ */
+        #include <stdio.h>
+        
+        /*--- 文字列内の英字を大文字に変換 ---*/
+        void str_toupper(char s[])
+        {
+            int i = 0;
+            while (s[i]) {
+                s[i] = toupper(s[i]);
+                i++;
+            }
+        }
+        
+        /*--- 文字列内の英字を小文字に変換 ---*/
+        void str_tolower(char s[])
+        {
+            int i = 0;
+            while (s[i]) {
+                s[i] = tolower(s[i]);
+                i++;
+            }
+        }
+        
+        int main(void)
+        {
+            char str[128];
+        
+            printf("文字列を入力してください：");
+            scanf("%s", str);
+        
+            str_toupper(str);
+            printf("大文字：%s\n", str);
+        
+            str_tolower(str);
+            printf("小文字：%s\n", str);
+        
+            return 0;
+        }
+    
+    入力された文字列を変更してしまっている点では，恐ろしいプログラムといえる．
+    しかも2回も．
+
+2.  解答を見て理解できた 演習9-10
+
+    文字列s内の全ての数字文字を削除する関数を作成せよ．
+    例えば，"AB1C9"を受け取ったら，"ABC"に変換する．
+    ネットの解答例を見てしまった．
+    結構難しい．
+    
+        #include<ctype.h>
+        #include<stdio.h>
+        
+        void del_digit(char s[])
+        {
+            int i, j;
+        
+            for(i = 0; s[i] != '\0'; i++){
+                if('0' <= s[i] && s[i] <= '9'){
+                    for(j = i; s[j] != '\0'; j++){
+                        s[j] = s[j + 1];
+                    }
+                    i--;
+                }
+            }
+        }
+        
+        int main(void)
+        {
+            char str[128];
+            printf("文字列を入力してください:");
+            scanf("%s", str);
+            printf("数字を取り除くと");
+            del_digit(str);
+            printf("%s", str);
+            printf("となります\n");
+        
+            return 0;
+        }
+
+
+<a id="org81b92b4"></a>
 
 ### 文字列の配列の受け渡し
 
+1.  OK List9-12
 
-<a id="org96b4dba"></a>
+    このプログラムは文字「列」を3つ，表示している．
+    iだけを使った1次元ループ．
+    
+        /*
+            文字列の配列を表示（関数版）
+        */
+        
+        #include <stdio.h>
+        
+        /*--- 文字列の配列を表示 ---*/
+        void put_strary(const char s[][6], int n) /* ここの[6]が，このプログラムの汎用性を損なっている */
+        {
+            int i;
+            for (i = 0; i < n; i++)
+                printf("s[%d] = \"%s\"\n", i, s[i]); /* ここは文字列をまるごと，1行ずつ表示している */
+        }
+        
+        int main(void)
+        {
+            char cs[][6] = {"Turbo", "NA", "DOHC"};
+        
+            put_strary(cs, 3);
+        
+            return 0;
+        }
+
+2.  OK List9-13
+
+    こちらのプログラムは，「文字」を1つずつ表示している．
+    iとjの2次元ループ．
+    
+        /*
+            文字列の配列を表示（関数版：１文字ずつ走査）
+        */
+        
+        #include <stdio.h>
+        
+        /*--- 文字列の配列を表示（１文字ずつ表示）---*/
+        void put_strary2(const char s[][6], int n)
+        {
+            int i;
+            for (i = 0; i < n; i++) {
+                int j = 0;
+                printf("s[%d] = \"", i);
+        
+                while (s[i][j])
+                    putchar(s[i][j++]); /* 文字「列」ではなく，文字を1つずつ表示している */
+        
+                puts("\"");
+            }
+        }
+        
+        int main(void)
+        {
+            char cs[][6] = {"Turbo", "NA", "DOHC"};
+        
+            put_strary2(cs, 3);
+        
+            return 0;
+        }
+
+3.  解答を見て理解できた 演習9-11
+
+    List9-12を以下のように書き換えたプログラムを作成せよ．
+    
+    -   文字列の個数を3ではなく大きな数にし，その値をオブジェクト形式マクロとして定義する．
+    -   文字列の文字数を6ではなく128とする．その値もオブジェクト形式マクロとして定義する．
+    -   文字列の配列を読み込む関数を作成する．[演習9-3](#org8b09ee6)と同様に，"\[\]$"を読み込んだ時点で読み込みを中断・終了する．
+    -   "\[\]$"より前に入力された全文字列を表示する．
+    
+        #include <stdio.h>
+        
+        #define DIM 100
+        #define NUMCHAR 128
+        
+        int main(void)
+        {
+            char str[DIM][NUMCHAR];
+            int i, j, cnt;
+            printf("文字列を入力してください\n");
+            for (i = 0; i < DIM; i++) {
+                cnt = 0;
+                printf("%d個目:", i+1);
+                scanf("%s", str[i]);
+                puts("\n");
+                for (j = 0; j < NUMCHAR; j++) {
+                    if (str[i][j] != '$') break;
+                }
+                if (j == 5) break;
+            }
+            for (j = 0; j < i; j++) {
+                printf("%s\n", str[j]);
+            }
+            return 0;
+        }
+
+4.  解答を見て理解できた 演習9-12
+
+    受け取った文字列の配列に格納されているn個の文字列の並びを反転する関数を作成せよ．
+    たとえば，sに{"SEC", "ABC"}を受け取ったら，その配列を{"CES", "CBA"}に更新せよ．
+    
+    1.  林の答案
+    
+            #include <stdio.h>
+            
+            void rev_string(char s[][128], int n)
+            {
+                char tmp[n][128];
+                int i, j, length;
+                for (i = 0; i < n; i++) {
+                    length = 0;
+                    for (j = 0; s[i][j] != '\0'; j++) {
+                        tmp[i][j] = s[i][j];
+                        length++;
+                    }
+                    for (j = 0; j < length; j++) {
+                      s[i][length - j - 1] = tmp[i][j];
+                    }
+                }
+            }
+            
+            int main(void) {
+                int i, n;
+                char str[n][128];
+                printf("文字列をいくつ入力しますか？");
+                scanf("%d", &n);
+                for (i = 0; i < n; i++) {
+                    printf("%d個目の文字列を入力してください:", i+1);
+                    scanf("%s", str[n]);
+                    puts("\n");
+                }
+            
+                rev_string(str, n);
+            
+                printf("その文字列をそれぞれ反転すると");
+                for (i = 0; i < n; i++) printf("%s\n", str[i]);
+                printf("となります．\n");
+            
+                return 0;
+            }
+    
+    2.  Web模範解答
+    
+            #include <stdio.h>
+            #define row 128
+            
+            void rev_string(char s[][128], int n){
+                int i, j, length;
+                char tmp[128]; /*そうか，tmpは1次元でいいことに気づかなかった*/
+            
+                for(j = 0; j < n; j++){
+            
+                    length = 0;
+                    for(i = 0; s[j][i] != '\0'; i++){
+                        tmp[i] = s[j][i];
+                        length++;
+                    }
+            
+                    for(i = 0; i < length; i++){
+                        s[j][i] = tmp[length - 1 - i];      
+                    }
+            
+                    printf("s[%d] = \"%s\"\n", j, s[j]);　/*printまでこの関数でやってしまう*/
+                }
+            }
+            
+            int main(){
+            
+                int i, j;
+                char cs[row][128];
+            
+                for(i = 0; i < row; i++){
+                    printf("文字列を入力してください：");    scanf("%s", cs[i]);
+            
+                    for(j = 0; cs[i][j] != '\0'; j++){
+                        if(cs[i][j] != '$') break;
+                    }
+                    if(j == 5) break;
+                }
+            
+                rev_string(cs, i); /*値の更新，表示をすべてここで*/
+            
+                return 0;
+            }
+    
+    3.  改訂版の答案
+    
+            #include <stdio.h>
+            
+            void rev_string(char s[][128], int n)
+            {
+                char tmp[128];
+                int i, j, length;
+                for (i = 0; i < n; i++) {
+                    length = 0;
+                    for (j = 0; s[i][j] != '\0'; j++) {
+                        tmp[j] = s[i][j];
+                        length++;
+                    }
+                    for (j = 0; j < length; j++) {
+                      s[i][j] = tmp[length - j - 1];
+                    }
+                    printf("%d個目の文字列: %s\n", i+1, s[i]);
+                }
+            }
+            
+            int main(void) {
+                int i, n;
+                char str[n][128];
+                printf("文字列をいくつ入力しますか？");
+                scanf("%d", &n);
+                for (i = 0; i < n; i++) {
+                    printf("%d個目の文字列を入力してください:", i+1);
+                    scanf("%s", str[i]);
+                    puts("\n");
+                }
+            
+                printf("その文字列をそれぞれ反転すると\n");
+                rev_string(str, n);
+                printf("となります．\n");
+            
+                return 0;
+            }
+
+
+<a id="org7555f79"></a>
 
 ## まとめ
 
