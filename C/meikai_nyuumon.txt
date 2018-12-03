@@ -521,4 +521,100 @@ int main(void)
   }
 #+END_SRC
 *** 文字列の配列の受け渡し
+**** List9-12
+このプログラムは文字「列」を3つ，表示している．
+iだけを使った1次元ループ．
+#+BEGIN_SRC C
+  /*
+      文字列の配列を表示（関数版）
+  ,*/
+
+  #include <stdio.h>
+
+  /*--- 文字列の配列を表示 ---*/
+  void put_strary(const char s[][6], int n) /* ここの[6]が，このプログラムの汎用性を損なっている */
+  {
+      int i;
+      for (i = 0; i < n; i++)
+          printf("s[%d] = \"%s\"\n", i, s[i]); /* ここは文字列をまるごと，1行ずつ表示している */
+  }
+
+  int main(void)
+  {
+      char cs[][6] = {"Turbo", "NA", "DOHC"};
+
+      put_strary(cs, 3);
+
+      return 0;
+  }
+
+#+END_SRC
+**** List9-13
+こちらのプログラムは，「文字」を1つずつ表示している．
+iとjの2次元ループ．
+#+BEGIN_SRC C
+  /*
+      文字列の配列を表示（関数版：１文字ずつ走査）
+  ,*/
+
+  #include <stdio.h>
+
+  /*--- 文字列の配列を表示（１文字ずつ表示）---*/
+  void put_strary2(const char s[][6], int n)
+  {
+      int i;
+      for (i = 0; i < n; i++) {
+          int j = 0;
+          printf("s[%d] = \"", i);
+
+          while (s[i][j])
+              putchar(s[i][j++]); /* 文字「列」ではなく，文字を1つずつ表示している */
+
+          puts("\"");
+      }
+  }
+
+  int main(void)
+  {
+      char cs[][6] = {"Turbo", "NA", "DOHC"};
+
+      put_strary2(cs, 3);
+
+      return 0;
+  }
+
+#+END_SRC
+**** 演習9-11
+List9-12を以下のように書き換えたプログラムを作成せよ．
+- 文字列の個数を3ではなく大きな数にし，その値をオブジェクト形式マクロとして定義する．
+- 文字列の文字数を6ではなく128とする．その値もオブジェクト形式マクロとして定義する．
+- 文字列の配列を読み込む関数を作成する．[[*%E6%BC%94%E7%BF%929-3][演習9-3]]と同様に，"$$$$$"を読み込んだ時点で読み込みを中断・終了する．
+- "$$$$$"より前に入力された全文字列を表示する．
+#+BEGIN_SRC C
+  #include <stdio.h>
+
+  #define DIM 100
+  #define NUMCHAR 128
+
+  int main(void)
+  {
+      char str[DIM][NUMCHAR];
+      int i, j, cnt;
+      printf("文字列を入力してください\n");
+      for (i = 0; i < DIM; i++) {
+          cnt = 0;
+          printf("%d個目:", i+1);
+          scanf("%s", str[i]);
+          puts("\n");
+          for (j = 0; j < NUMCHAR; j++) {
+              if (str[i][j] != '$') break;
+          }
+          if (j == 5) break;
+      }
+      for (j = 0; j < i; j++) {
+          printf("%s\n", str[j]);
+      }
+      return 0;
+  }
+#+END_SRC
 ** まとめ
