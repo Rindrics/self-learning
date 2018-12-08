@@ -1,9 +1,273 @@
 #+TITLE: Gitによるバージョン管理
 * 第I部　入門編
 ** 第1章　Gitとは
+*** バージョン管理システムとは
+*** バージョン管理システムGit
 ** 第2章　一人でGitを利用する
+*** Gitを使って設定ファイルを管理する
+よく，日付付きのファイル名でバックアップしたりするが...
+- 変更内容やその理由がわからない
+- バックアップの取り忘れが起きる
+- ファイル数が膨大になる
+*** 基本的なワークフロー
+- リポジトリ作成
+- ファイルの新規作成と編集
+- インデックスへの登録
+- リポジトリへのコミット
+*** リポジトリの作成と最初のコミット
+**** Gitリポジトリ作成
+#+BEGIN_SRC sh :session *git*
+  mkdir ~/Downloads/initfiles/
+  cd ~/Downloads/initfiles
+  git init
+#+END_SRC
+
+#+RESULTS:
+| mkdir:  | /Users/ahayashi/Downloads/initfiles/: | File     | exists |            |    |                                           |
+| sh-3.2$ | Reinitialized                         | existing | Git    | repository | in | /Users/ahayashi/Downloads/initfiles/.git/ |
+**** Gitで使う名前とメールアドレスの設定
+#+BEGIN_SRC sh :session *git*
+git config --global user.name
+git config --global user.email
+#+END_SRC
+
+#+RESULTS:
+| Akira               | Hayashi |
+| smxshxishxad@me.com |         |
+**** Git設定ファイルの確認
+#+BEGIN_SRC sh :session *git*
+cat ~/.gitconfig
+#+END_SRC
+
+#+RESULTS:
+|            |               |           |                                                           |                |          |              |
+| h>         | %ad           | [%an]     | %Cgreen%d%Creset                                          | %s]\"          | --all    | --date=short |
+| [filter    | lfs           |           |                                                           |                |          |              |
+| f          |               |           |                                                           |                |          |              |
+| f          |               |           |                                                           |                |          |              |
+|            | process       | =         | git-lfs                                                   | filter-process |          |              |
+|            | required      | =         | true                                                      |                |          |              |
+| [core]     |               |           |                                                           |                |          |              |
+|            | excludesfile  | =         | /Users/ahayashi/.gitignore_global                         |                |          |              |
+|            | quotepath     | =         | false                                                     |                |          |              |
+| [difftool  | sourcetree    |           |                                                           |                |          |              |
+| LOCAL\"    | $REMOTE\      |           |                                                           |                |          |              |
+|            | path          | =         |                                                           |                |          |              |
+| [mergetool | sourcetree    |           |                                                           |                |          |              |
+| LOCAL\"    | $REMOTE\      | -ancestor | $BASE\                                                    | -merge         | $MERGED\ |              |
+|            | trustExitCode | =         | true                                                      |                |          |              |
+| [user]     |               |           |                                                           |                |          |              |
+|            | name          | =         | Akira                                                     | Hayashi        |          |              |
+|            | email         | =         | smxshxishxad@me.com                                       |                |          |              |
+| [commit]   |               |           |                                                           |                |          |              |
+|            | template      | =         | /Users/ahayashi/Documents/GitHub/dotfiles/.gitmessage.txt |                |          |              |
+**** 管理するファイルの登録と確認
+#+BEGIN_SRC sh :session *git* :results output
+  touch test.txt
+  git status
+#+END_SRC
+
+#+RESULTS:
+***** インデックスへ登録前のリポジトリ確認
+#+begin_example
+
+test.txt
+On branch master
+
+No commits yet
+
+Untracked files:
+..." to include in what will be committed)
+
+	test.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+#+end_example
+***** インデックスに登録後のリポジトリ状態の確認
+#+BEGIN_SRC sh :session *git* :results output
+git add test.txt
+git status
+#+END_SRC
+
+#+RESULTS:
+: 
+: On branch master
+: 
+: No commits yet
+: 
+: Changes to be committed:
+: ..." to unstage)
+: 
+: 	new file:   test.txt
+***** リポジトリへのコミットとコミットログの確認
+コミット
+#+BEGIN_SRC sh :session *git* :results output
+git commit -m "Initial commit"
+#+END_SRC
+
+#+RESULTS:
+: [master (root-commit) 48ca5da] Initial commit
+:  1 file changed, 0 insertions(+), 0 deletions(-)
+:  create mode 100644 test.txt
+
+#+BEGIN_SRC sh :session *git* :results output
+echo "hello, world!!" > test.txt
+git status
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+
+test.txt
+On branch master
+Changes not staged for commit:
+..." to update what will be committed)
+..." to discard changes in working directory)
+
+	modified:   test.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+#+end_example
+
+#+BEGIN_SRC sh :session *git* :results output
+git add test.txt
+git commit -m "Say hello to world"
+#+END_SRC
+
+#+RESULTS:
+: 
+: [master 6a99f5c] Say hello to world
+:  1 file changed, 1 insertion(+)
+
+#+BEGIN_SRC sh :session *git* :results output
+git log
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+
+master)[m
+[m
+Date:   Sat Dec 8 20:18:28 2018 +0900[m
+[m
+    Say hello to world[m
+[m
+diff --git a/test.txt b/test.txt[m
+index e69de29..af96ee3 100644[m
+--- a/test.txt[m
++++ b/test.txt[m
+@@ -0,0 +1 @@[m
++hello, worldecho 'org_babel_sh_eoe'[m
+[m
+commit 48ca5da104ea627614d5d05c8b43e7766f841e7b[m
+[m
+Date:   Sat Dec 8 20:14:33 2018 +0900[m
+[m
+    Initial commit[m
+[m
+diff --git a/test.txt b/test.txt[m
+new file mode 100644[m
+index 0000000..e69de29[m
+sh: it: command not found
+#+end_example
+
+
+*** 管理したくないファイルをGitで無視する
+.gitignore
+*** リポジトリでのワークフロー
+**** ファイル変更，コミット
+**** ファイル追加，既存ファイル変更
+**** 複数の変更を一括コミット
+git commit -a -m "message"
+*** この章のまとめ
+- git init
+- git config
+- git add
+- git status
+- git commit
+- git log
+- git rm
+- .gitignore
+- git show
+- git mv
+- git checkout
 ** 第3章　Gitの用語
+*** バージョン管理システムにおける基本的な用語
+**** リポジトリ
+***** ローカルリポジトリ
+***** リモートリポジトリ
+**** ワーキングツリー
+**** ブランチ
+***** ローカルブランチ
+***** リモートブランチ
+***** リモートトラッキングブランチ
+リモートブランチをローカルリポジトリでトラッキングするためのブランチ．
+origin/masterは，originという名前のリモートブランチにある，masterブランチをトラッキングしている．
+**** チェックアウト
+**** タグ
+**** コミット
+*** Git独特の概念
+**** ワーキングツリーとインデックス，リポジトリ
+インデックスがあるので，編集内容の一部だけコミットすることができる．
+リモートリポジトリに接続できないときにも，変更をコミットし，ログや差分を確認できる．
+**** リビジョン
+Gitが連番ではなくハッシュ値を使うのは，複数人での作業を前提としているから．
+ハッシュ値以外にも，以下の代名詞による指定方法がある．
+- HEAD
+- FETCH_HEAD
+- ORIG_HEAD
+- MERGE_HEAD
 ** 第4章　基本的なGitコマンド
+*** リポジトリの作成/git init
+**** bareリポジトリ
+git init --bare reponame
+リモートリポジトリはこの方法で作るのがよい．でないと，うまく動作しないことがある．
+**** 共有リポジトリ
+git init --shared
+--sharedオプションをつけると，ディレクトリの権限を自動的に適切に設定してくれる．
+#+BEGIN_SRC sh :session *git* :results output
+cd ../
+cghrp project initfiles
+cd initfiles
+git init --shared
+ls -la .git/
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+
+sh: cghrp: command not found
+sh-3.2$ Initialized empty shared Git repository in /Users/ahayashi/Downloads/initfiles/.git/
+total 24
+drwxrwsr-x  10 ahayashi  staff  320 Dec  8 20:46 .
+drwxr-xr-x   4 ahayashi  staff  128 Dec  8 20:46 ..
+-rw-rw-r--   1 ahayashi  staff   23 Dec  8 20:46 HEAD
+drwxrwsr-x   2 ahayashi  staff   64 Dec  8 20:46 branches
+-rw-rw-r--   1 ahayashi  staff  197 Dec  8 20:46 config
+-rw-rw-r--   1 ahayashi  staff   73 Dec  8 20:46 description
+drwxrwsr-x  13 ahayashi  staff  416 Dec  8 20:46 hooks
+drwxrwsr-x   3 ahayashi  staff   96 Dec  8 20:46 info
+drwxrwsr-x   4 ahayashi  staff  128 Dec  8 20:46 objects
+drwxrwsr-x   4 ahayashi  staff  128 Dec  8 20:46 refs
+#+end_example
+
+*** Gitリポジトリの設定を行う/git config
+.git/configのほうが.gitconfigよりも優先するので，リポジトリごとの設定は前者に登録するとよい．
+*** ファイルをインデックスに登録する/git add
+既に登録したファイルを管理から外すには，
+git rm --cachedを使う．
+*** 差分を出力する/git diff
+
+*** コミットログを表示する/git log, git shortlog
+*** ローカルリポジトリ，ワーキングツリーの状態を確認する/git status
+*** ディレクトリおよびファイルの移動，変更を行う/git mv
+*** ファイルおよびディレクトリの削除/git rm
+*** 変更をローカルリポジトリにコミットする/git commit
+*** ローカルリポジトリ，インデックスを元に戻す/git reset
+*** ワーキングツリーを掃除する/git clean
+*** 特定の文字列を検索する/git grep
+*** リポジトリで管理するファイルを設定する/.gitignoreファイル
+*** コミット内容を表示する/git show
 ** 第5章　複数人のプロジェクトでGitを利用する
 ** 第6章　複数人で開発する場合に利用するGitコマンド
 * 第II部　発展編
