@@ -884,3 +884,272 @@ int main(void)
 <<間接演算子>>: *のこと．
 ポインタpがxを指すとき，*pはxのエイリアスとなる．
 ** 10-2 ポインタと関数
+*** 関数の引数としてのポインタ
+**** List10-4
+一時的なコピーである関数の仮引数をいくら変更しても，元の実引数には影響しないことは既に見た．
+そこで，ポインタによって，実引数を間接的に変更してみる．
+#+BEGIN_SRC C
+  /*
+      ポインタによって身長を間接的に操作する
+  */
+
+  #include <stdio.h>
+
+  /*--- ひろ子さん（180cm未満の身長を180cmに伸ばす）---*/
+  void hiroko(int *height)        /* この関数hirokoの引数は，ポインタ型となっている */
+  {
+      if (*height < 180)
+          ,*height = 180;
+  }
+
+  int main(void)
+  {
+      int sato   = 178;		/* 佐藤宏史君の身長 */
+      int sanaka = 175;		/* 佐中俊哉君の身長 */
+      int masaki = 179;		/* 真崎宏孝君の身長 */
+
+      hiroko(&masaki);
+
+      printf("佐藤君の身長：%d\n", sato);
+      printf("佐中君の身長：%d\n", sanaka);
+      printf("真崎君の身長：%d\n", masaki);
+
+      return 0;
+  }
+
+
+
+#+END_SRC
+
+
+#+RESULTS:
+| 佐藤君の身長：178 |
+| 佐中君の身長：175 |
+| 真崎君の身長：180 |
+
+*** 和と差を求める関数
+List10-1は，正しくはポインタを使って，下のList10-5のように書くべきだった．
+**** List10-5
+#+BEGIN_SRC C :var na=3, nb=5
+  /*
+      二つの整数の和と差を求める
+  ,*/
+
+  #include <stdio.h>
+
+  /*--- n1とn2の和と差を*sumと*diffに格納 ---*/
+  void sum_diff(int n1, int n2, int *sum, int *diff) /* ポインタを使って書く */
+  { 
+      ,*sum  = n1 + n2;
+      ,*diff = (n1 > n2) ? n1 - n2 : n2 - n1;
+  }
+
+  int main(void)
+  {
+      int na, nb;
+      int wa = 0, sa = 0;
+
+      puts("二つの整数を入力してください。");
+      printf("整数Ａ：\n");   scanf("%d", &na);
+      printf("整数Ｂ：\n");   scanf("%d", &nb);
+
+      sum_diff(na, nb, &wa, &sa);
+
+      printf("和は%dで差は%dです。\n", wa, sa);
+
+      return 0;
+  }
+
+#+END_SRC
+
+#+RESULTS:
+| 二つの整数を入力してください。     |
+| 整数Ａ：                           |
+| 整数Ｂ：                           |
+| 和は217407540で差は217342008です。 |
+
+*** 2つの値の交換
+2つのオブジェクトへポインタをうけとれば，値の交換も可能．
+中間で値を保存するtemp
+**** List10-6
+#+BEGIN_SRC C
+/*
+	二つの整数値を交換する
+*/
+
+#include <stdio.h>
+
+/*--- pxとpyが指すオブジェクトの値を交換 ---*/
+void swap(int *px, int *py)
+{
+	int temp = *px;
+	*px = *py;
+	*py = temp;
+}
+
+int main(void)
+{
+	int na, nb;
+
+	puts("二つの整数を入力してください。");
+	printf("整数Ａ：");   scanf("%d", &na);
+	printf("整数Ｂ：");   scanf("%d", &nb);
+
+	swap(&na, &nb);
+
+	puts("これらの値を交換しました。");
+	printf("整数Ａは%dです。\n", na);
+	printf("整数Ｂは%dです。\n", nb);
+
+	return 0;
+}
+
+#+END_SRC
+**** OK 演習10-1
+nの指す値が0より小さければ0に更新し，100より大きければ100に更新する（値が0〜100であれば更新しない）
+関数adjust_pointを作成せよ．
+#+BEGIN_SRC C
+  #include <stdio.h>
+
+  void adjust_point(int *n) {
+      if (*n < 0){
+          ,*n = 0;
+           printf("値を%dに更新しました\n", *n);
+      } else if (*n > 100) {
+          ,*n = 100;
+          printf("値を%dに更新しました\n", *n);
+      } else {
+          printf("値は%dのままです\n", *n);
+      }
+  }
+
+  int main(void) {
+      int n;
+
+      printf("整数を入力してください:");
+      scanf("%d", &n);
+
+      adjust_point(&n);
+
+      return 0;
+  }
+#+END_SRC
+
+**** OK 演習10-2
+西暦*y年*m月*d日の日付を，"前の日"あるいは"次の日”の日付に更新する関数を作成せよ
+閏年を考慮して計算を行うこと．
+#+BEGIN_SRC C
+  #include <stdio.h>
+
+  void decrement_date(int *y, int *m, int *d) {
+      if (*d == 1) {
+          switch (*m) {
+          case 2:
+          case 4:
+          case 6:
+          case 9:
+          case 11: *d = 31; *m = *m -1; break;
+          case 1: *d = 31; *m = 12; *y = *y - 1; break;
+          case 3: if ((*y % 4) == 0) {
+                  ,*d = 29;
+              } else {
+                  if (*d == 29) {
+                      printf("有効な年月日を入力してください\n");
+                      break;
+                  } else {
+                      ,*d = 28;
+                  }
+              }
+              ,*m = *m - 1; break;
+          case 5:
+          case 7:
+          case 8:
+          case 10: *m = *m -1; *d = 29; break;
+          }
+      } else {
+          ,*d = *d - 1;
+      }
+      printf("その日の1日前の日付は%d年%d月%d日です\n", *y, *m, *d);
+
+  }
+  void increment_date(int *y, int *m, int *d) {
+      switch (*m) {
+      case 2: if ((*y % 4) == 0) {
+              if (*d == 29) {
+                  ,*d = 1;
+                  ,*m = *m + 1;
+              } else {
+                  ,*d = *d + 1;
+              }
+          } else {
+              if (*d == 28) {
+                  ,*d = 1;
+                  ,*m = *m + 1;
+              } else if (*d == 29) {
+                  printf("有効な年月日を入力してください\n");
+                  break;
+              } else {
+                  ,*d = *d + 1;
+              }
+          }
+          break;
+      case 4:
+      case 6:
+      case 9:
+      case 11: if (*d == 30) {
+              ,*d = 1;
+              ,*m = *m + 1;
+          } else {
+              ,* d = *d + 1;
+          }
+          break;
+      case 1:
+      case 3:
+      case 5:
+      case 7:
+      case 8:
+      case 10: if (*d == 31) {
+              ,*d = 1;
+              ,*m = *m + 1;
+          } else {
+              ,*d = *d + 1;
+          }
+          break;
+      case 12: if (*d == 31) {
+              ,*d = 1;
+              ,*y = *y + 1;
+              ,*m = 1;
+          } else {
+              ,*d = *d + 1;
+          }
+          break;
+      }
+      printf("その日の1日後の日付は%d年%d月%d日です\n", *y, *m, *d);
+  }
+
+  int main(void) {
+      int y, m, d;
+      int y2, m2, d2;
+
+      printf("年月日を入力してください\n");
+      printf("年:"); scanf("%d", &y);
+      printf("月:"); scanf("%d", &m);
+      printf("日:"); scanf("%d", &d);
+
+      y2 = y;
+      m2 = m;
+      d2 = d;
+
+      decrement_date(&y, &m, &d);
+      increment_date(&y2, &m2, &d2);
+    
+      return 0;
+  }
+#+END_SRC
+
+*** 2値のソート
+*** scanf関数とポインタ
+*** ポインタの型
+*** 空ポインタ
+*** スカラ型
+** 10-3ポインタと配列
