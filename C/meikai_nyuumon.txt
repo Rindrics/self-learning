@@ -48,6 +48,59 @@ int main(void)
 
 #+END_SRC
 * 関数
+** 記憶域期間
+*** 自動記憶域期間
+*** 静的記憶域期間
+*** List6-18
+#+BEGIN_SRC C :results scalar
+/*
+	自動記憶域期間と静的記憶域期間
+*/
+
+#include <stdio.h>
+
+int fx = 0;				/* 静的記憶域期間＋ファイル有効範囲．本プログラムを通じて生き続ける． */
+
+void func(void)
+{
+	static int sx = 0;	/* 静的記憶域期間＋ブロック有効範囲．関数の外でも生き続ける． */
+	int        ax = 0;	/* 自動記憶域期間＋ブロック有効範囲．関数の外では0で初期化される． */
+
+	printf("%3d%3d%3d\n", ax++, sx++, fx++);
+}
+
+int main(void)
+{
+	int i;
+
+	puts(" ax sx fx");
+	puts("----------");
+	for (i = 0; i < 10; i++)
+		func();
+	puts("----------");
+
+	return 0;
+}
+
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+ax sx fx
+----------
+  0  0  0
+  0  1  1
+  0  2  2
+  0  3  3
+  0  4  4
+  0  5  5
+  0  6  6
+  0  7  7
+  0  8  8
+  0  9  9
+----------
+#+end_example
+
 * 基本形
 ** 算術型と基本型
 *** 算術型
