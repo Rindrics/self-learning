@@ -1154,6 +1154,83 @@ nの指す値が0より小さければ0に更新し，100より大きければ10
 #+END_SRC
 
 *** 2値のソート
+先のswap関数を応用すると，ソートプログラムが作れる．
+**** List10-7
+#+BEGIN_SRC C
+  /*
+      二つの整数を昇順に並べる
+  ,*/
+
+  #include <stdio.h>
+
+  /*--- pxとpyが指すオブジェクトの値を交換 ---*/
+  void swap(int *px, int *py)
+  {
+      int temp = *px;
+      ,*px = *py;
+      ,*py = temp;
+  }
+
+  /*--- *n1≦*n2となるように並べる ---*/
+  void sort2(int *n1, int *n2)
+  {
+      if (*n1 > *n2)
+          swap(n1, n2);           /* ここには&をつけてはいけない．型が合わない．入門編の域を超えるので説明は割愛． */
+  }
+
+  int main(void)
+  {
+      int na, nb;
+
+      puts("二つの整数を入力してください。");
+      printf("整数Ａ：");   scanf("%d", &na);
+      printf("整数Ｂ：");   scanf("%d", &nb);
+
+      sort2(&na, &nb);
+
+      puts("昇順にソートしました。");
+      printf("整数Ａは%dです。\n", na);
+      printf("整数Ｂは%dです。\n", nb);
+
+      return 0;
+  }
+#+END_SRC
+**** 演習10-3
+ポインタn1, n2, n3が指す3つのint型整数を昇順にソートする関数を作成せよ．
+#+BEGIN_SRC C
+  #include <stdio.h>
+  void swap(int *px, int *py) {
+      int temp = *px;
+      ,*px = *py;
+      ,*py = temp;
+  }
+  void sort3(int *n1, int *n2, int *n3) {
+      if (*n1 > *n2) {
+          swap(n1, n2);
+      }
+      if (*n1 > *n3) {
+          swap(n1, n3);
+      }
+
+      if (*n2 > *n3) {
+          swap(n2, n3);
+      }
+  }
+
+  int main(void) {
+      int n1, n2, n3;
+      printf("整数を3つ入力してください\n");
+      printf("1つ目:"); scanf("%d", &n1);
+      printf("2つ目:"); scanf("%d", &n2);
+      printf("3つ目:"); scanf("%d", &n3);
+
+      sort3(&n1, &n2, &n3);
+
+      printf("昇順にソートすると%d, %d, %dとなります\n", n1, n2, n3);
+
+      return 0;
+  }
+#+END_SRC
 *** scanf関数とポインタ
 *** ポインタの型
 *** 空ポインタ
