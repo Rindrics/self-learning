@@ -257,8 +257,20 @@ drwxrwsr-x   4 ahayashi  staff  128 Dec  8 20:46 refs
 既に登録したファイルを管理から外すには，
 git rm --cachedを使う．
 *** 差分を出力する/git diff
-
-*** コミットログを表示する/git log, git shortlog
+**** 現在の修正の差分
+普通にgit diff
+**** ブランチやコミット間の差分
+git diff branchA branchB
+git diff commithashA commthashB
+**** 現在ブランチとインデックスとの差分
+addした後に見たくなったときとか．
+git diff --cached
+または
+git diff HEAD
+**** -Mオプション
+git diff -M
+とすると，ファイル名を変更した場合にもうまく表示される．
+*** TODO コミットログを表示する/git log, git shortlog
 *** ローカルリポジトリ，ワーキングツリーの状態を確認する/git status
 *** ディレクトリおよびファイルの移動，変更を行う/git mv
 *** ファイルおよびディレクトリの削除/git rm
