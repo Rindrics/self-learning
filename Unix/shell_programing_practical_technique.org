@@ -1,10 +1,1024 @@
 #+TITLE: シェルプログラミング実用テクニック
-* 第1章　準備運動
-* 第2章　不定形な文章や設定ファイルの検索と加工
-* 第3章　ファイルの取扱いとシステムの操作
-* 第4章　ファイルシステムをデータベースにする
-* 第5章　大きなデータを処理する
-* 第6章　画像，表計算ソフト，その他特殊のゲータを扱う
-* 第7章　CLI的インターネットとの付き合い方
-* 第8章　計算
+#+TAGS: 知らなかった
+* 準備運動
+** UNIXとは何者なのか？
+パイプを契機として，UNIXがUNIXになっていった
+研究所生まれの，合理性の塊．これを使いこなす者は，合理的なデータを渡して，お膳立てしないといけない．
+UNIXと対極の位置にあるのが，本書で言う「もう1つの選択肢」．Officeに代表されるようなガラパゴス巨大ソフト．
+*** McIlroyによるパイプの提案
+1969年，ベル研でUNIXの開発が始まってまもない頃．
+McIlroyがパイプ機能を提案．
+パイプは提案から実装まで3年放置されたが，実装後すぐに，誰もがその重要性に気づいた．
+古いコマンドは，パイプと併用すると便利なように書き直された．
+パイプをどんどん使え！！！！
+*** grep, sedの誕生
+edというエディタのメモリ不足を契機として，grepが開発された．
+grepは1行ごとに動作するので，ほとんどメモリを必要としない．
+sed(stream editor)も，メモリをほとんど必要としない．
+両者をパイプでつなぐと，あら便利．
+*** 「ソフトウェアツール」という言葉の誕生
+「コマンドは単機能で作るべき」という考え方がベル研内で生まれ，多くの単機能コマンドが作られた．
+lexとyaccというツールをつくるツールからawkが生まれた
+*** 考えられた「もう1つの選択肢」
+こちらは，Officeや統合開発環境などの大きいソフトウェアのこと．現在のメジャー．
+
+
+しかし，この道にいっていたら，UNIXは開発が遅れていたか，もしくは誕生していなかった．
+UNIXの誕生は，合理性追求の賜物である．
+
+合理性？
+「データがすべてに優先する」という考え方．（人月の神話 原著p.102）
+我々が使っているプログラムは，データ構造に引きずられている．
+データが適切なら，アルゴリズムも自明．データが汚いから，プログラムも肥大化し，汚く，遅くなる．
+
+XMLも合理的とは言えない．
+タグだらけにすると，それを解釈するコマンドと解釈しないコマンドの接続に不都合が出るから．
+
+UNIXが生まれたのは「研究所」なので，汚いデータを渡してくる者はいなかった．
+そこで，コマンドの設計もズボラで，親切ではない．
+なぜ，親切なOfficeなどのが誕生したか？
+営利目的だから，便利なものを売るのが優先される．
+汚いデータも飲み込む．
+*** GancarzのUNIX哲学
+「UNIXという考え方」にまとめられている．
+ただし，本書に書いてあることを自然にできないと，理解できないだろう．
+** OSや環境について
+*** 想定する利用シーン
+*** Ubuntu 14.04 LTS
+** 基本操作
+fish環境では多少コマンドが違ってくるので，別途調べる必要がある．
+*** 端末とシェルを開く
+- 端末: コンピュータに接続してデータをやり取りするための機械
+- シェル: 端末から文字列の入力を受けて，OS本体（カーネル）に渡すためのソフトウェア
+*** シェルにコマンドを入力する
+*** manを使う
+manで見ることができるマニュアルには，章番号がある．
+TR(1)とは，trのマニュアルは第1章に書いてあることを意味する．
+例えば，printfには，シェルコマンドのprintf(1)と，print(3)がある．
+*** ファイルやコマンドの出力を眺める
+*** ディレクトリを理解する
+*** ディレクトリを移動する
+*** ワイルドカードで一度に複数ファイルを指定する
+**** ワイルドカードの動作
+#+BEGIN_SRC sh
+ls
+#+END_SRC
+
+#+RESULTS:
+| Unix_for_OSX.org                          |
+| Unix_for_OSX.org~                         |
+| dir                                       |
+| shell_programing_practical_technique.org  |
+| shell_programing_practical_technique.org~ |
+| test.docx                                 |
+
+#+BEGIN_SRC sh
+ls *.org
+#+END_SRC
+
+#+RESULTS:
+| Unix_for_OSX.org                         |
+| shell_programing_practical_technique.org |
+
+#+BEGIN_SRC sh
+ls -l *org
+#+END_SRC
+
+#+RESULTS:
+| -rw-r--r-- | 1 | ahayashi | staff | 61698 | Dec |  8 | 18:18 | Unix_for_OSX.org                         |
+| -rw-r--r-- | 1 | ahayashi | staff |  4610 | Dec | 10 | 21:58 | shell_programing_practical_technique.org |
+**** grepと一緒に使う
+#+BEGIN_SRC sh
+grep パイプ *org
+#+END_SRC
+
+#+RESULTS:
+| shell_programing_practical_technique.org:パイプを契機として，UNIXがUNIXになっていった                                        |                           |
+| shell_programing_practical_technique.org:***                                                                                 | McIlroyによるパイプの提案 |
+| shell_programing_practical_technique.org:McIlroyがパイプ機能を提案．                                                         |                           |
+| shell_programing_practical_technique.org:パイプは提案から実装まで3年放置されたが，実装後すぐに，誰もがその重要性に気づいた． |                           |
+| shell_programing_practical_technique.org:古いコマンドは，パイプと併用すると便利なように書き直された．                        |                           |
+| shell_programing_practical_technique.org:パイプをどんどん使え！！！！                                                        |                           |
+| shell_programing_practical_technique.org:両者をパイプでつなぐと，あら便利．                                                  |                           |
+| shell_programing_practical_technique.org:***                                                                                 | パイプでコマンドをつなぐ  |
+
+*** パイプでコマンドをつなぐ
+#+BEGIN_SRC sh
+grep grep *org
+#+END_SRC
+
+#+RESULTS:
+| Unix_for_OSX.org:ps                                                                                   | -ax              |                                                                                                    |   | grep | Word |   |   |         |   |   |      |   |   |      |   |   |   |
+| Unix_for_OSX.org:                                                                                     |                  | 35237                                                                                              |   |      | ??   |   |   | 0:00.00 |   |   | grep |   |   | Word |   |   |   |
+| Unix_for_OSX.org:-                                                                                    | grep:            | 複数のファイルの内容から，指定した「パターン」に当てはまるものを探し出す．メール検索などに使える． |   |      |      |   |   |         |   |   |      |   |   |      |   |   |   |
+| shell_programing_practical_technique.org:***                                                          | grep,            | sedの誕生                                                                                          |   |      |      |   |   |         |   |   |      |   |   |      |   |   |   |
+| shell_programing_practical_technique.org:edというエディタのメモリ不足を契機として，grepが開発された． |                  |                                                                                                    |   |      |      |   |   |         |   |   |      |   |   |      |   |   |   |
+| shell_programing_practical_technique.org:grepは1行ごとに動作するので，ほとんどメモリを必要としない．  |                  |                                                                                                    |   |      |      |   |   |         |   |   |      |   |   |      |   |   |   |
+| shell_programing_practical_technique.org:****                                                         | grepと一緒に使う |                                                                                                    |   |      |      |   |   |         |   |   |      |   |   |      |   |   |   |
+| shell_programing_practical_technique.org:grep                                                         | パイプ           | *org                                                                                               |   |      |      |   |   |         |   |   |      |   |   |      |   |   |   |
+ファイル名とマッチした行ではなく，ファイル名のリストだったとき，どうするか？
+実際には，grepのオプションに-lをつければ済む．
+しかし，sedとuniqをパイプで繋げば以下のように実現できる．
+
+#+BEGIN_SRC sh
+grep grep *org | sed 's/:..*$//' | uniq
+#+END_SRC
+
+#+RESULTS:
+| Unix_for_OSX.org                         |
+| shell_programing_practical_technique.org |
+
+**** *オプションを覚えるより，パイプでつなげ！！！！*
+なぜか？
+オプションを覚えても，できることが1つ増えるだけ（grepのオプションだけでも45個ある）．
+しかしコマンドをパイプで繋げば，できることは指数関数的に増えていく．
+
+*** シェルスクリプトを書いて実行する
+流石に，コマンドを書き込んで保存したほうが楽．
+*** ファイルを読み書きする
+>を使えば，コマンドの出力をファイルに書き込める．
+必然的に，">"は不等号としては使えない．
+"<"を表すのは-lt．（less than）
+">"を表すのは-gt?
+
+シェルはとにかくスクリプトが短い！
+ただ，文法的に汚く見えるということはある．
+便利だが，汚い．
+この汚さと付き合うのは，残念ながら宿命．
+**** 入力リダイレクト
+***** まずhogeに0と書き込む
+#+BEGIN_SRC sh
+echo 0 > hoge
+cat hoge
+#+END_SRC
+
+#+RESULTS:
+: 0
+***** trで0を1に置換するが，それを入力リダイレクト記号で渡す．
+#+BEGIN_SRC sh
+tr '0' '1' < hoge
+#+END_SRC
+
+#+RESULTS:
+: 1
+***** ただし，パイプを使う方がいいかも．一度標準出力で確認できるから．
+#+BEGIN_SRC sh
+cat hoge | tr '0' '1'
+#+END_SRC
+
+#+RESULTS:
+: 1
+***** なぜかこれでも通る．
+#+BEGIN_SRC sh
+<hoge tr '0' '1'
+#+END_SRC
+
+#+RESULTS:
+: 1
+**** 標準エラー出力
+エラーは専用の出力「標準エラー出力，2番」に出力される．
+#+BEGIN_SRC sh
+ls --unknownoption 0< / 1> ans 2> error
+cat error
+#+END_SRC
+
+#+RESULTS:
+| ls:    | illegal | option                                   | --    |    0 |
+| usage: | ls      | [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] | [file | ...] |
+**** ファイルの書き換え
+Aをコマンドで処理してAに上書きしたくても，一度Bとして書き出し，diffをとって確認してからAとして保存しよう．
+*** 出力を捨てる                                             :知らなかった:
+捨て場所は，/dev/null，いわゆるデブヌル．
+- ベンチマークを測定するとき
+- エラーが大量に出ることがわかっているとき
+
+*** 日本語と英語を切り替える（ロケール）
+#+BEGIN_SRC sh
+date
+#+END_SRC
+
+#+RESULTS:
+: Tue Dec 11 01:13:58 JST 2018
+
+#+BEGIN_SRC sh
+locale
+#+END_SRC
+
+#+RESULTS:
+| en_JP.UTF-8 |
+| C           |
+| C           |
+| C           |
+| C           |
+| C           |
+| C           |
+| LC_ALL=     |
+Cはデフォルトということ．
+*** パーミッションを理解する
+**** パーミッションを確認する
+#+BEGIN_SRC sh
+ls -l ~/
+#+END_SRC
+
+#+RESULTS:
+| total       | 7200 |          |       |         |     |    |       |                     |         |        |                         |
+| -rw-r--r--  |    1 | ahayashi | staff |       0 | May | 21 |  2018 | #test#              |         |        |                         |
+| -rw-r--r--  |    1 | ahayashi | staff |     527 | May | 18 |  2018 | #test.org#          |         |        |                         |
+| drwxr-xr-x  |    4 | ahayashi | staff |     128 | Nov | 25 | 06:42 | Applications        |         |        |                         |
+| drwxr-xr-x  |   16 | ahayashi | staff |     512 | Oct | 11 | 23:01 | Calibre             | Library |        |                         |
+| drwxrwxr-x@ |    3 | ahayashi | staff |      96 | Jun | 22 | 07:53 | Creative            | Cloud   | Files  |                         |
+| drwxr-xr-x  |    2 | ahayashi | staff |      64 | Feb | 17 |  2018 | Databases           |         |        |                         |
+| drwx------+ |    7 | ahayashi | staff |     224 | Dec |  2 | 06:24 | Desktop             |         |        |                         |
+| drwx------+ |   29 | ahayashi | staff |     928 | Dec |  9 | 19:47 | Documents           |         |        |                         |
+| drwx------+ |  141 | ahayashi | staff |    4512 | Dec |  8 | 20:01 | Downloads           |         |        |                         |
+| drwx------@ |   34 | ahayashi | staff |    1088 | Dec |  4 | 22:59 | Dropbox             |         |        |                         |
+| drwx------@ |   32 | ahayashi | staff |    1024 | Dec |  5 | 18:05 | Google              | Drive   |        |                         |
+| drwxr-xr-x@ |    6 | ahayashi | staff |     192 | Nov | 17 |  2000 | LSD                 |         |        |                         |
+| drwx------@ |   92 | ahayashi | staff |    2944 | Nov | 25 | 06:42 | Library             |         |        |                         |
+| drwx------  |   19 | ahayashi | staff |     608 | Nov | 12 | 20:24 | Mail                |         |        |                         |
+| drwx------+ |    8 | ahayashi | staff |     256 | Oct | 23 | 22:43 | Movies              |         |        |                         |
+| drwx------+ |    7 | ahayashi | staff |     224 | Nov |  4 | 22:18 | Music               |         |        |                         |
+| drwxr-xr-x  |    3 | ahayashi | staff |      96 | Nov | 12 | 20:24 | News                |         |        |                         |
+| drwx------+ |   15 | ahayashi | staff |     480 | Oct | 23 | 22:43 | Pictures            |         |        |                         |
+| drwxr-xr-x  |    6 | ahayashi | staff |     192 | Jan | 29 |  2018 | Pixa.pxlibrary      |         |        |                         |
+| drwxr-xr-x+ |    5 | ahayashi | staff |     160 | Oct | 11 |  2017 | Public              |         |        |                         |
+| -rw-r--r--  |    1 | ahayashi | staff |    2130 | Nov | 21 |  2017 | convertExcelToCsv.R |         |        |                         |
+| drwxr-xr-x  |   39 | ahayashi | staff |    1248 | Feb | 14 |  2018 | fonts               |         |        |                         |
+| drwxr-xr-x  |    4 | ahayashi | staff |     128 | Nov | 12 | 21:41 | gmail               |         |        |                         |
+| drwxr-xr-x  |    3 | root     | staff |      96 | Jul | 31 | 15:54 | intel               |         |        |                         |
+| drwxr-xr-x  |   24 | ahayashi | staff |     768 | Jul | 25 | 08:18 | junk                |         |        |                         |
+| lrwxr-xr-x  |    1 | ahayashi | staff |      30 | Jul | 16 | 08:08 | mylibrary.bib       | ->      | Google | Drive/pdf/mylibrary.bib |
+| -rw-r--r--  |    1 | ahayashi | staff |    5439 | Jul | 16 | 08:44 | mylibrary.bib~      |         |        |                         |
+| -rw-r--r--  |    1 | ahayashi | staff | 3657593 | Jul | 16 | 06:22 | mylibrary2.bib~     |         |        |                         |
+| drwxr-xr-x  |    2 | ahayashi | staff |      64 | Jul | 15 | 20:57 | org-demo            |         |        |                         |
+| drwx------@ |    4 | ahayashi | staff |     128 | Nov | 23 |  2010 | shakespack-allidx   |         |        |                         |
+| -rwxr--r--  |    1 | ahayashi | staff |     648 | Feb | 13 |  2018 | ssh-host-color      |         |        |                         |
+| -rw-r--r--  |    1 | ahayashi | staff |     475 | May | 18 |  2018 | test.org            |         |        |                         |
+| -rw-r--r--  |    1 | ahayashi | staff |     195 | Nov | 26 |  2017 | texput.log          |         |        |                         |
+| drwxr-xr-x  |    2 | ahayashi | staff |      64 | Jun |  7 |  2018 | tmp                 |         |        |                         |
+**** グループを確認する
+#+BEGIN_SRC sh
+groups ahayashi
+#+END_SRC
+
+#+RESULTS:
+: staff com.apple.sharepoint.group.1 everyone localaccounts _appserverusr admin _appserveradm _lpadmin _appstore _lpoperator _developer _analyticsusers com.apple.access_ftp com.apple.access_screensharing-disabled com.apple.access_ssh-disabled
+
+**** パーミッションの読み方 
+- 先頭のd: ディレクトリか，ファイルか．
+- 次の3桁: 所有者のパーミッション
+- 次の3桁: グループに属するユーザのパーミッション
+- その次の3桁: 赤の他人のパーミッション
+
+パーミッションの意味
+- r: readable
+- w: writable
+- x: executable
+**** スクリプトを書いてパーミッションを与える
+***** 書く
+#+BEGIN_SRC sh :tangle hoge.bash
+#!/bin/bash
+echo "hoge!"
+#+END_SRC
+***** 中を見る
+#+BEGIN_SRC sh :results scalar
+cat hoge.bash
+#+END_SRC
+
+#+RESULTS:
+: #!/bin/bash
+: echo "hoge!"
+***** できたてだと，実行権限はまだない
+#+BEGIN_SRC sh
+ls -l hoge.bash
+#+END_SRC
+
+#+RESULTS:
+: -rw-r--r--  1 ahayashi  staff  25 Dec 11 01:24 hoge.bash
+***** 実行すると怒られる
+#+BEGIN_SRC sh :results output
+./hoge.bash 2> error
+cat error
+#+END_SRC
+
+#+RESULTS:
+: sh: line 1: ./hoge.bash: Permission denied
+***** 誰でも実行できるようにする
+#+BEGIN_SRC sh :results scalar
+chmod +x hoge.bash
+ls -l hoge.bash
+#+END_SRC
+
+#+RESULTS:
+: -rwxr-xr-x  1 ahayashi  staff  25 Dec 11 01:24 hoge.bash
+***** 実行する
+#+BEGIN_SRC sh
+./hoge.bash
+#+END_SRC
+
+#+RESULTS:
+: hoge!
+**** rootとは
+sudoとは...何でもできるアカウント．
+例えば，"sudo apt-get"は，"rootになってapt-getを実行する"という意味．
+rootになりっぱなしは絶対だめ．
+rootとしての心構えに関する本が出ているほど．
+**** ファイルの所有者の変更
+chownコマンドを使う．change ownerの意味．
+*** 制御構文を使う
+**** while文
+***** テストファイルを作る
+#+BEGIN_SRC sh
+"hoge" > file1
+"fuga" > file2
+"piyo" > file3
+ls
+#+END_SRC
+
+#+RESULTS:
+| Unix_for_OSX.org                          |
+| Unix_for_OSX.org~                         |
+| ans                                       |
+| dir                                       |
+| error                                     |
+| file1                                     |
+| file2                                     |
+| file3                                     |
+| hoge                                      |
+| hoge.bash                                 |
+| shell_programing_practical_technique.org  |
+| shell_programing_practical_technique.org~ |
+| test.docx                                 |
+***** whileを使ってバックアップ
+#+BEGIN_SRC sh
+ls file* | while read f; do cp $f $f.backup ; done
+ls file*
+#+END_SRC
+
+#+RESULTS:
+| file1        |
+| file1.backup |
+| file2        |
+| file2.backup |
+| file3        |
+| file3.backup |
+***** バックアップファイルを削除
+#+BEGIN_SRC sh
+rm file[0-9].*
+#+END_SRC
+
+#+RESULTS:
+**** read文
+#+BEGIN_SRC sh :tangle read.bash :results silent
+#!/bin/bash
+
+echo "1単語ずつ読むと"
+echo aaa bbb ccc |
+while read a b c; do
+echo $b
+done
+
+
+echo "1行まるごと読むと"
+echo aaa bbb ccc |
+while read s; do
+echo $s
+done
+
+#+END_SRC
+
+
+#+BEGIN_SRC sh :results scalar
+chmod +x read.bash
+./read.bash
+#+END_SRC
+
+#+RESULTS:
+: 1単語ずつ読むと
+: bbb
+: 1行まるごと読むと
+: aaa bbb ccc
+**** for文
+***** 単語を順に読み込む
+#+BEGIN_SRC sh
+for n in aa bb cc; do echo $n; done
+#+END_SRC
+
+#+RESULTS:
+| aa |
+| bb |
+| cc |
+***** コマンドの出力を変数に順番に入力
+#+BEGIN_SRC sh
+for n in $(seq 1 3); do echo $n; done
+#+END_SRC
+
+#+RESULTS:
+| 1 |
+| 2 |
+| 3 |
+
+**** if文
+
+***** スクリプトを作る
+[はテストコマンド．
+あとで説明．
+#+BEGIN_SRC sh :tangle if.bash :results silent
+  #!/bin/bash
+
+  if [ ! -e "$1" ] ; then         # ファイルの有無を判断
+  echo "ファイルがない!"
+  elif grep hoge "$1" > /dev/null ; then # ファイル中に文字列があるか判断
+  echo hoge!
+  else 
+  echo hegeじゃない!
+  fi
+#+END_SRC
+
+***** 実行
+#+BEGIN_SRC sh
+chmod +x if.bash
+./if.bash file
+./if.bash file1
+#+END_SRC
+
+#+RESULTS:
+| ファイルがない! |
+| hegeじゃない!   |
+
+**** case文
+こんな感じで書く（下のコードは動かない．）．
+#+BEGIN_SRC sh
+  case $1 in
+      条件1)
+          コマンド
+          ;;
+      条件2)
+          コマンド
+          exit 3
+          ;;
+      条件3)
+          コマンド
+          ;;
+  esac
+#+END_SRC
+
+#+RESULTS:
+
+*** その他の文法
+**** ファイルへの追記
+> file
+ではなく
+>> file
+とすると，既存ファイルの後ろに追記することができる．
+
+**** ヒアドキュメント                                       :知らなかった:
+cat << FIN > file
+意味は，「FINまでの内容をcatし，fileへ書き出せ」
+
+**** ヒアストリング                                         :知らなかった:
+変数を標準入力に突っ込むときに使える
+#+BEGIN_SRC sh
+A=あいうえお
+sed 's/お/だ/' <<< $A
+#+END_SRC
+
+#+RESULTS:
+: あいうえだ
+
+基本的な書き方をすると，以下のようになる
+#+BEGIN_SRC sh
+A=あいうえお
+echo $A | sed 's/お/だ/'
+#+END_SRC
+
+#+RESULTS:
+: あいうえだ
+
+**** 変数/値/クオート
+
+***** 変数をさらに変数に格納
+#+BEGIN_SRC sh
+AAA=あいうえお
+BBB=$AAA
+echo $BBB
+#+END_SRC
+
+#+RESULTS:
+: あいうえお
+
+***** クオートの有無による動作の違い
+
+****** シングルクオート
+単なる文字列となる
+#+BEGIN_SRC sh
+AAA=あいうえお
+BBB='$AAA'
+echo $BBB
+#+END_SRC
+
+#+RESULTS:
+: $AAA
+****** ダブルクオート
+評価される！
+#+BEGIN_SRC sh
+AAA=あいうえお
+BBB="$AAA"
+echo $BBB
+#+END_SRC
+
+#+RESULTS:
+: あいうえお
+****** ダブルクオートとクオート無しの違いは？
+空白を含む文字列を与える時には，ダブルクオートで囲む必要がある．
+
+***** 変数の使いどき
+基本的に，変数はなるべく使わず，データはなるべく標準入出力，もしくはファイルで扱うべき．
+では，いつ使うか？
+*一時的なファイルを扱う時！*
+$$は，bashのプロセス番号を意味する特殊変数．
+このプロセス番号をファイル名に使えば，例えば同じスクリプトを同時に10個動かしたときでも，
+プロセス番号がそれぞれ異なるので，ファイル名が衝突せずに済む．
+***** スクリプトを書く
+#+BEGIN_SRC sh :tangle tmpfile.bash
+#!/bin/bash
+
+tmp=$$
+echo hoge > $tmp-hoge
+#+END_SRC
+
+***** 実行する
+#+BEGIN_SRC sh
+chmod +x tmpfile.bash
+ls -l tmpfile.bash
+./tmpfile.bash
+#+END_SRC
+
+#+RESULTS:
+: -rwxr-xr-x  1 ahayashi  staff  42 Dec 11 20:07 tmpfile.bash
+
+
+**** 終了ステータス
+標準出力でもなく，標準エラー出力でもないところに，「終了ステータス」が吐き出される．
+特殊変数は$?．
+
+***** 何事もないと，0が吐き出される．
+#+BEGIN_SRC sh
+ls file1
+echo $? # 何事もなければ0が出る
+#+END_SRC
+
+#+RESULTS:
+| file1 |
+|     0 |
+
+***** 問題があると，0以外の数字が出る．
+babelがエラーをキャッチしてしまうのでここでは示せないが．
+
+**** PIPESTATUS
+普通に$?を使うと，パイプの上流で起きたエラーをキャッチできない．
+${PIPESTATUS[@]}
+と書けば，パイプで繋がれた各コマンドの終了ステータスをキャッチできる．
+
+**** テストコマンド
+多様は禁物．
+AWKやgrepが基本と心得よ．
+- 真なら0
+- 偽なら1
+- それ以外なら2
+が返る．
+
+***** 試してみる
+#+BEGIN_SRC sh
+  [ "aaa" = "aaa" ]               # 真の場合
+  echo $?
+
+  [ "aaa" = "aab" ]               # 偽の場合
+  echo $?
+
+  [ "aaa" ="aab" ]                # コマンド自体を間違った場合（スペースが不適切）
+  echo $?
+#+END_SRC
+
+#+RESULTS:
+| 0 |
+| 1 |
+| 2 |
+
+***** 空文字列かどうかのチェック
+- "-n"だと空でないことをチェック
+- "-z"だと空であることをチェック
+#+BEGIN_SRC sh
+  A="aa"
+
+  [ -n "$A" ] ; echo $?           # 空ではないよね？ -> Yes (0)
+
+  [ -z "$A" ] ; echo $?           # 空だよね？ -> No (1)
+#+END_SRC
+
+#+RESULTS:
+| 0 |
+| 1 |
+
+***** 数値の比較
+- =: -eq
+- >=: -ge
+- >: -gt
+- <=: -le
+- <: -lt
+- !=: -ne
+そのほか，"man ["で調べられる．
+#+BEGIN_SRC sh
+  A="-5"
+  [ "-10" -lt "$A" ]; echo $?     # -10は5より小さいか？ -> Yes (0)
+
+  [ "-10" -gt "$A" ]; echo $?     # -10は5より大きいか？ -> No (1)
+#+END_SRC
+
+#+RESULTS:
+| 0 |
+| 1 |
+** AWKとsed
+*** AWKを使う
+**** 必要な「列」だけを抽出
+***** サンプルデータの作成
+#+BEGIN_SRC sh 
+  seq 1 10 | xargs -n 5 > data    # 5列で出力
+  cat data
+#+END_SRC
+
+#+RESULTS:
+| 1 | 2 | 3 | 4 |  5 |
+| 6 | 7 | 8 | 9 | 10 |
+***** AWKで2列目と4列目を取り出す
+#+BEGIN_SRC sh
+awk '{print $2,$4}' data
+#+END_SRC
+
+#+RESULTS:
+| 2 | 4 |
+| 7 | 9 |
+***** パイプを使うと
+#+BEGIN_SRC sh
+cat data | awk '{print $2,$4}'
+#+END_SRC
+
+#+RESULTS:
+| 2 | 4 |
+| 7 | 9 |
+***** 4行目をいろいろな方法で抜き出してみる
+****** 足し算
+#+BEGIN_SRC sh
+cat data | awk '{print $(1+3)}'
+#+END_SRC
+
+#+RESULTS:
+| 4 |
+| 9 |
+
+****** 変数
+#+BEGIN_SRC sh
+cat data | awk '{a=3;print $(a+1)}'
+#+END_SRC
+
+#+RESULTS:
+| 4 |
+| 9 |
+
+****** フィールドの数 NF
+#+BEGIN_SRC sh
+cat data | awk '{print $(NF-1)}'
+#+END_SRC
+
+#+RESULTS:
+| 4 |
+| 9 |
+**** {}に囲まれた部分を「アクション」と言う．では，{}に囲まれていない部分は？
+**** 必要な「行」だけを抽出
+***** データの準備
+#+BEGIN_SRC sh :results scalar
+echo {a..g}
+echo "縦に出力すると"
+echo {a..g} | xargs -n 1
+#+END_SRC
+
+#+RESULTS:
+: a b c d e f g
+: 縦に出力すると
+: a
+: b
+: c
+: d
+: e
+: f
+: g
+***** 4行目以降を出力するには
+#+BEGIN_SRC sh
+echo {a..g} | xargs -n 1 | awk 'NR>=4'
+#+END_SRC
+
+#+RESULTS:
+| d |
+| e |
+| f |
+| g |
+***** {}に囲まれていない部分は，「パターン」という．
+特定の列に対して，条件を書くこともできる．
+#+BEGIN_SRC sh :results scalar
+  cat data
+  echo 4列目が8よりも大きい行を抜き出すと
+  cat data | awk '$4>8'
+#+END_SRC
+
+#+RESULTS:
+: 1 2 3 4 5
+: 6 7 8 9 10
+: 4列目が8よりも大きい行を抜き出すと
+: 6 7 8 9 10
+***** サイズを基準に，AWKでファイルをフィルタリング
+#+BEGIN_SRC sh
+ls -l | awk '$5>10000'
+#+END_SRC
+
+#+RESULTS:
+| -rw-r--r--  | 1 | ahayashi | staff | 27654 | Dec | 12 | 07:19 | #shell_programing_practical_technique.org# |
+| -rw-r--r--  | 1 | ahayashi | staff | 61698 | Dec |  8 | 18:18 | Unix_for_OSX.org                           |
+| -rw-r--r--  | 1 | ahayashi | staff | 27468 | Dec | 11 | 21:55 | shell_programing_practical_technique.org   |
+| -rw-r--r--@ | 1 | ahayashi | staff | 11837 | Dec |  8 | 16:39 | test.docx                                  |
+***** クオートすると文字列として比較される
+#+BEGIN_SRC sh
+echo 数値として比較
+echo 9.9 | awk '$1>88'
+echo 文字列として辞書順で比較
+echo 9.9 | awk '$1>"88"'
+#+END_SRC
+
+#+RESULTS:
+| 数値として比較   |
+| 文字列として比較 |
+| 9.9              |
+**** 行を抽出して加工
+***** パターンとアクションは組み合わせられる
+#+BEGIN_SRC sh :results scalar
+echo {a..g} | xargs -n 1
+echo ------------------
+echo {a..g} | xargs -n 1 | awk 'NR>4'
+echo ------------------
+echo {a..g} | xargs -n 1 | awk 'NR>4{print $1,$1,$1}'
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+a
+b
+c
+d
+e
+f
+g
+------------------
+e
+f
+g
+------------------
+e e e
+f f f
+g g g
+#+end_example
+***** アクションが実行されるのは，パターンにマッチする行だけ．
+パターンとアクションの組は，複数書くことができる．
+#+BEGIN_SRC sh
+echo {a..g} | xargs -n 1 | awk 'NR>=4{print $1,$1,$1}NR<=4{print $1,$1}'
+#+END_SRC
+
+#+RESULTS:
+| a | a |   |
+| b | b |   |
+| c | c |   |
+| d | d | d |
+| d | d |   |
+| e | e | e |
+| f | f | f |
+| g | g | g |
+
+ややトリッキーだが，defgが縦に3つ出力された後に，abcdが縦に2つ出力されている．
+**** BEGINとEND
+***** BEGIN
+#+BEGIN_SRC sh
+seq 1 5 | awk '{a=10000;print $1+a}'
+echo --------------BEGINで書くと
+seq 1 5 | awk 'BEGIN{a=10000}{print $1+a}'
+#+END_SRC
+
+#+RESULTS:
+|                       10001 |
+|                       10002 |
+|                       10003 |
+|                       10004 |
+|                       10005 |
+| --------------BEGINで書くと |
+|                       10001 |
+|                       10002 |
+|                       10003 |
+|                       10004 |
+|                       10005 |
+***** BEGINしかないパターン
+#+BEGIN_SRC sh
+awk 'BEGIN{print 1+2}'
+echo ----------BEGINを入れないと
+awk '{print 1+2}'
+#+END_SRC
+
+#+RESULTS:
+|                           3 |
+| ----------BEGINを入れないと |
+***** END
+ENDはAWKによるメイン処理も全部終わった後，最後の1回のコマンドを指定する
+#+BEGIN_SRC sh
+echo ---ENDで1回だけ出力
+seq 1 5 | awk 'BEGIN{a=10000}{a+=$1}END{print a}'
+aの値は積算されている点に注意．
+**** 制御構文
+***** if文
+if節全体を{}でくくっている点に注意．
+#+BEGIN_SRC sh
+seq 1 5 | awk '{if($1%2==0){print $1,"偶数"}else{print $1,"奇数"}}'
+#+END_SRC
+
+#+RESULTS:
+| 1 | 奇数 |
+| 2 | 偶数 |
+| 3 | 奇数 |
+| 4 | 偶数 |
+| 5 | 奇数 |
+
+***** for文
+for節だけを{}でくくっている点に注意．
+#+BEGIN_SRC sh
+seq 1 5 | awk '{for(i=1;i<=NF;i++){a+=$i}}END{print a}'
+echo ---ENDなしだと
+seq 1 5 | awk '{for(i=1;i<=NF;i++){a+=$i}}{print a}'
+#+END_SRC
+
+#+RESULTS:
+| 15 |
+|  1 |
+|  3 |
+|  6 |
+| 10 |
+| 15 |
+
+**** 明示的に初期化しない変数の扱い
+先のfor文の例では，aの初期化をしていなかったが，実は自動的に0で初期化されている．
+文字列の場合には，以下のように空文字列で初期化される．
+#+BEGIN_SRC sh :results scalar
+echo 初期化なしだと----------
+echo ほげ | awk '{print $1 a $1 b $1}'
+echo 初期化すると-----------
+echo ほげ | awk 'BEGIN{a=" と "}{b=" は "}{print $1 a $1 b $1}'
+#+END_SRC
+
+#+RESULTS:
+: 初期化なしだと----------
+: ほげほげほげ
+: 初期化すると-----------
+: ほげ と ほげ は ほげ
+
+**** 行全体の出力/略記
+
+#+BEGIN_SRC sh :results scalar
+echo こうやるのは面倒--------------------------
+echo {a..g} | awk '{print $1,$2,$3,$4,$5,$6,$7}'
+
+echo 行全体はゼロで略記できる------------------
+echo {a..g} | awk '{print $0}'
+
+echo ある列の値を更新しても，'$0'にはちゃんと反映される
+echo {a..g} | awk '{$3="hogehoge";print $0}'
+
+echo といいつつ，実は何も書かなくてもできたんだけどね
+echo {a..g} | awk '{print}'
+echo {a..g} | awk '{$3="hogehoge";print}'
+#+END_SRC
+
+#+RESULTS:
+: こうやるのは面倒--------------------------
+: a b c d e f g
+: 行全体はゼロで略記できる------------------
+: a b c d e f g
+: ある列の値を更新しても，$0にはちゃんと反映される
+: a b hogehoge d e f g
+: といいつつ，実は何も書かなくてもできたんだけどね
+: a b c d e f g
+: a b hogehoge d e f g
+
+**** AWKでよく使う関数
+
+***** printf
+#+BEGIN_SRC sh :results scalar
+echo 数字に単位をつける------------------
+seq 1 3 | awk '{printf("%d円\n",$1)}'
+
+echo 2フィールド目を5桁の整数に整形
+seq 1 30 | xargs -n 3
+seq 1 30 | xargs -n 3 | awk '{printf("%05d\n",$2)}'
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+数字に単位をつける------------------
+1円
+2円
+3円
+2フィールド目を5桁の整数に整形
+1 2 3
+4 5 6
+7 8 9
+10 11 12
+13 14 15
+16 17 18
+19 20 21
+22 23 24
+25 26 27
+28 29 30
+00002
+00005
+00008
+00011
+00014
+00017
+00020
+00023
+00026
+00029
+#+end_example
+
+***** sprintf
+printfと似ているが，標準出力に字を出さず，整形された文字列を返す．
+silent print formatの略？
+printと合わせて使ったり，変数に文字列を一度書き出す時に使う．
+#+BEGIN_SRC sh :results scalar
+echo sprintfで書く----------
+echo 上田 0 不合格 | awk '{print $1,sprintf("%010d点",$2),$3}'
+
+echo printfで書こうとすると，'$1'と'$3'も関数の引数にしないといけないので面倒----------
+echo 上田 0 不合格 | awk '{printf("%s %010d点 %s\n",$1,$2,$3)}'
+
+echo iだけiiに変更する
+echo {a..z} | awk '{$9=sprintf("%s%s",$9,$9);print}'
+echo iだけabに変更する
+echo {a..z} | awk '{$9=sprintf("%s%s",$1,$2);print}'
+
+#+END_SRC
+
+#+RESULTS:
+: sprintfで書く----------
+: 上田 0000000000点 不合格
+: printfで書こうとすると，$1と$3も関数の引数にしないといけないので面倒----------
+: 上田 0000000000点 不合格
+: iだけiiに変更する
+: a b c d e f g h ii j k l m n o p q r s t u v w x y z
+: iだけabに変更する
+: a b c d e f g h ab j k l m n o p q r s t u v w x y z
+
+***** sub
+1回だけ置換
+#+BEGIN_SRC sh
+echo オバチャンオバチャン | awk '{sub(/オバ/,"オッ",$0);print}'
+#+END_SRC
+
+#+RESULTS:
+: オッチャンオバチャン
+
+***** gsub
+1行中を全て置換
+#+BEGIN_SRC sh
+echo オバチャンオバチャン | awk '{gsub(/オバ/,"オッ",$0);print}'
+#+END_SRC
+
+#+RESULTS:
+: オッチャンオッチャン
+
+***** gensub
+自分のbash環境にはなかった．
+#+BEGIN_SRC sh
+echo オバチャンオバチャン | awk '{$0 = gensub(/オバ/,"オッ",$0);print}'
+#+END_SRC
+
+#+RESULTS:
+
+*** sedを使う
+**** 置換
+**** 範囲指定して置換
+** 使用するコマンドのインストール
+** 本書におけるPOSIXに対する立場
+* 不定形な文章や設定ファイルの検索と加工
+* ファイルの取扱いとシステムの操作
+* ファイルシステムをデータベースにする
+* 大きなデータを処理する
+* 画像，表計算ソフト，その他特殊のゲータを扱う
+* CLI的インターネットとの付き合い方
+* 計算
 * 付録
+* 知らなかったコマンド
+- uniq: 重複除去
