@@ -1,4 +1,5 @@
 #+TITLE: Gitによるバージョン管理
+#+TAGS: important
 * 入門編
 ** Gitとは
 *** バージョン管理システムとは
@@ -270,8 +271,334 @@ git diff HEAD
 **** -Mオプション
 git diff -M
 とすると，ファイル名を変更した場合にもうまく表示される．
-*** TODO コミットログを表示する/git log, git shortlog
-*** ローカルリポジトリ，ワーキングツリーの状態を確認する/git status
+*** コミットログを表示する/git log, git shortlog
+- git log
+- git shortlog: コミットログを要約して出力
+**** git log
+***** 普通に使う
+#+BEGIN_SRC sh :results scalar
+git log | head -n18
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+commit a5d63c3e55cabadc3666a255223f075044c9322e
+Author: Akira Hayashi <smxshxishxad@me.com>
+Date:   Fri Dec 14 02:19:30 2018 +0900
+
+    Learn sed
+
+commit b6c5b8eefc75158a7361c1f8b9022be29e1146f3
+Author: Akira Hayashi <smxshxishxad@me.com>
+Date:   Thu Dec 13 22:25:17 2018 +0900
+
+    Learn pointer
+
+commit 0b8235f2eb326c918fe7196ad38fa9793a787f95
+Author: Akira Hayashi <smxshxishxad@me.com>
+Date:   Thu Dec 13 22:25:05 2018 +0900
+
+    Learn file system
+
+#+end_example
+***** コミットログの出力範囲を指定
+git log 古いコミット..新しいコミット
+と指定
+#+BEGIN_SRC sh :results scalar
+git log 0b8235f2eb326c918fe7196ad38fa9793a787f95..a5d63c3e55cabadc3666a255223f075044c9322e
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+commit a5d63c3e55cabadc3666a255223f075044c9322e
+Author: Akira Hayashi <smxshxishxad@me.com>
+Date:   Fri Dec 14 02:19:30 2018 +0900
+
+    Learn sed
+
+commit b6c5b8eefc75158a7361c1f8b9022be29e1146f3
+Author: Akira Hayashi <smxshxishxad@me.com>
+Date:   Thu Dec 13 22:25:17 2018 +0900
+
+    Learn pointer
+#+end_example
+***** あるコミットからHEADまで
+git log コミット..
+と入力
+#+BEGIN_SRC sh :results scalar
+git log b6c5b8eefc75158a7361c1f8b9022be29e1146f3..
+#+END_SRC
+
+#+RESULTS:
+: commit a5d63c3e55cabadc3666a255223f075044c9322e
+: Author: Akira Hayashi <smxshxishxad@me.com>
+: Date:   Fri Dec 14 02:19:30 2018 +0900
+: 
+:     Learn sed
+***** あるファイルに関係するコミット                          :important:
+git log ブランチ名 ファイル名
+ブランチには originも，ローカルも指定できる
+#+BEGIN_SRC sh :results scalar
+git log master version_management_by_git.org
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+commit a7328b51311b51cefe9708ee9450dc9e8579511d
+Author: Akira Hayashi <smxshxishxad@me.com>
+Date:   Wed Dec 12 14:15:01 2018 +0900
+
+    Learn git diff
+
+commit 92a5580e5f622598c8faadf583861e6bd0a3134a
+Author: Akira Hayashi <smxshxishxad@me.com>
+Date:   Wed Dec 12 14:11:51 2018 +0900
+
+    Learn terms
+
+commit d9ee84fde4572bdc7d3f6a7144f4e4f6a00f5815
+Author: Akira Hayashi <smxshxishxad@me.com>
+Date:   Wed Dec 12 14:05:41 2018 +0900
+
+    Remove numbers from headings
+
+commit c0c1d4a532cb28a4f45e44e48c7461cac91b2eb1
+Author: Akira Hayashi <smxshxishxad@me.com>
+Date:   Sat Dec 8 22:20:52 2018 +0900
+
+    Update
+
+commit d791a660fff04d3fb4123b2733c52eee7fd376b4
+Author: Akira Hayashi <smxshxishxad@me.com>
+Date:   Sat Dec 8 18:27:25 2018 +0900
+
+    Initial commit
+#+end_example
+***** コミットで行われた変更の差分を表示する
+#+BEGIN_SRC sh :results scalar
+git log -p | head -n30
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+commit a5d63c3e55cabadc3666a255223f075044c9322e
+Author: Akira Hayashi <smxshxishxad@me.com>
+Date:   Fri Dec 14 02:19:30 2018 +0900
+
+    Learn sed
+
+diff --git a/Unix/shell_programing_practical_technique.org b/Unix/shell_programing_practical_technique.org
+index fd4b1ea..eeec78f 100644
+--- a/Unix/shell_programing_practical_technique.org
++++ b/Unix/shell_programing_practical_technique.org
+@@ -1009,7 +1009,171 @@ echo オバチャンオバチャン | awk '{$0 = gensub(/オバ/,"オッ",$0);pr
+ 
+ ,*** sedを使う
+ ,**** 置換
++たいていは文字列の置換に使われる．
++***** AWKのsubとの使い分け
++特定の列の文字列を狙うならAWKを使う．
++***** 郵便番号にハイフンを入れる
++****** まずやってみる
++#+BEGIN_SRC sh
++echo 1110001\\n2220001 > zipcode
++cat zipcode
++cat zipcode | sed 's/0001/-0001/'
++#+END_SRC
++
++#+RESULTS:
++|  1110001 |
++|  2220001 |
++| 111-0001 |
++| 222-0001 |
+#+end_example
+***** 出力するコミット数を指定する
+-数字でok.
+headにパイプで送らなくてもよかったのか！！
+#+BEGIN_SRC sh :results scalar
+git log -2
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+commit a5d63c3e55cabadc3666a255223f075044c9322e
+Author: Akira Hayashi <smxshxishxad@me.com>
+Date:   Fri Dec 14 02:19:30 2018 +0900
+
+    Learn sed
+
+commit b6c5b8eefc75158a7361c1f8b9022be29e1146f3
+Author: Akira Hayashi <smxshxishxad@me.com>
+Date:   Thu Dec 13 22:25:17 2018 +0900
+
+    Learn pointer
+#+end_example
+***** コミットされた順でコミットログを表示する
+コミットをパッチでやり取りする際に利いてくる．
+****** コミットされた順に表示 --topo-order
+#+BEGIN_SRC sh :results scalar
+git log -10 --pretty="%h %ai %s" --topo-order HEAD
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+a5d63c3 2018-12-14 02:19:30 +0900 Learn sed
+b6c5b8e 2018-12-13 22:25:17 +0900 Learn pointer
+0b8235f 2018-12-13 22:25:05 +0900 Learn file system
+a7328b5 2018-12-12 14:15:01 +0900 Learn git diff
+92a5580 2018-12-12 14:11:51 +0900 Learn terms
+d9ee84f 2018-12-12 14:05:41 +0900 Remove numbers from headings
+2cdbda1 2018-12-12 12:07:57 +0900 Update
+e9da3e6 2018-12-12 12:07:46 +0900 Learn storage duration
+e1f7b94 2018-12-12 12:07:16 +0900 Learn type of pointers
+83b2d80 2018-12-12 12:06:56 +0900 Study scalar type
+#+end_example
+****** 日付順に表示 --date-order
+#+BEGIN_SRC sh :results scalar
+git log -10 --pretty="%h %ai %s" --date-order HEAD
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+a5d63c3 2018-12-14 02:19:30 +0900 Learn sed
+b6c5b8e 2018-12-13 22:25:17 +0900 Learn pointer
+0b8235f 2018-12-13 22:25:05 +0900 Learn file system
+a7328b5 2018-12-12 14:15:01 +0900 Learn git diff
+92a5580 2018-12-12 14:11:51 +0900 Learn terms
+d9ee84f 2018-12-12 14:05:41 +0900 Remove numbers from headings
+2cdbda1 2018-12-12 12:07:57 +0900 Update
+e9da3e6 2018-12-12 12:07:46 +0900 Learn storage duration
+e1f7b94 2018-12-12 12:07:16 +0900 Learn type of pointers
+83b2d80 2018-12-12 12:06:56 +0900 Study scalar type
+#+end_example
+***** コミットログ出力フォーマット --oneline, --pretty
+****** --oneline
+#+BEGIN_SRC sh :results scalar
+git log -10 --oneline
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+a5d63c3 Learn sed
+b6c5b8e Learn pointer
+0b8235f Learn file system
+a7328b5 Learn git diff
+92a5580 Learn terms
+d9ee84f Remove numbers from headings
+2cdbda1 Update
+e9da3e6 Learn storage duration
+e1f7b94 Learn type of pointers
+83b2d80 Study scalar type
+#+end_example
+
+****** --pretty
+git log --pretty="%h %ai %s"
+- %h: コミットハッシュ値
+- %ai: パッチが作成された日時
+- %s: コミットログの1行目
+- %ci: コミット日時をISO 8601フォーマットで出力
+- short: 要約．日付がない
+- medium: デフォルト．
+- full: コミットした人の名前が追加される
+- fuller: 変更作成日時とコミット日時が追加される
+- email: git format-patch形式（後述）でメッセージを作る
+- raw: 全てを出力
+#+BEGIN_SRC sh :results scalar
+git log -10 --pretty=fuller
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+commit a5d63c3e55cabadc3666a255223f075044c9322e
+Author:     Akira Hayashi <smxshxishxad@me.com>
+AuthorDate: Fri Dec 14 02:19:30 2018 +0900
+Commit:     Akira Hayashi <smxshxishxad@me.com>
+CommitDate: Fri Dec 14 02:19:37 2018 +0900
+
+    Learn sed
+
+commit b6c5b8eefc75158a7361c1f8b9022be29e1146f3
+Author:     Akira Hayashi <smxshxishxad@me.com>
+AuthorDate: Thu Dec 13 22:25:17 2018 +0900
+Commit:     Akira Hayashi <smxshxishxad@me.com>
+CommitDate: Thu Dec 13 22:25:17 2018 +0900
+
+    Learn pointer
+
+commit 0b8235f2eb326c918fe7196ad38fa9793a787f95
+Author:     Akira Hayashi <smxshxishxad@me.com>
+AuthorDate: Thu Dec 13 22:25:05 2018 +0900
+Commit:     Akira Hayashi <smxshxishxad@me.com>
+CommitDate: Thu Dec 13 22:25:05 2018 +0900
+
+    Learn file system
+
+commit a7328b51311b51cefe9708ee9450dc9e8579511d
+Author:     Akira Hayashi <smxshxishxad@me.com>
+AuthorDate: Wed Dec 12 14:15:01 2018 +0900
+Commit:     Akira Hayashi <smxshxishxad@me.com>
+CommitDate: Wed Dec 12 14:15:01 2018 +0900
+
+    Learn git diff
+
+commit 92a5580e5f622598c8faadf583861e6bd0a3134a
+Author:     Akira Hayashi <smxshxishxad@me.com>
+AuthorDate: Wed Dec 12 14:11:51 2018 +0900
+Commit:     Akira Hayashi <smxshxishxad@me.com>
+CommitDate: Wed Dec 12 14:11:51 2018 +0900
+
+    Learn terms
+
+commit d9ee84fde4572bdc7d3f6a7144f4e4f6a00f5815
+Author:     Akira Hayashi <smxshxishxad@me.com>
+AuthorDate: Wed Dec 12 14:05:41 2018 +0900
+Commit:     Akira Hayashi <smxshxishxad@me.com>
+CommitDate: Wed Dec 12 14:05:41 2018 +0900
+
+    Remove numbers from headings
+
+commit 2cdbda1228416a4348f733fc623e40ae421e234e
+Author:     Akira Hayashi <smxshxishxad@me.com>
+AuthorDate: Wed Dec 12 12:07:57 2018 +0900
+Commit:     Akira Hayashi <smxshxishxad@me.com>
+CommitDate: Wed Dec 12 12:07:57 2018 +0900
+
+    Update
+
+commit e9da3e619a82628fc685137a4eb90428098453de
+Author:     Akira Hayashi <smxshxishxad@me.com>
+AuthorDate: Wed Dec 12 12:07:46 2018 +0900
+Commit:     Akira Hayashi <smxshxishxad@me.com>
+CommitDate: Wed Dec 12 12:07:46 2018 +0900
+
+    Learn storage duration
+
+commit e1f7b94f7955f7c5aad0ab13563f6ed3e482d877
+Author:     Akira Hayashi <smxshxishxad@me.com>
+AuthorDate: Wed Dec 12 12:07:16 2018 +0900
+Commit:     Akira Hayashi <smxshxishxad@me.com>
+CommitDate: Wed Dec 12 12:07:34 2018 +0900
+
+    Learn type of pointers
+
+commit 83b2d805a126800df17879d58cfc5824778715a3
+Author:     Akira Hayashi <smxshxishxad@me.com>
+AuthorDate: Wed Dec 12 12:06:56 2018 +0900
+Commit:     Akira Hayashi <smxshxishxad@me.com>
+CommitDate: Wed Dec 12 12:06:56 2018 +0900
+
+    Study scalar type
+#+end_example
+
+**** git shortlog
+babel環境では出ない!
+#+BEGIN_SRC sh :results output
+git shortlog
+#+END_SRC
+
+#+RESULTS:
+
+*** TODO ローカルリポジトリ，ワーキングツリーの状態を確認する/git status
 *** ディレクトリおよびファイルの移動，変更を行う/git mv
 *** ファイルおよびディレクトリの削除/git rm
 *** 変更をローカルリポジトリにコミットする/git commit
