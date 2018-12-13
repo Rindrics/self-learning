@@ -1,4 +1,5 @@
 #+TITLE: Unix for OSX
+#+TAGS: 知らなかった
 * Unixを使う理由
 ** Unixの威力
 以下のコマンドは，実行中のプロセスの一覧を表示する．
@@ -479,8 +480,7 @@ ps -acx
 | 30974 | ttys000 |   0:00.04 | iTerm2                                        |          |              |
 | 30975 | ttys000 |   0:00.03 | login                                         |          |              |
 | 30976 | ttys000 |   0:00.85 | -fish                                         |          |              |
-
-たとえば，固まったWordを強制終了させるとき
+*** たとえば，固まったWordを強制終了させるとき               :知らなかった:
 #+BEGIN_SRC sh
 open test.docx
 #+END_SRC
@@ -805,6 +805,828 @@ exit
 *** エイリアスの作成
 ** 応答しないターミナル
 * ファイルシステム探訪
+ターミナルを仕えは，Finderより多くの情報を得られる．
+** OS Xのファイルシステム
+OS Xでは，全てがファイル．
+ディレクトリも，ファイルの亜種．
+*** ホームディレクトリ
+cd /
+でホームへ．
+*** 作業ディレクトリ
+ある時点で作業を行っているディレクトリ．
+コマンドは全て作業ディレクトリのファイルに対して実行される．
+
+pwd
+で確認．
+*** ディレクトリの木構造
+ls /
+とすれば，ルートの下に，いくつかのディレクトリがあるのが確認できる．
+ネットワークファイルシステム，サーバ上の共有可能ディレクトリも扱える．
+*** 絶対パス名
+*** 相対パス名
+*** 作業ディレクトリの変更
+**** pwd
+**** cd
+ドラッグで簡単入力
+*** ディレクトリの木構造内にあるファイル
+/dev
+デバイスを操作するためのファイル
+** ファイルとディレクトリの一覧
+lsコマンドを詳しくみていく
+*** とても強力なlsコマンド
+**** 上から下に
+#+BEGIN_SRC sh
+ls -C
+#+END_SRC
+
+#+RESULTS:
+| Unix_for_OSX.org                           |
+| Unix_for_OSX.org~                          |
+| ans                                        |
+| data                                       |
+| dir                                        |
+| error                                      |
+| file1                                      |
+| file1.backup                               |
+| file2                                      |
+| file2.backup                               |
+| file3                                      |
+| file3.backup                               |
+| file4                                      |
+| hoge                                       |
+| hoge.bash                                  |
+| if.bash                                    |
+| read.bash                                  |
+| shell_programing_practical_technique.html~ |
+| shell_programing_practical_technique.org   |
+| shell_programing_practical_technique.org~  |
+| test.docx                                  |
+| tmpfile.bash                               |
+**** 左から右へ
+#+BEGIN_SRC sh
+ls -x
+#+END_SRC
+
+#+RESULTS:
+| Unix_for_OSX.org                           |
+| Unix_for_OSX.org~                          |
+| ans                                        |
+| data                                       |
+| dir                                        |
+| error                                      |
+| file1                                      |
+| file1.backup                               |
+| file2                                      |
+| file2.backup                               |
+| file3                                      |
+| file3.backup                               |
+| file4                                      |
+| hoge                                       |
+| hoge.bash                                  |
+| if.bash                                    |
+| read.bash                                  |
+| shell_programing_practical_technique.html~ |
+| shell_programing_practical_technique.org   |
+| shell_programing_practical_technique.org~  |
+| test.docx                                  |
+| tmpfile.bash                               |
+**** 全て表示
+#+BEGIN_SRC sh
+ls -a
+#+END_SRC
+
+#+RESULTS:
+| #Unix_for_OSX.org#                         |
+| 0                                          |
+| .#Unix_for_OSX.org                         |
+| ..                                         |
+| .DS_Store                                  |
+| Unix_for_OSX.org                           |
+| Unix_for_OSX.org~                          |
+| ans                                        |
+| data                                       |
+| dir                                        |
+| error                                      |
+| file1                                      |
+| file1.backup                               |
+| file2                                      |
+| file2.backup                               |
+| file3                                      |
+| file3.backup                               |
+| file4                                      |
+| hoge                                       |
+| hoge.bash                                  |
+| if.bash                                    |
+| read.bash                                  |
+| shell_programing_practical_technique.html~ |
+| shell_programing_practical_technique.org   |
+| shell_programing_practical_technique.org~  |
+| test.docx                                  |
+| tmpfile.bash                               |
+*** lsコマンドの練習
+- 各行に1つずつ: ls -1
+- ディレクトリを区別: ls -F
+-
+
+**** ls -F
+#+BEGIN_SRC sh
+ls -F
+#+END_SRC
+
+#+RESULTS:
+| #Unix_for_OSX.org#                         |
+| Unix_for_OSX.org                           |
+| Unix_for_OSX.org~                          |
+| ans                                        |
+| data                                       |
+| dir/                                       |
+| error                                      |
+| file1                                      |
+| file1.backup                               |
+| file2                                      |
+| file2.backup                               |
+| file3                                      |
+| file3.backup                               |
+| file4                                      |
+| hoge                                       |
+| hoge.bash                                  |
+| if.bash                                    |
+| read.bash                                  |
+| shell_programing_practical_technique.html~ |
+| shell_programing_practical_technique.org   |
+| shell_programing_practical_technique.org~  |
+| test.docx                                  |
+| tmpfile.bash*                              |
+
+**** ls -s
+512バイト単位で表示する．
+2で割るとだいたいKBになる．
+136だったら69KB
+#+BEGIN_SRC sh
+ls -s
+#+END_SRC
+
+#+RESULTS:
+| total | 552                                        |
+|   136 | #Unix_for_OSX.org#                         |
+|   136 | Unix_for_OSX.org                           |
+|     8 | Unix_for_OSX.org~                          |
+|     0 | ans                                        |
+|     8 | data                                       |
+|     0 | dir                                        |
+|     8 | error                                      |
+|     0 | file1                                      |
+|     0 | file1.backup                               |
+|     0 | file2                                      |
+|     0 | file2.backup                               |
+|     0 | file3                                      |
+|     0 | file3.backup                               |
+|     0 | file4                                      |
+|     8 | hoge                                       |
+|     8 | hoge.bash                                  |
+|     8 | if.bash                                    |
+|     8 | read.bash                                  |
+|   112 | shell_programing_practical_technique.html~ |
+|    72 | shell_programing_practical_technique.org   |
+|     8 | shell_programing_practical_technique.org~  |
+|    24 | test.docx                                  |
+|     8 | tmpfile.bash                               |
+
+**** ~/Library/Preferencesを見てみる
+QuickTime Preferencesなど，けっこう容量が大きい．
+ほかは小さい．これは，標準設定と異なる部分だけを保存しているため．
+#+BEGIN_SRC sh
+ls -sF ~/Library/Preferences
+#+END_SRC
+
+#+RESULTS:
+| total | 4712                                                                       |               |        |             |       |      |          |
+|     0 | Adobe/                                                                     |               |        |             |       |      |          |
+|     0 | Adobe                                                                      | Illustrator   | CS6    | Settings/   |       |      |          |
+|     8 | Adobe                                                                      | PNG           | Format | CS6         | Prefs |      |          |
+|     8 | Adobe                                                                      | Photoshop     | CS6    | Paths       |       |      |          |
+|     0 | Adobe                                                                      | Photoshop     | CS6    | Settings/   |       |      |          |
+|     8 | Adobe                                                                      | Save          | For    | Web         | AI    | 16.0 | 初期設定 |
+|     0 | Adobe.ExMan/                                                               |               |        |             |       |      |          |
+|     0 | ByHost/                                                                    |               |        |             |       |      |          |
+|     8 | CD                                                                         | Info.cidb     |        |             |       |      |          |
+|    16 | Excalibur                                                                  | Preferences   |        |             |       |      |          |
+|     0 | ExtendScript                                                               | Toolkit/      |        |             |       |      |          |
+|     0 | Macromedia/                                                                |               |        |             |       |      |          |
+|     8 | MobileMeAccounts.plist                                                     |               |        |             |       |      |          |
+|     0 | PDAppFlex/                                                                 |               |        |             |       |      |          |
+|    24 | QuickTime                                                                  | Preferences   |        |             |       |      |          |
+|     8 | SafariCloudHistoryPushAgent.plist                                          |               |        |             |       |      |          |
+|    32 | TeXShop.plist                                                              |               |        |             |       |      |          |
+|     8 | applet.plist                                                               |               |        |             |       |      |          |
+|     0 | calibre/                                                                   |               |        |             |       |      |          |
+|     8 | callservicesd.plist                                                        |               |        |             |       |      |          |
+|     8 | ckkeyrolld.plist                                                           |               |        |             |       |      |          |
+|     8 | com.Adobe.Common                                                           | 11.0.plist    |        |             |       |      |          |
+|     8 | com.Adobe.Common                                                           | LR5.plist     |        |             |       |      |          |
+|    48 | com.Adobe.dynamiclinkmediaserver.7.0.plist                                 |               |        |             |       |      |          |
+|     8 | com.TJ-HD.Language_Switcher.plist                                          |               |        |             |       |      |          |
+|     8 | com.adobe.Acrobat.Pro.plist                                                |               |        |             |       |      |          |
+|     8 | com.adobe.CSXS.3.plist                                                     |               |        |             |       |      |          |
+|     8 | com.adobe.CSXSPreferences.plist                                            |               |        |             |       |      |          |
+|    80 | com.adobe.Lightroom5.plist                                                 |               |        |             |       |      |          |
+|     8 | com.adobe.Photoshop.plist                                                  |               |        |             |       |      |          |
+|     8 | com.adobe.acc.AdobeCreativeCloud.plist                                     |               |        |             |       |      |          |
+|     8 | com.adobe.acc.AdobeDesktopService.plist                                    |               |        |             |       |      |          |
+|     8 | com.adobe.acc.HEXHelper.plist                                              |               |        |             |       |      |          |
+|     8 | com.adobe.accmac.plist                                                     |               |        |             |       |      |          |
+|     8 | com.adobe.adobedigitaleditions.app.plist                                   |               |        |             |       |      |          |
+|   224 | com.adobe.bridge5.plist                                                    |               |        |             |       |      |          |
+|     8 | com.adobe.crashreporter.plist                                              |               |        |             |       |      |          |
+|     8 | com.adobe.illustrator.plist                                                |               |        |             |       |      |          |
+|   152 | com.adobe.mediabrowser.plist                                               |               |        |             |       |      |          |
+|    16 | com.amazon.Kindle.plist                                                    |               |        |             |       |      |          |
+|     8 | com.amazon.music-renderer.plist                                            |               |        |             |       |      |          |
+|     8 | com.amazon.music.plist                                                     |               |        |             |       |      |          |
+|     8 | com.apple.Accessibility.plist                                              |               |        |             |       |      |          |
+|     8 | com.apple.ActivityMonitor.plist                                            |               |        |             |       |      |          |
+|     8 | com.apple.AdLib.plist                                                      |               |        |             |       |      |          |
+|     8 | com.apple.AddressBook.plist                                                |               |        |             |       |      |          |
+|     8 | com.apple.AppleMediaServices.plist                                         |               |        |             |       |      |          |
+|     8 | com.apple.AppleMultitouchMouse.plist                                       |               |        |             |       |      |          |
+|     8 | com.apple.AppleMultitouchTrackpad.plist                                    |               |        |             |       |      |          |
+|     8 | com.apple.BezelServices.plist                                              |               |        |             |       |      |          |
+|     8 | com.apple.CallHistorySyncHelper.plist                                      |               |        |             |       |      |          |
+|     8 | com.apple.CharacterPicker.plist                                            |               |        |             |       |      |          |
+|     8 | com.apple.ColorSyncCalibrator.plist                                        |               |        |             |       |      |          |
+|     8 | com.apple.CommCenter.counts.plist                                          |               |        |             |       |      |          |
+|     8 | com.apple.Console.plist                                                    |               |        |             |       |      |          |
+|     8 | com.apple.CoreDuet.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.CoreGraphics.plist                                               |               |        |             |       |      |          |
+|     8 | com.apple.DictionaryServices.plist                                         |               |        |             |       |      |          |
+|     8 | com.apple.DiskUtility.plist                                                |               |        |             |       |      |          |
+|    16 | com.apple.EmojiCache.plist                                                 |               |        |             |       |      |          |
+|     8 | com.apple.EmojiPreferences.plist                                           |               |        |             |       |      |          |
+|     8 | com.apple.FileStatsAgent.plist                                             |               |        |             |       |      |          |
+|     8 | com.apple.FolderActionsDispatcher.plist                                    |               |        |             |       |      |          |
+|     8 | com.apple.FollowUpUI.plist                                                 |               |        |             |       |      |          |
+|    16 | com.apple.FontBook.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.FontRegistry.user.plist                                          |               |        |             |       |      |          |
+|     8 | com.apple.GEO.plist                                                        |               |        |             |       |      |          |
+|     8 | com.apple.HIToolbox.plist                                                  |               |        |             |       |      |          |
+|     8 | com.apple.InputMethodKit.UserDictionary.plist                              |               |        |             |       |      |          |
+|     0 | com.apple.LaunchServices/                                                  |               |        |             |       |      |          |
+|    88 | com.apple.LaunchServices.QuarantineEventsV2                                |               |        |             |       |      |          |
+|     8 | com.apple.Maps.plist                                                       |               |        |             |       |      |          |
+|     8 | com.apple.MassStorageCamera.plist                                          |               |        |             |       |      |          |
+|     8 | com.apple.Messages.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.NetAuthAgent.plist                                               |               |        |             |       |      |          |
+|     8 | com.apple.NetworkUtility.plist                                             |               |        |             |       |      |          |
+|     8 | com.apple.PTPCamera.plist                                                  |               |        |             |       |      |          |
+|     8 | com.apple.PhotoBooth.plist                                                 |               |        |             |       |      |          |
+|     8 | com.apple.Preferences.plist                                                |               |        |             |       |      |          |
+|     8 | com.apple.Preview.plist                                                    |               |        |             |       |      |          |
+|     8 | com.apple.ProblemReporter.plist                                            |               |        |             |       |      |          |
+|     8 | com.apple.PubSubAgent.plist                                                |               |        |             |       |      |          |
+|     8 | com.apple.QuickLookDaemon.plist                                            |               |        |             |       |      |          |
+|     8 | com.apple.QuickTimePlayerX.plist                                           |               |        |             |       |      |          |
+|     8 | com.apple.Safari.SafeBrowsing.plist                                        |               |        |             |       |      |          |
+|     8 | com.apple.Safari.SandboxBroker.plist                                       |               |        |             |       |      |          |
+|     8 | com.apple.SafariBookmarksSyncAgent.plist                                   |               |        |             |       |      |          |
+|     8 | com.apple.SafariCloudHistoryPushAgent.plist                                |               |        |             |       |      |          |
+|     8 | com.apple.ScriptEditor2.plist                                              |               |        |             |       |      |          |
+|     8 | com.apple.ScriptMenuApp.plist                                              |               |        |             |       |      |          |
+|     8 | com.apple.ScriptMonitor.plist                                              |               |        |             |       |      |          |
+|    56 | com.apple.ServicesMenu.Services.plist                                      |               |        |             |       |      |          |
+|     8 | com.apple.SetupAssistant.plist                                             |               |        |             |       |      |          |
+|     8 | com.apple.SharedWebCredentials.plist                                       |               |        |             |       |      |          |
+|     8 | com.apple.Siri.plist                                                       |               |        |             |       |      |          |
+|     8 | com.apple.SpeechRecognitionCore.plist                                      |               |        |             |       |      |          |
+|     8 | com.apple.Spotlight.plist                                                  |               |        |             |       |      |          |
+|     8 | com.apple.SystemProfiler.plist                                             |               |        |             |       |      |          |
+|     8 | com.apple.TelephonyUtilities.plist                                         |               |        |             |       |      |          |
+|    40 | com.apple.Terminal.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.TextEdit.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.UIKit.plist                                                      |               |        |             |       |      |          |
+|     8 | com.apple.UserAccountUpdater.plist                                         |               |        |             |       |      |          |
+|     8 | com.apple.WeatherService.plist                                             |               |        |             |       |      |          |
+|     8 | com.apple.WebKit.WebContent.plist                                          |               |        |             |       |      |          |
+|     8 | com.apple.accounts.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.accountsd.plist                                                  |               |        |             |       |      |          |
+|     8 | com.apple.airplay.plist                                                    |               |        |             |       |      |          |
+|     8 | com.apple.akd.plist                                                        |               |        |             |       |      |          |
+|     8 | com.apple.appstore.commerce.plist                                          |               |        |             |       |      |          |
+|     8 | com.apple.appstore.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.appstored.plist                                                  |               |        |             |       |      |          |
+|     8 | com.apple.archiveutility.plist                                             |               |        |             |       |      |          |
+|     8 | com.apple.assistant.backedup.plist                                         |               |        |             |       |      |          |
+|     8 | com.apple.assistant.plist                                                  |               |        |             |       |      |          |
+|     8 | com.apple.assistant.support.plist                                          |               |        |             |       |      |          |
+|     8 | com.apple.assistant_service.plist                                          |               |        |             |       |      |          |
+|     8 | com.apple.audio.AudioMIDISetup.plist                                       |               |        |             |       |      |          |
+|    24 | com.apple.audio.InfoHelper.plist                                           |               |        |             |       |      |          |
+|     8 | com.apple.automator.SaveasAdobePDF.plist                                   |               |        |             |       |      |          |
+|     8 | com.apple.bird.plist                                                       |               |        |             |       |      |          |
+|     8 | com.apple.bookstoreagent.plist                                             |               |        |             |       |      |          |
+|     8 | com.apple.calculateframework.plist                                         |               |        |             |       |      |          |
+|     8 | com.apple.cloudd.plist                                                     |               |        |             |       |      |          |
+|     8 | com.apple.cloudpaird.plist                                                 |               |        |             |       |      |          |
+|     8 | com.apple.cmfsyncagent.plist                                               |               |        |             |       |      |          |
+|     8 | com.apple.commcenter.callservices.plist                                    |               |        |             |       |      |          |
+|     8 | com.apple.commcenter.carrier_bundle.plist                                  |               |        |             |       |      |          |
+|     8 | com.apple.commcenter.device_specific_nobackup.plist                        |               |        |             |       |      |          |
+|     8 | com.apple.commerce.configurator.plist                                      |               |        |             |       |      |          |
+|    40 | com.apple.commerce.knownclients.plist                                      |               |        |             |       |      |          |
+|     8 | com.apple.commerce.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.commerce.safari.plist                                            |               |        |             |       |      |          |
+|     8 | com.apple.commerce.spotlight.plist                                         |               |        |             |       |      |          |
+|     8 | com.apple.configurator.ui.commerce.plist                                   |               |        |             |       |      |          |
+|     8 | com.apple.coreauthd.plist                                                  |               |        |             |       |      |          |
+|     8 | com.apple.coreservices.UASharedPasteboardProgressUI.plist                  |               |        |             |       |      |          |
+|     8 | com.apple.coreservices.uiagent.plist                                       |               |        |             |       |      |          |
+|     8 | com.apple.coreservices.useractivityd.dynamicuseractivites.plist            |               |        |             |       |      |          |
+|     8 | com.apple.coreservices.useractivityd.plist                                 |               |        |             |       |      |          |
+|     8 | com.apple.corespotlightui.plist                                            |               |        |             |       |      |          |
+|     8 | com.apple.dashboard.client.plist                                           |               |        |             |       |      |          |
+|     8 | com.apple.dashboard.plist                                                  |               |        |             |       |      |          |
+|    24 | com.apple.dock.plist                                                       |               |        |             |       |      |          |
+|     8 | com.apple.driver.AppleBluetoothMultitouch.mouse.plist                      |               |        |             |       |      |          |
+|     8 | com.apple.driver.AppleBluetoothMultitouch.trackpad.plist                   |               |        |             |       |      |          |
+|     8 | com.apple.driver.AppleHIDMouse.plist                                       |               |        |             |       |      |          |
+|    40 | com.apple.dt.Xcode.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.dt.xcodebuild.plist                                              |               |        |             |       |      |          |
+|    40 | com.apple.facetime.bag.plist                                               |               |        |             |       |      |          |
+|     8 | com.apple.facetime.plist                                                   |               |        |             |       |      |          |
+|    72 | com.apple.finder.plist                                                     |               |        |             |       |      |          |
+|     8 | com.apple.frameworks.diskimages.diuiagent.plist                            |               |        |             |       |      |          |
+|     8 | com.apple.gamecenter.plist                                                 |               |        |             |       |      |          |
+|    24 | com.apple.gamed.plist                                                      |               |        |             |       |      |          |
+|     8 | com.apple.help.plist                                                       |               |        |             |       |      |          |
+|     8 | com.apple.helpd.plist                                                      |               |        |             |       |      |          |
+|     8 | com.apple.helpviewer.plist                                                 |               |        |             |       |      |          |
+|     8 | com.apple.homed.notbackedup.plist                                          |               |        |             |       |      |          |
+|     8 | com.apple.homed.plist                                                      |               |        |             |       |      |          |
+|     8 | com.apple.iApps.plist                                                      |               |        |             |       |      |          |
+|     8 | com.apple.iBooksX.commerce.plist                                           |               |        |             |       |      |          |
+|     8 | com.apple.iCal.plist                                                       |               |        |             |       |      |          |
+|     8 | com.apple.iChat.AIM.plist                                                  |               |        |             |       |      |          |
+|     8 | com.apple.iChat.Jabber.plist                                               |               |        |             |       |      |          |
+|     8 | com.apple.iChat.StatusMessages.plist                                       |               |        |             |       |      |          |
+|     8 | com.apple.iChat.Yahoo.plist                                                |               |        |             |       |      |          |
+|    40 | com.apple.iChat.plist                                                      |               |        |             |       |      |          |
+|     8 | com.apple.iPod.plist                                                       |               |        |             |       |      |          |
+|     8 | com.apple.iTunes.Gracenote.plist                                           |               |        |             |       |      |          |
+|    32 | com.apple.iTunes.eq.plist                                                  |               |        |             |       |      |          |
+|   216 | com.apple.iTunes.plist                                                     |               |        |             |       |      |          |
+|     8 | com.apple.iTunesHelper.plist                                               |               |        |             |       |      |          |
+|     8 | com.apple.iWork.Keynote.plist                                              |               |        |             |       |      |          |
+|     8 | com.apple.iWork.Numbers.plist                                              |               |        |             |       |      |          |
+|     8 | com.apple.iWork.Pages.plist                                                |               |        |             |       |      |          |
+|     8 | com.apple.ibooks.plist                                                     |               |        |             |       |      |          |
+|     8 | com.apple.ibtool.plist                                                     |               |        |             |       |      |          |
+|     8 | com.apple.icbaccountsd.plist                                               |               |        |             |       |      |          |
+|     8 | com.apple.icloud.fmfd.notbackedup.plist                                    |               |        |             |       |      |          |
+|     8 | com.apple.icloud.fmfd.plist                                                |               |        |             |       |      |          |
+|    16 | com.apple.identityservicesd.plist                                          |               |        |             |       |      |          |
+|     8 | com.apple.ids.deviceproperties.plist                                       |               |        |             |       |      |          |
+|     8 | com.apple.ids.service.com.apple.private.alloy.callhistorysync.plist        |               |        |             |       |      |          |
+|     8 | com.apple.ids.service.com.apple.private.alloy.continuity.auth.plist        |               |        |             |       |      |          |
+|     8 | com.apple.ids.service.com.apple.private.alloy.idsremoteurlconnection.plist |               |        |             |       |      |          |
+|     8 | com.apple.ids.service.com.apple.private.alloy.idstransfers.plist           |               |        |             |       |      |          |
+|     8 | com.apple.ids.service.com.apple.private.alloy.sysdiagnose.plist            |               |        |             |       |      |          |
+|     8 | com.apple.ids.subservices.plist                                            |               |        |             |       |      |          |
+|     8 | com.apple.imagecapture.plist                                               |               |        |             |       |      |          |
+|     8 | com.apple.imagent.plist                                                    |               |        |             |       |      |          |
+|     8 | com.apple.imdpersistence.IMDPersistenceAgent.plist                         |               |        |             |       |      |          |
+|     8 | com.apple.imdsmsrecordstore.plist                                          |               |        |             |       |      |          |
+|    24 | com.apple.imessage.bag.plist                                               |               |        |             |       |      |          |
+|     8 | com.apple.imessage.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.imservice.ids.FaceTime.plist                                     |               |        |             |       |      |          |
+|     8 | com.apple.imservice.ids.iMessage.plist                                     |               |        |             |       |      |          |
+|     8 | com.apple.inputmethod.Kotoeri.plist                                        |               |        |             |       |      |          |
+|     8 | com.apple.installer.plist                                                  |               |        |             |       |      |          |
+|     8 | com.apple.internal.ck.plist                                                |               |        |             |       |      |          |
+|     8 | com.apple.internetaccounts.plist                                           |               |        |             |       |      |          |
+|     8 | com.apple.ipTelephony.plist                                                |               |        |             |       |      |          |
+|    24 | com.apple.java.util.prefs.plist                                            |               |        |             |       |      |          |
+|     8 | com.apple.keyboardservicesd.plist                                          |               |        |             |       |      |          |
+|     8 | com.apple.languageassetd.plist                                             |               |        |             |       |      |          |
+|     8 | com.apple.locationmenu.plist                                               |               |        |             |       |      |          |
+|     8 | com.apple.loginitems.plist                                                 |               |        |             |       |      |          |
+|     8 | com.apple.loginwindow.plist                                                |               |        |             |       |      |          |
+|     8 | com.apple.lookup.shared.plist                                              |               |        |             |       |      |          |
+|     8 | com.apple.madrid.plist                                                     |               |        |             |       |      |          |
+|     8 | com.apple.mail-shared.plist                                                |               |        |             |       |      |          |
+|     8 | com.apple.mail.plist                                                       |               |        |             |       |      |          |
+|     8 | com.apple.menuextra.battery.plist                                          |               |        |             |       |      |          |
+|     8 | com.apple.menuextra.clock.plist                                            |               |        |             |       |      |          |
+|     8 | com.apple.menuextra.textinput.plist                                        |               |        |             |       |      |          |
+|     8 | com.apple.messaging.expire.plist                                           |               |        |             |       |      |          |
+|     8 | com.apple.metadata.SpotlightNetHelper.plist                                |               |        |             |       |      |          |
+|     8 | com.apple.mmcs.plist                                                       |               |        |             |       |      |          |
+|    64 | com.apple.ncprefs.plist                                                    |               |        |             |       |      |          |
+|     8 | com.apple.newscore.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.newscore2.plist                                                  |               |        |             |       |      |          |
+|     8 | com.apple.notificationcenterui.plist                                       |               |        |             |       |      |          |
+|     8 | com.apple.parsecd.plist                                                    |               |        |             |       |      |          |
+|     8 | com.apple.passd.plist                                                      |               |        |             |       |      |          |
+|     8 | com.apple.pipagent.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.preference.general.plist                                         |               |        |             |       |      |          |
+|     8 | com.apple.preference.security.plist                                        |               |        |             |       |      |          |
+|     8 | com.apple.preferences.extensions.FinderSync.plist                          |               |        |             |       |      |          |
+|     8 | com.apple.preferences.extensions.PhotoEditing.plist                        |               |        |             |       |      |          |
+|     8 | com.apple.preferences.extensions.PhotoProjects.plist                       |               |        |             |       |      |          |
+|     8 | com.apple.preferences.extensions.ServicesWithUI.plist                      |               |        |             |       |      |          |
+|     8 | com.apple.preferences.extensions.ShareMenu.plist                           |               |        |             |       |      |          |
+|     8 | com.apple.preferences.extensions.SharedLinks.plist                         |               |        |             |       |      |          |
+|     8 | com.apple.preferences.extensions.XcodeSourceEditor.plist                   |               |        |             |       |      |          |
+|     8 | com.apple.preferences.softwareupdate.plist                                 |               |        |             |       |      |          |
+|     8 | com.apple.print.add.plist                                                  |               |        |             |       |      |          |
+|     8 | com.apple.print.custompresets.forprinter.EPSON_EP_879A_Series.plist        |               |        |             |       |      |          |
+|    16 | com.apple.print.custompresets.forprinter._192_168_0_31.plist               |               |        |             |       |      |          |
+|     8 | com.apple.proactive.PersonalizationPortrait.plist                          |               |        |             |       |      |          |
+|     8 | com.apple.quicklook.satellite.plist                                        |               |        |             |       |      |          |
+|    32 | com.apple.quicktime.plugin.preferences.plist                               |               |        |             |       |      |          |
+|     8 | com.apple.recentitems.plist                                                |               |        |             |       |      |          |
+|     8 | com.apple.registration.plist                                               |               |        |             |       |      |          |
+|     8 | com.apple.reversetemplated.plist                                           |               |        |             |       |      |          |
+|     8 | com.apple.routined.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.rtcreporting.plist                                               |               |        |             |       |      |          |
+|     0 | com.apple.scheduler.plist                                                  |               |        |             |       |      |          |
+|     8 | com.apple.screencapture.plist                                              |               |        |             |       |      |          |
+|     8 | com.apple.screensaver.plist                                                |               |        |             |       |      |          |
+|     8 | com.apple.scriptmenu.plist                                                 |               |        |             |       |      |          |
+|     8 | com.apple.security.KCN.plist                                               |               |        |             |       |      |          |
+|     8 | com.apple.security.cloudkeychainproxy3.keysToRegister.plist                |               |        |             |       |      |          |
+|     8 | com.apple.security.keychainsyncingoveridsproxy.unhandledMessages.plist     |               |        |             |       |      |          |
+|     8 | com.apple.security.pboxd.plist                                             |               |        |             |       |      |          |
+|     8 | com.apple.sharekit.recents.plist                                           |               |        |             |       |      |          |
+|     8 | com.apple.sharingd.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.sidebarlists.plist                                               |               |        |             |       |      |          |
+|     8 | com.apple.siri.context.service.plist                                       |               |        |             |       |      |          |
+|     8 | com.apple.siricore.fides.plist                                             |               |        |             |       |      |          |
+|     8 | com.apple.sms.plist                                                        |               |        |             |       |      |          |
+|     8 | com.apple.socialpushagent.plist                                            |               |        |             |       |      |          |
+|     8 | com.apple.spaces.plist                                                     |               |        |             |       |      |          |
+|     0 | com.apple.spaces.plist.XG123dW                                             |               |        |             |       |      |          |
+|     8 | com.apple.speech.recognition.AppleSpeechRecognition.prefs.plist            |               |        |             |       |      |          |
+|     8 | com.apple.speech.voice.prefs.plist                                         |               |        |             |       |      |          |
+|     8 | com.apple.stockholm.plist                                                  |               |        |             |       |      |          |
+|     8 | com.apple.stocks.account.plist                                             |               |        |             |       |      |          |
+|     8 | com.apple.storeagent.plist                                                 |               |        |             |       |      |          |
+|     8 | com.apple.suggestd.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.suggestions.plist                                                |               |        |             |       |      |          |
+|     8 | com.apple.symbolichotkeys.plist                                            |               |        |             |       |      |          |
+|     8 | com.apple.syncserver.plist                                                 |               |        |             |       |      |          |
+|     8 | com.apple.systempreferences.plist                                          |               |        |             |       |      |          |
+|     8 | com.apple.systemsound.plist                                                |               |        |             |       |      |          |
+|     8 | com.apple.systemuiserver.plist                                             |               |        |             |       |      |          |
+|     8 | com.apple.talagent.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.textInput.keyboardServices.textReplacement.plist                 |               |        |             |       |      |          |
+|     8 | com.apple.tourist.plist                                                    |               |        |             |       |      |          |
+|     8 | com.apple.touristd.plist                                                   |               |        |             |       |      |          |
+|     8 | com.apple.universalaccess.plist                                            |               |        |             |       |      |          |
+|     8 | com.apple.universalaccessAuthWarning.plist                                 |               |        |             |       |      |          |
+|     8 | com.apple.voicememod.plist                                                 |               |        |             |       |      |          |
+|     8 | com.apple.wifi.keychain-format.plist                                       |               |        |             |       |      |          |
+|    16 | com.apple.xpc.activity2.plist                                              |               |        |             |       |      |          |
+|    48 | com.barebones.textwrangler.plist                                           |               |        |             |       |      |          |
+|     8 | com.binarynights.ForkLiftMini.plist                                        |               |        |             |       |      |          |
+|     8 | com.bjango.istatmenus6.extras.plist                                        |               |        |             |       |      |          |
+|     8 | com.company.SE2                                                            | SmartSet      | App    | (Mac).plist |       |      |          |
+|     8 | com.docker.docker.plist                                                    |               |        |             |       |      |          |
+|     8 | com.dropbox.DropboxMacUpdate.plist                                         |               |        |             |       |      |          |
+|     8 | com.dropbox.DropboxMonitor.plist                                           |               |        |             |       |      |          |
+|     8 | com.dropbox.tungsten.helper.plist                                          |               |        |             |       |      |          |
+|     8 | com.evernote.ENAttachmentToPDFHelper.plist                                 |               |        |             |       |      |          |
+|    32 | com.evernote.Evernote.plist                                                |               |        |             |       |      |          |
+|     8 | com.evernote.EvernoteHelper.plist                                          |               |        |             |       |      |          |
+|     8 | com.getdropbox.dropbox.plist                                               |               |        |             |       |      |          |
+|     8 | com.github.GitHubClient.helper.plist                                       |               |        |             |       |      |          |
+|     8 | com.github.GitHubClient.plist                                              |               |        |             |       |      |          |
+|     8 | com.google.Chrome.plist                                                    |               |        |             |       |      |          |
+|     8 | com.google.GoogleDrive.plist                                               |               |        |             |       |      |          |
+|     8 | com.google.Keystone.Agent.plist                                            |               |        |             |       |      |          |
+|    32 | com.googlecode.iterm2.plist                                                |               |        |             |       |      |          |
+|     8 | com.googlecode.mactlmgr.tlu.plist                                          |               |        |             |       |      |          |
+|     8 | com.grammarly.DesktopEditor.helper.plist                                   |               |        |             |       |      |          |
+|     8 | com.grammarly.DesktopEditor.plist                                          |               |        |             |       |      |          |
+|     8 | com.hahainteractive.mywdaysmac-setapp.plist                                |               |        |             |       |      |          |
+|    96 | com.hegenberg.BetterSnapTool.plist                                         |               |        |             |       |      |          |
+|     0 | com.hegenberg.BetterSnapTool.plist.9ENqtNu                                 |               |        |             |       |      |          |
+|    72 | com.hegenberg.BetterTouchTool.plist                                        |               |        |             |       |      |          |
+|    16 | com.hegenberg.BetterTouchTool.plist.pb4T3H8                                |               |        |             |       |      |          |
+|     0 | com.hegenberg.BetterTouchTool.plist.wcIesbs                                |               |        |             |       |      |          |
+|     8 | com.install4j.installations.plist                                          |               |        |             |       |      |          |
+|     8 | com.literatureandlatte.scrivener2.plist                                    |               |        |             |       |      |          |
+|    32 | com.literatureandlatte.scrivener3.plist                                    |               |        |             |       |      |          |
+|     8 | com.mediaatelier.CheatSheet.plist                                          |               |        |             |       |      |          |
+|    16 | com.mendeley.Mendeley                                                      | Desktop.plist |        |             |       |      |          |
+|     8 | com.mendeley.desktop.plist                                                 |               |        |             |       |      |          |
+|     8 | com.microsoft.Excel.plist                                                  |               |        |             |       |      |          |
+|     8 | com.microsoft.OneDrive-mac.plist                                           |               |        |             |       |      |          |
+|     8 | com.microsoft.Powerpoint.plist                                             |               |        |             |       |      |          |
+|     8 | com.microsoft.Word.plist                                                   |               |        |             |       |      |          |
+|     8 | com.microsoft.autoupdate.fba.plist                                         |               |        |             |       |      |          |
+|     8 | com.microsoft.autoupdate2.plist                                            |               |        |             |       |      |          |
+|     8 | com.microsoft.office.plist                                                 |               |        |             |       |      |          |
+|     8 | com.nchsoftware.tempoperfect-free.plist                                    |               |        |             |       |      |          |
+|     8 | com.oracle.java.Java-Updater.plist                                         |               |        |             |       |      |          |
+|     8 | com.oracle.java.JavaAppletPlugin.plist                                     |               |        |             |       |      |          |
+|     8 | com.oracle.javadeployment.plist                                            |               |        |             |       |      |          |
+|     8 | com.pagico.pagico-setapp.pagicohelper.plist                                |               |        |             |       |      |          |
+|     8 | com.qtproject.plist                                                        |               |        |             |       |      |          |
+|     8 | com.runningwithcrayons.Alfred-3.plist                                      |               |        |             |       |      |          |
+|     8 | com.runningwithcrayons.Alfred-Preferences-3.plist                          |               |        |             |       |      |          |
+|     8 | com.skype.skype.Helper.plist                                               |               |        |             |       |      |          |
+|     8 | com.skype.skype.plist                                                      |               |        |             |       |      |          |
+|    16 | com.spiny.xbench.modelDatabase.plist                                       |               |        |             |       |      |          |
+|     8 | com.spiny.xbench.plist                                                     |               |        |             |       |      |          |
+|    32 | com.torusknot.SourceTreeNotMAS.plist                                       |               |        |             |       |      |          |
+|   120 | com.trankynam.aText.plist                                                  |               |        |             |       |      |          |
+|     0 | com.trankynam.aText.plist.ottHRrI                                          |               |        |             |       |      |          |
+|     8 | com.trolltech.plist                                                        |               |        |             |       |      |          |
+|     8 | com.uranusjr.macdown.plist                                                 |               |        |             |       |      |          |
+|     8 | cx.c3.theunarchiver.plist                                                  |               |        |             |       |      |          |
+|     8 | droplet.plist                                                              |               |        |             |       |      |          |
+|     8 | edu.bucknell.Excalibur.plist                                               |               |        |             |       |      |          |
+|     8 | edu.ucsd.cs.mmccrack.bibdesk.plist                                         |               |        |             |       |      |          |
+|     8 | fr.chachatelier.pierre.LaTeXiT.plist                                       |               |        |             |       |      |          |
+|     8 | info.eurocomp.Timing2.fallback.plist                                       |               |        |             |       |      |          |
+|     8 | info.eurocomp.Timing2.plist                                                |               |        |             |       |      |          |
+|     8 | internetAccountsMigrator.plist                                             |               |        |             |       |      |          |
+|     8 | jp.co.kinokuniya.kinoppy.plist                                             |               |        |             |       |      |          |
+|     8 | jp.shibata.teslapref.plist                                                 |               |        |             |       |      |          |
+|     8 | jp.sourceforge.inputmethod.aquaskk.plist                                   |               |        |             |       |      |          |
+|     8 | knowledge-agent.plist                                                      |               |        |             |       |      |          |
+|     8 | loginwindow.plist                                                          |               |        |             |       |      |          |
+|     8 | net.freemacsoft.AppCleaner.plist                                           |               |        |             |       |      |          |
+|     8 | net.kovidgoyal.calibre.plist                                               |               |        |             |       |      |          |
+|    48 | net.sourceforge.skim-app.skim.bookmarks.plist                              |               |        |             |       |      |          |
+|     8 | net.sourceforge.skim-app.skim.plist                                        |               |        |             |       |      |          |
+|    16 | org.R-project.R.plist                                                      |               |        |             |       |      |          |
+|     8 | org.cups.PrintingPrefs.plist                                               |               |        |             |       |      |          |
+|     8 | org.gnu.Emacs.plist                                                        |               |        |             |       |      |          |
+|     8 | org.gottcode.Kapow.plist                                                   |               |        |             |       |      |          |
+|     8 | org.jabref.bibtexkeypatterns.plist                                         |               |        |             |       |      |          |
+|     8 | org.jabref.customizedbiblatextypes.plist                                   |               |        |             |       |      |          |
+|     8 | org.jabref.customizedbibtextypes.plist                                     |               |        |             |       |      |          |
+|    16 | org.jpn.lacaille.Lacaille.plist                                            |               |        |             |       |      |          |
+|     8 | org.macosforge.xquartz.X11.plist                                           |               |        |             |       |      |          |
+|     8 | org.processing.app.plist                                                   |               |        |             |       |      |          |
+|     8 | org.rstudio.RStudio.plist                                                  |               |        |             |       |      |          |
+|     8 | org.tug.TeXworks.plist                                                     |               |        |             |       |      |          |
+|     8 | org.w0lf.mySIMBL.plist                                                     |               |        |             |       |      |          |
+|     8 | org.w0lf.mySIMBLAgent.plist                                                |               |        |             |       |      |          |
+|     8 | org.xmind.cathy.application.plist                                          |               |        |             |       |      |          |
+|     8 | pbs.plist                                                                  |               |        |             |       |      |          |
+|     8 | processing.app.tools.plist                                                 |               |        |             |       |      |          |
+|     8 | widget-com.apple.widget.calendar.plist                                     |               |        |             |       |      |          |
+|     8 | widget-com.apple.widget.cinema.plist                                       |               |        |             |       |      |          |
+|     8 | widget-com.apple.widget.dictionary.plist                                   |               |        |             |       |      |          |
+|     8 | widget-com.apple.widget.weather.plist                                      |               |        |             |       |      |          |
+|     8 | widget-com.apple.widget.web-clip.plist                                     |               |        |             |       |      |          |
+
+**** /var/logを見てみる
+ここは監視しておく必要があるらしい（理由は書いていない）．
+#+BEGIN_SRC sh
+ls -s /var/log
+#+END_SRC
+
+#+RESULTS:
+| total | 119904                    |
+|     0 | Bluetooth                 |
+|     8 | CDIS.custom               |
+|     0 | CoreDuet                  |
+|     0 | DiagnosticMessages        |
+|     0 | alf.log                   |
+|     0 | apache2                   |
+|     0 | appfirewall.log           |
+|     0 | asl                       |
+|     0 | com.apple.xpc.launchd     |
+| 24584 | corecaptured.log          |
+|     0 | cups                      |
+|   392 | daily.out                 |
+|     0 | displaypolicy             |
+|     8 | displaypolicyd.stdout.log |
+|     0 | emond                     |
+|    32 | fsck_apfs.log             |
+|    24 | fsck_hfs.log              |
+| 88656 | install.log               |
+|     8 | monthly.out               |
+|     0 | powermanagement           |
+|     0 | ppp                       |
+|     0 | shutdown_monitor.log      |
+|  4104 | system.log                |
+|   208 | system.log.0.gz           |
+|   320 | system.log.1.gz           |
+|   248 | system.log.2.gz           |
+|   184 | system.log.3.gz           |
+|   240 | system.log.4.gz           |
+|   224 | system.log.5.gz           |
+|    88 | system.log.6.gz           |
+|    32 | system.log.7.gz           |
+|     0 | uucp                      |
+|     8 | weekly.out                |
+|    32 | wifi.log                  |
+|    16 | wifi.log.0.bz2            |
+|    16 | wifi.log.1.bz2            |
+|    48 | wifi.log.10.bz2           |
+|    16 | wifi.log.2.bz2            |
+|    24 | wifi.log.3.bz2            |
+|    40 | wifi.log.4.bz2            |
+|     8 | wifi.log.5.bz2            |
+|    24 | wifi.log.6.bz2            |
+|   160 | wifi.log.7.bz2            |
+|    56 | wifi.log.8.bz2            |
+|    96 | wifi.log.9.bz2            |
+
+**** -d で存在するかどうかを確かめる
+#+BEGIN_SRC sh
+ls -d /Library
+#+END_SRC
+
+#+RESULTS:
+: /Library
+#+BEGIN_SRC sh
+ls -d
+#+END_SRC
+
+#+RESULTS:
+: 0
+
+*** -lオプションの利用
+-lとは，longの意味．
+-aと組み合わせて使うことが多い．
+表示項目は，
+|種類とパーミッション |リンク数|オーナー|グループ|容量（バイト単位）|変更日|名前|
+リンクは，「リンクを使った作業」参照．
+#+BEGIN_SRC sh
+ls -al
+#+END_SRC
+
+#+RESULTS:
+| total       | 560 |          |       |        |     |    |       |                                            |
+| drwxr-xr-x  |  25 | ahayashi | staff |    800 | Dec | 13 | 20:58 | 0                                          |
+| drwxr-xr-x  |  22 | ahayashi | staff |    704 | Dec | 12 | 13:06 | ..                                         |
+| -rw-r--r--@ |   1 | ahayashi | staff |   6148 | Dec | 11 | 20:40 | .DS_Store                                  |
+| -rw-r--r--  |   1 | ahayashi | staff | 133633 | Dec | 13 | 20:58 | Unix_for_OSX.org                           |
+| -rw-r--r--  |   1 | ahayashi | staff |    300 | Dec |  8 | 16:08 | Unix_for_OSX.org~                          |
+| -rw-r--r--  |   1 | ahayashi | staff |      0 | Dec | 11 | 01:03 | ans                                        |
+| -rw-r--r--  |   1 | ahayashi | staff |     21 | Dec | 11 | 21:42 | data                                       |
+| drwxr-xr-x  |   2 | ahayashi | staff |     64 | Dec |  8 | 17:28 | dir                                        |
+| -rw-r--r--  |   1 | ahayashi | staff |     43 | Dec | 11 | 01:26 | error                                      |
+| -rw-r--r--  |   1 | ahayashi | staff |      0 | Dec | 11 | 01:37 | file1                                      |
+| -rw-r--r--  |   1 | ahayashi | staff |      0 | Dec | 11 | 01:40 | file1.backup                               |
+| -rw-r--r--  |   1 | ahayashi | staff |      0 | Dec | 11 | 01:37 | file2                                      |
+| -rw-r--r--  |   1 | ahayashi | staff |      0 | Dec | 11 | 01:40 | file2.backup                               |
+| -rw-r--r--  |   1 | ahayashi | staff |      0 | Dec | 11 | 01:37 | file3                                      |
+| -rw-r--r--  |   1 | ahayashi | staff |      0 | Dec | 11 | 01:40 | file3.backup                               |
+| -rw-r--r--  |   1 | ahayashi | staff |      0 | Dec | 11 | 01:37 | file4                                      |
+| -rw-r--r--  |   1 | ahayashi | staff |      2 | Dec | 11 | 00:51 | hoge                                       |
+| -rw-r--r--  |   1 | ahayashi | staff |     25 | Dec | 11 | 20:07 | hoge.bash                                  |
+| -rw-r--r--  |   1 | ahayashi | staff |    238 | Dec | 11 | 20:07 | if.bash                                    |
+| -rw-r--r--  |   1 | ahayashi | staff |    180 | Dec | 11 | 20:07 | read.bash                                  |
+| -rw-r--r--@ |   1 | ahayashi | staff |  56857 | Dec | 12 | 08:56 | shell_programing_practical_technique.html~ |
+| -rw-r--r--  |   1 | ahayashi | staff |  34715 | Dec | 12 | 09:30 | shell_programing_practical_technique.org   |
+| -rw-r--r--  |   1 | ahayashi | staff |    470 | Dec |  9 | 03:44 | shell_programing_practical_technique.org~  |
+| -rw-r--r--@ |   1 | ahayashi | staff |  11837 | Dec |  8 | 16:39 | test.docx                                  |
+| -rwxr-xr-x  |   1 | ahayashi | staff |     42 | Dec | 11 | 20:07 | tmpfile.bash                               |
+
+*** ファイルのパーミッション（アクセス権）
+** ファイルやディスクの容量計算
+**** duコマンド
+du ファイル名
+disk usageの略．
+#+BEGIN_SRC sh
+du ./Unix_for_OSX.org
+#+END_SRC
+
+#+RESULTS:
+| 264 | ./Unix_for_OSX.org |
+**** -sで要約
+summary
+#+BEGIN_SRC sh
+du -s ../
+#+END_SRC
+
+#+RESULTS:
+| 10392 | ../ |
+**** アプリケーションの容量を調べてみる
+-hで人間に読みやすく表示
+#+BEGIN_SRC sh
+du -sh /Applications/*.app | sort -n
+#+END_SRC
+
+#+RESULTS:
+| 0B    | /Applications/Adobe Digital Editions.app      |
+| 1.0G  | /Applications/GarageBand.app                  |
+| 1.2G  | /Applications/Adobe Photoshop Lightroom 5.app |
+| 1.2M  | /Applications/Launchpad.app                   |
+| 1.2M  | /Applications/Time Machine.app                |
+| 1.3M  | /Applications/VoiceMemos.app                  |
+| 1.4M  | /Applications/Enigma.app                      |
+| 1.5G  | /Applications/Microsoft PowerPoint.app        |
+| 1.5M  | /Applications/TempoPerfect.app                |
+| 1.7G  | /Applications/Docker.app                      |
+| 1.7G  | /Applications/Microsoft Excel.app             |
+| 1.7M  | /Applications/Siri.app                        |
+| 2.0M  | /Applications/Dictionary.app                  |
+| 2.0M  | /Applications/Image Capture.app               |
+| 2.1G  | /Applications/Microsoft Word.app              |
+| 2.1M  | /Applications/BetterSnapTool.app              |
+| 2.2G  | /Applications/iMovie.app                      |
+| 2.7M  | /Applications/Home.app                        |
+| 3.0M  | /Applications/Calculator.app                  |
+| 3.6M  | /Applications/AppCleaner.app                  |
+| 4.0M  | /Applications/Photo Booth.app                 |
+| 4.1M  | /Applications/News.app                        |
+| 4.1M  | /Applications/R.app                           |
+| 4.1M  | /Applications/TextEdit.app                    |
+| 4.3M  | /Applications/FaceTime.app                    |
+| 4.8M  | /Applications/Reminders.app                   |
+| 4.9M  | /Applications/CheatSheet.app                  |
+| 4.9M  | /Applications/Chess.app                       |
+| 5.0M  | /Applications/System Preferences.app          |
+| 5.3M  | /Applications/Automator.app                   |
+| 6.4G  | /Applications/Xcode.app                       |
+| 6.5M  | /Applications/App Store.app                   |
+| 6.6M  | /Applications/aText.app                       |
+| 6.7M  | /Applications/mySIMBL.app                     |
+| 6.8M  | /Applications/Alfred 3.app                    |
+| 6.9M  | /Applications/Notes.app                       |
+| 7.2M  | /Applications/Maps.app                        |
+| 7.9M  | /Applications/Messages.app                    |
+| 9.2M  | /Applications/Font Book.app                   |
+| 10M   | /Applications/Calendar.app                    |
+| 10.0M | /Applications/TextWrangler.app                |
+| 11M   | /Applications/Contacts.app                    |
+| 11M   | /Applications/Skim.app                        |
+| 12M   | /Applications/QuickTime Player.app            |
+| 13M   | /Applications/The Unarchiver.app              |
+| 15M   | /Applications/iTerm.app                       |
+| 16M   | /Applications/Stickies.app                    |
+| 20M   | /Applications/Safari.app                      |
+| 22M   | /Applications/Mail.app                        |
+| 23M   | /Applications/Photos.app                      |
+| 25M   | /Applications/Books.app                       |
+| 31M   | /Applications/Preview.app                     |
+| 32M   | /Applications/BetterTouchTool.app             |
+| 41M   | /Applications/紀伊國屋書店Kinoppy.app         |
+| 46M   | /Applications/TeXworks.app                    |
+| 64M   | /Applications/Adobe Digital Editions 4.5.app  |
+| 72M   | /Applications/OneDrive.app                    |
+| 83M   | /Applications/Backup and Sync.app             |
+| 139M  | /Applications/iTunes.app                      |
+| 140M  | /Applications/Grammarly.app                   |
+| 141M  | /Applications/Evernote.app                    |
+| 156M  | /Applications/Sourcetree.app                  |
+| 170M  | /Applications/Emacs.app                       |
+| 174M  | /Applications/VirtualBox.app                  |
+| 198M  | /Applications/calibre.app                     |
+| 209M  | /Applications/Numbers.app                     |
+| 211M  | /Applications/Skype.app                       |
+| 214M  | /Applications/Dropbox.app                     |
+| 216M  | /Applications/Scrivener.app                   |
+| 251M  | /Applications/Amazon Music.app                |
+| 255M  | /Applications/Julia-0.6.app                   |
+| 264M  | /Applications/Processing.app                  |
+| 271M  | /Applications/Inkscape.app                    |
+| 291M  | /Applications/Mendeley Desktop.app            |
+| 298M  | /Applications/Pages.app                       |
+| 307M  | /Applications/Kindle.app                      |
+| 323M  | /Applications/XMind.app                       |
+| 364K  | /Applications/Lacaille.app                    |
+| 377M  | /Applications/Google Chrome.app               |
+| 438M  | /Applications/RStudio.app                     |
+| 519M  | /Applications/Keynote.app                     |
+| 528K  | /Applications/Dashboard.app                   |
+| 800K  | /Applications/Stocks.app                      |
+| 808K  | /Applications/Mission Control.app             |
+| 916K  | /Applications/Language Switcher.app           |
+
+*** ディスクの空き容量計算
+disk freeの略？
+Filesystem|Size|Used|Avail|Capacity|iused|ifree|%iused|Mounted on
+- Filesystem: ボリュームに付けられたUnixデバイス名
+- Size: ディスク容量の総合計
+- Used: 使用中のディスク容量
+- Avail: 利用可能な残り容量
+- Capacity: 現在使用中のディスク容量が全体に対して占める割合
+
+devfsなどは通常のディスクではないので気にしなくていい．
+注意すべきは起動ディスク．/dev/disk1s1
+#+BEGIN_SRC sh
+df -h
+#+END_SRC
+
+#+RESULTS:
+| Filesystem   | Size      | Used  | Avail | Capacity |   iused |                 ifree | %iused | Mounted         | on    |
+| /dev/disk1s1 | 932Gi     | 282Gi | 648Gi |      31% | 2840793 | 9.223372036851935e+18 |     0% | /               |       |
+| devfs        | 185Ki     | 185Ki | 0Bi   |     100% |     639 |                     0 |   100% | /dev            |       |
+| /dev/disk1s4 | 932Gi     | 1.0Gi | 648Gi |       1% |       1 | 9.223372036854776e+18 |     0% | /private/var/vm |       |
+| map          | -hosts    | 0Bi   | 0Bi   |      0Bi |    100% |                     0 |      0 | 100%            | /net  |
+| map          | auto_home | 0Bi   | 0Bi   |      0Bi |    100% |                     0 |      0 | 100%            | /home |
+
+** ファイルの保護と共有
+** パスワードの変更
+** sudoコマンドによる管理者の権限
+** 外部ボリュームの利用
 * ファイル管理
 * ファイル検索と情報取得
 * 入出力のリダイレクト機能
