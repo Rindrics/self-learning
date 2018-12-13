@@ -1351,6 +1351,137 @@ int main(void)
       - 列挙型
     - 不動小数点型
 ** ポインタと配列
+ポインタが配列を指している時，デフォルトでは配列の1番目の要素を指す．
+配列全体ではない．
+p + 3とすれば，a[0]の3つ後ろのa[3]を指す．
+*** 例外
+- sizeof演算子のオペランドとして現れた時，配列全体を指す．
+- アドレス演算子&のオペランドとして現れた時も，配列全体を指す．
+*** List10-9
+#+BEGIN_SRC C :results scalar
+/*
+	配列の要素のアドレス（要素へのポインタ）を表示
+*/
+
+#include <stdio.h>
+
+int main(void)
+{
+	int i;
+	int a[5] = {1, 2, 3, 4, 5};
+	int *p = a;				/* pはa[0]を指す */
+
+	for (i = 0; i < 5; i++)
+		printf("&a[%d] = %p   p+%d = %p\n", i, &a[i], i, p + i);
+
+	return 0;
+}
+
+#+END_SRC
+
+#+RESULTS:
+: &a[0] = 0x7ffee96c3940   p+0 = 0x7ffee96c3940
+: &a[1] = 0x7ffee96c3944   p+1 = 0x7ffee96c3944
+: &a[2] = 0x7ffee96c3948   p+2 = 0x7ffee96c3948
+: &a[3] = 0x7ffee96c394c   p+3 = 0x7ffee96c394c
+: &a[4] = 0x7ffee96c3950   p+4 = 0x7ffee96c3950
+ただし，p + i がa[i]を指すのは，pがa[0]を指してる時に限る．
+pがa[2]を指していたら，p + iはa[2 + i]を指す．
+** 不安がある 間接演算子と添字演算子
+*** List10-10
+#+BEGIN_SRC C :results scalar
+/*
+	配列の要素の値とアドレスを表示
+*/
+
+#include <stdio.h>
+
+int main(void)
+{
+	int i;
+	int a[5] = {1, 2, 3, 4, 5};
+	int *p = a;				/* pはa[0]を指す */
+
+	for (i = 0; i < 5; i++)
+		printf("a[%d] = %d  *(a+%d) = %d  p[%d] = %d  *(p+%d) = %d\n",
+								i, a[i], i, *(a + i), i, p[i], i, *(p + i));
+
+	for (i = 0; i < 5; i++)
+		printf("&a[%d] = %p  a+%d = %p  &p[%d] = %p  p+%d = %p\n",
+								i, &a[i], i, (a + i), i, &p[i], i, (p + i));
+
+	return 0;
+}
+
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+a[0] = 1  *(a+0) = 1  p[0] = 1  *(p+0) = 1
+a[1] = 2  *(a+1) = 2  p[1] = 2  *(p+1) = 2
+a[2] = 3  *(a+2) = 3  p[2] = 3  *(p+2) = 3
+a[3] = 4  *(a+3) = 4  p[3] = 4  *(p+3) = 4
+a[4] = 5  *(a+4) = 5  p[4] = 5  *(p+4) = 5
+&a[0] = 0x7ffeea620930  a+0 = 0x7ffeea620930  &p[0] = 0x7ffeea620930  p+0 = 0x7ffeea620930
+&a[1] = 0x7ffeea620934  a+1 = 0x7ffeea620934  &p[1] = 0x7ffeea620934  p+1 = 0x7ffeea620934
+&a[2] = 0x7ffeea620938  a+2 = 0x7ffeea620938  &p[2] = 0x7ffeea620938  p+2 = 0x7ffeea620938
+&a[3] = 0x7ffeea62093c  a+3 = 0x7ffeea62093c  &p[3] = 0x7ffeea62093c  p+3 = 0x7ffeea62093c
+&a[4] = 0x7ffeea620940  a+4 = 0x7ffeea620940  &p[4] = 0x7ffeea620940  p+4 = 0x7ffeea620940
+#+end_example
+** 配列とポインタの相違点
+ポインタは代入文の左オペランドとなることができるが，
+配列はできない．
+*** これはOK
+#+BEGIN_SRC C
+int *p;
+int y[5];
+p = y;
+#+END_SRC
+*** これはNG
+#+BEGIN_SRC C
+int a[5];
+int b[5];
+a = b;
+#+END_SRC
+*** Column10-3
+*(p + i)は，pとiの加算．
+a + b が b + a と等しいことを考慮すると，
+*(p + i) と *(i + p)も等しそうだかどうか？実は，その通りである．
+同じように，p[i] と i[p] も等価である．
+ただし，紛らわしいので使うべきではない（何だよ！）．
+*** List10C-1
+#+BEGIN_SRC C :results scalar
+/*
+	添字演算子と間接演算子
+*/
+
+#include <stdio.h>
+
+int main(void)
+{
+	int i, a[4];
+
+	0[a] = a[1] = *(a + 2) = *(3 + a) = 7;
+
+	for (i = 0; i < 4; i++)
+		printf("a[%d] = %d\n", i, a[i]);
+
+	return 0;
+}
+
+#+END_SRC
+
+#+RESULTS:
+: a[0] = 7
+: a[1] = 7
+: a[2] = 7
+: a[3] = 7
+
+** 配列の受け渡し
+
+** まとめ
+
+
 * 文字列とポインタ
 * 構造体
 * ファイル処理
