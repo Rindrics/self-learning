@@ -1,4 +1,5 @@
 #+TITLE: Gitによるバージョン管理
+#+STARTUP: overview
 #+TAGS: important
 * 入門編
 ** Gitとは
@@ -598,11 +599,181 @@ git shortlog
 
 #+RESULTS:
 
-*** TODO ローカルリポジトリ，ワーキングツリーの状態を確認する/git status
+*** ローカルリポジトリ，ワーキングツリーの状態を確認する/git status
+次回コミット時の状態やファイルの状態を確認できる．
+- both modified: マージやリベースに失敗した状態で，複数のブランチで変更されているファイルが表示される．
+- unmerged: マージやリベースに失敗した場合のうち，both modified以外のとき表示される．例えば一方では削除されており，もう一方では変更されているときなど．
+**** 使ってみる
+#+BEGIN_SRC sh :results output
+git status
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+On branch master
+Your branch is ahead of 'origin/master' by 24 commits.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   version_management_by_git.org
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	../C/.qrinput
+	../C/a.out
+	../C/chap09/a.out
+	../C/chap09/list0907.qrinput
+	../C/meikai_nyuumon.html
+	../C/meikai_nyuumon.txt_archive
+	../C/qr_425068qL.out
+	../C/qr_425068qL.txt[ C ]*]
+	../C/studynote_c.txt
+	../Confucious/
+	../Fortran/list1_1.f90
+	../Fortran/practice1_2.f90
+	../Fortran/practice1_3.f90
+	../Fortran/practice1_4.f90
+	.#version_management_by_git.org
+	test.txt
+	../Processing/GenerativeDesign/GenerativeDesign.html
+	../Processing/GenerativeDesign/GenerativeDesign.pde
+	../Unix/ans
+	../Unix/data
+	../Unix/error
+	../Unix/file1
+	../Unix/file1.backup
+	../Unix/file2
+	../Unix/file2.backup
+	../Unix/file3
+	../Unix/file3.backup
+	../Unix/file4
+	../Unix/hoge
+	../Unix/hoge.bash
+	../Unix/if.bash
+	../Unix/read.bash
+	../Unix/test.docx
+	../Unix/tmpfile.bash
+	../Unix/zipcode
+
+no changes added to commit (use "git add" and/or "git commit -a")
+#+end_example
+**** 短縮表示 -s, --short
+#+BEGIN_SRC sh
+git status -s
+#+END_SRC
+
+#+RESULTS:
+| M  | version_management_by_git.org                        |   |     |
+| ?? | ../C/.qrinput                                        |   |     |
+| ?? | ../C/a.out                                           |   |     |
+| ?? | ../C/chap09/a.out                                    |   |     |
+| ?? | ../C/chap09/list0907.qrinput                         |   |     |
+| ?? | ../C/meikai_nyuumon.html                             |   |     |
+| ?? | ../C/meikai_nyuumon.txt_archive                      |   |     |
+| ?? | ../C/qr_425068qL.out                                 |   |     |
+| ?? | ../C/qr_425068qL.txt[                                | C | ]*] |
+| ?? | ../C/studynote_c.txt                                 |   |     |
+| ?? | ../Confucious/                                       |   |     |
+| ?? | ../Fortran/list1_1.f90                               |   |     |
+| ?? | ../Fortran/practice1_2.f90                           |   |     |
+| ?? | ../Fortran/practice1_3.f90                           |   |     |
+| ?? | ../Fortran/practice1_4.f90                           |   |     |
+| ?? | #version_management_by_git.org#                      |   |     |
+| ?? | .#version_management_by_git.org                      |   |     |
+| ?? | test.txt                                             |   |     |
+| ?? | ../Processing/GenerativeDesign/GenerativeDesign.html |   |     |
+| ?? | ../Processing/GenerativeDesign/GenerativeDesign.pde  |   |     |
+| ?? | ../Unix/ans                                          |   |     |
+| ?? | ../Unix/data                                         |   |     |
+| ?? | ../Unix/error                                        |   |     |
+| ?? | ../Unix/file1                                        |   |     |
+| ?? | ../Unix/file1.backup                                 |   |     |
+| ?? | ../Unix/file2                                        |   |     |
+| ?? | ../Unix/file2.backup                                 |   |     |
+| ?? | ../Unix/file3                                        |   |     |
+| ?? | ../Unix/file3.backup                                 |   |     |
+| ?? | ../Unix/file4                                        |   |     |
+| ?? | ../Unix/hoge                                         |   |     |
+| ?? | ../Unix/hoge.bash                                    |   |     |
+| ?? | ../Unix/if.bash                                      |   |     |
+| ?? | ../Unix/read.bash                                    |   |     |
+| ?? | ../Unix/test.docx                                    |   |     |
+| ?? | ../Unix/tmpfile.bash                                 |   |     |
+| ?? | ../Unix/zipcode                                      |   |     |
+**** ブランチ表示 -b
+#+BEGIN_SRC sh
+git status -sb
+#+END_SRC
+
+#+RESULTS:
+| ## | master...origin/master                               | [ahead | 24] |
+| M  | version_management_by_git.org                        |        |     |
+| ?? | ../C/.qrinput                                        |        |     |
+| ?? | ../C/a.out                                           |        |     |
+| ?? | ../C/chap09/a.out                                    |        |     |
+| ?? | ../C/chap09/list0907.qrinput                         |        |     |
+| ?? | ../C/meikai_nyuumon.html                             |        |     |
+| ?? | ../C/meikai_nyuumon.txt_archive                      |        |     |
+| ?? | ../C/qr_425068qL.out                                 |        |     |
+| ?? | ../C/qr_425068qL.txt[                                | C      | ]*] |
+| ?? | ../C/studynote_c.txt                                 |        |     |
+| ?? | ../Confucious/                                       |        |     |
+| ?? | ../Fortran/list1_1.f90                               |        |     |
+| ?? | ../Fortran/practice1_2.f90                           |        |     |
+| ?? | ../Fortran/practice1_3.f90                           |        |     |
+| ?? | ../Fortran/practice1_4.f90                           |        |     |
+| ?? | .#version_management_by_git.org                      |        |     |
+| ?? | test.txt                                             |        |     |
+| ?? | ../Processing/GenerativeDesign/GenerativeDesign.html |        |     |
+| ?? | ../Processing/GenerativeDesign/GenerativeDesign.pde  |        |     |
+| ?? | ../Unix/ans                                          |        |     |
+| ?? | ../Unix/data                                         |        |     |
+| ?? | ../Unix/error                                        |        |     |
+| ?? | ../Unix/file1                                        |        |     |
+| ?? | ../Unix/file1.backup                                 |        |     |
+| ?? | ../Unix/file2                                        |        |     |
+| ?? | ../Unix/file2.backup                                 |        |     |
+| ?? | ../Unix/file3                                        |        |     |
+| ?? | ../Unix/file3.backup                                 |        |     |
+| ?? | ../Unix/file4                                        |        |     |
+| ?? | ../Unix/hoge                                         |        |     |
+| ?? | ../Unix/hoge.bash                                    |        |     |
+| ?? | ../Unix/if.bash                                      |        |     |
+| ?? | ../Unix/read.bash                                    |        |     |
+| ?? | ../Unix/test.docx                                    |        |     |
+| ?? | ../Unix/tmpfile.bash                                 |        |     |
+| ?? | ../Unix/zipcode                                      |        |     |
+
 *** ディレクトリおよびファイルの移動，変更を行う/git mv
+git mvを使わないと，削除と新規作成という扱いになってしまう．
+
+**** 既に存在するファイル名に変更する git mv -f file1 file2
 *** ファイルおよびディレクトリの削除/git rm
+ディレクトリごとの削除は -r
+インデックスからの削除は --cached
+削除を取り消すにはcheckout．
 *** 変更をローカルリポジトリにコミットする/git commit
+すべての変更をコミットするには -a
+指定したファイルのみもコミットできる
+**** コミットメッセージの書き方
+慣習に従え．
+パッチメール作成のときにも役立つ．
+**** 直前のコミットを変更する --amend
 *** ローカルリポジトリ，インデックスを元に戻す/git reset
+**** 指定したコミットを完全にリセットする --hard
+インデックスに登録されていないファイルは意外と削除されない．
+登録したけどコミットされていないファイルは削除される．
+***** 間違ってgit resetしてしまったら，実行前の状態がORIG_HEADに保存されているので，これを使えばいい．
+**** HEADのみを元に戻す --soft
+git reset --soft HEAD~
+とすると，HEADだけを1つ前のコミットに戻す．
+なので，git diffで変更の差分が見れる．
+**** HEADとインデックスを指定したコミットに戻す --mixed
+
 *** ワーキングツリーを掃除する/git clean
 *** 特定の文字列を検索する/git grep
 *** リポジトリで管理するファイルを設定する/.gitignoreファイル
