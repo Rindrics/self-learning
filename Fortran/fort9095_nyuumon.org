@@ -10,7 +10,23 @@
 ** 本書の特徴
 - コンパイラの取扱方法
 - 画像の図化
-* 反復計算と基本プログラミング
+* 反復演算と基本プログラミング
+** Fortran 計算環境を整えよう
+** 反復演算と基本プログラミング
+*** 簡単な反復演算
+**** List 1.1
+#+BEGIN_SRC fortran
+  program loop
+      implicit none
+      integer i, wa
+      wa = 0
+      do i = 1, 100
+          wa = wa + i
+      enddo
+      write(*, *) 'wa = ', wa
+  end program loop
+
+#+END_SRC
 * 配列を用いるプログラミング
 * モジュール副プログラム
 * 外部副プログラム
