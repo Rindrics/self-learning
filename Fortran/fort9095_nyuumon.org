@@ -1,4 +1,4 @@
-#+TITLE: 数値計算のためのFortran90/95プログラミング入門
+#+TITLE: 数値計算のためのFortran 90/95プログラミング入門
 #+STARTUP: overview
 * はじめに
 ** Fortran 90/95の特徴
