@@ -3,6 +3,25 @@
 * 第一歩
 ** はじめに
 なぜ本書で学ぶスキルが重要か
+
+本書のゴール: 自力でバッケージを書けるようになること
+なぜパッケージを書くのか
+- 人と共有したいコードがある
+- 規約に従うことによって自分自身の時間を節約するため
+*** 哲学
+自動化できるものは自動化する！これはdevtoolsでできる．
+**** devtools のデメリット
+パッケージがどのように構成されているのかを遮蔽してしまう．
+詳しく学ぶには公式の[[http://bit.ly/iEYWyMy][Writing R Extensions]]が一番．
+ただし，難しいので基本を理解してから．
+*** 学習開始
+**** パッケージのインストール
+#+BEGIN_SRC R
+  install.packages(c("devtools", "roxygen2", "testthat", "knitr"))
+  devtools::install_github("hadley/devtools")
+#+END_SRC
+**** その他必要なもの
+Xcode または Command-Line Tools for Xcode
 ** パッケージの構造
 - パッケージの基本的な構造
 - どのような形式をとれるのか
