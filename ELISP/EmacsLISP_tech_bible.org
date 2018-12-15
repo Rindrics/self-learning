@@ -16,6 +16,44 @@
 ** anything.el
 ** その他
 * Emacs Lisp 始めの一歩
+** ようこそ Emacs Lisp の世界へ
+*** Emacs Lisp とは
+*** Emacs Lisp 習得のメリット・目的
+本書のステップ
+- elisp の基礎を知る
+- バッファとウィンドウによる表現方法を学ぶ
+- 関数をすこしずつ覚えていく
+- オンラインヘルプの使い方を学ぶ
+- 応用的な知識をつける
+- Commpn Lisp マクロを使ってエレガントに elisp を書く
+- テスト・デバッグの方法を知る
+- 実際に elisp で書いてみる
+** Emacs Lisp を書くための設定
+*** auto-install.el をインストールする
+*** 必須ファイルのインストール
+- open-junk-file.el
+- lispxmp.el
+- paredit.el
+- auto-async-byte-compile.el
+*** 設定
+p.31の設定を
+[[file:~/Documents/GitHub/dotfiles/.emacs.d/inits/40_EmacsLisp.el::(require%20'lispxmp)%20;;%20Enable%20help%20in%20emacs-lisp-mode][設定ファイル]]に書いたほうがいいかも？
+** 文法
+*** 括弧だらけの文法
+*** 構成要素
+*** コメント
+** Emacs Lisp プログラム実行の仕組み
+*** フォーム
+*** 評価とは
+*** 関数呼び出し
+*** 評価の具体例
+#+BEGIN_SRC elisp
+  (+ 23 (+ 6 7))
+#+END_SRC
+
+#+RESULTS:
+: 36
+
 * Emacs Lisp の基礎
 * バッファ・ファイル
 * ウィンドウ
