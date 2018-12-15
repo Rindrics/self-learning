@@ -773,9 +773,149 @@ git reset --soft HEAD~
 とすると，HEADだけを1つ前のコミットに戻す．
 なので，git diffで変更の差分が見れる．
 **** HEADとインデックスを指定したコミットに戻す --mixed
-
+難しい！！！
+軽く地獄を見た．
+checkoutで任意のコミットに移動．
+ファイルの状態が問題ないのを確認．
+しかし自分はHEADにいるが，originがついてこない．
+reflogで戻したいコミットを見つけ，rebaseして事なきを得た．
 *** ワーキングツリーを掃除する/git clean
+リポジトリで管理されていないファイル，ビルドで生成するファイルなどを削除する．
+**** 削除されるファイルを確認する -n, --dry-run
+#+BEGIN_SRC sh :results output
+#git status
+git clean -n
+#+END_SRC
+
+#+RESULTS:
+: Would remove .#version_management_by_git.org
+: Would remove test.txt
+**** 実際にファイルを削除する -f, --force
+-fを付けないと，削除されない．
+#+BEGIN_SRC sh :results output
+git clean
+# git clean -f
+#+END_SRC
+
+#+RESULTS:
+**** ディレクトリを削除する -d
+git clean -fdで実行．
+**** オプションなしで削除できるようにするには
+一応，git configコマンドや設定ファイルから設定できる．
+clean.requireForceをfalseにするとオプションがいらなくなる．危険だけど．
+**** .gitignoreファイルとの関係
+.gitignoreで無視しているファイルは，gitコマンドを全てスルーするので，git cleanコマンドもスルーされ，消去できない．
+これらを消したいときには，-xオプション．
+gitignore の内容を参照しないので，git cleanが通るようになる．
 *** 特定の文字列を検索する/git grep
+**** 普通に使う
+#+BEGIN_SRC sh :results output
+git grep ignore
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+version_management_by_git.org:|            | excludesfile  | =         | /Users/ahayashi/.gitignore_global                         |                |          |              |
+version_management_by_git.org:.gitignore
+version_management_by_git.org:- .gitignore
+version_management_by_git.org:**** .gitignoreファイルとの関係
+version_management_by_git.org:.gitignoreで無視しているファイルは，gitコマンドを全てスルーするので，git cleanコマンドもスルーされ，消去できない．
+version_management_by_git.org:gitignore の内容を参照しないので，git cleanが通るようになる．
+version_management_by_git.org:git grep 'ignore'
+version_management_by_git.org:git grep --cached ignore
+version_management_by_git.org:git grep --no-index ignore
+version_management_by_git.org:*** リポジトリで管理するファイルを設定する/.gitignoreファイル
+#+end_example
+**** インデックスのみを対象に検索する --cached
+#+BEGIN_SRC sh :results output
+git grep --cached ignore
+#+END_SRC
+
+#+RESULTS:
+: version_management_by_git.org:|            | excludesfile  | =         | /Users/ahayashi/.gitignore_global                         |                |          |              |
+: version_management_by_git.org:.gitignore
+: version_management_by_git.org:- .gitignore
+: version_management_by_git.org:*** リポジトリで管理するファイルを設定する/.gitignoreファイル
+
+**** インデックスに登録されていないファイルも対象に検索する --no-index
+#+BEGIN_SRC sh :results output
+git grep --no-index ignore
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+version_management_by_git.org:|            | excludesfile  | =         | /Users/ahayashi/.gitignore_global                         |                |          |              |
+version_management_by_git.org:.gitignore
+version_management_by_git.org:- .gitignore
+version_management_by_git.org:**** .gitignoreファイルとの関係
+version_management_by_git.org:.gitignoreで無視しているファイルは，gitコマンドを全てスルーするので，git cleanコマンドもスルーされ，消去できない．
+version_management_by_git.org:gitignore の内容を参照しないので，git cleanが通るようになる．
+version_management_by_git.org:git grep 'ignore'
+version_management_by_git.org:git grep --cached ignore
+version_management_by_git.org:git grep --no-index ignore
+version_management_by_git.org:*** リポジトリで管理するファイルを設定する/.gitignoreファイル
+#+end_example
+
+**** 正規表現を使う -e
+#+BEGIN_SRC sh :results output
+git grep -e \.gitignore
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+version_management_by_git.org:|            | excludesfile  | =         | /Users/ahayashi/.gitignore_global                         |                |          |              |
+version_management_by_git.org:.gitignore
+version_management_by_git.org:- .gitignore
+version_management_by_git.org:**** .gitignoreファイルとの関係
+version_management_by_git.org:.gitignoreで無視しているファイルは，gitコマンドを全てスルーするので，git cleanコマンドもスルーされ，消去できない．
+version_management_by_git.org:version_management_by_git.org:|            | excludesfile  | =         | /Users/ahayashi/.gitignore_global                         |                |          |              |
+version_management_by_git.org:version_management_by_git.org:.gitignore
+version_management_by_git.org:version_management_by_git.org:- .gitignore
+version_management_by_git.org:version_management_by_git.org:**** .gitignoreファイルとの関係
+version_management_by_git.org:version_management_by_git.org:.gitignoreで無視しているファイルは，gitコマンドを全てスルーするので，git cleanコマンドもスルーされ，消去できない．
+version_management_by_git.org:version_management_by_git.org:gitignore の内容を参照しないので，git cleanが通るようになる．
+version_management_by_git.org:version_management_by_git.org:*** リポジトリで管理するファイルを設定する/.gitignoreファイル
+version_management_by_git.org:: version_management_by_git.org:|            | excludesfile  | =         | /Users/ahayashi/.gitignore_global                         |                |          |              |
+version_management_by_git.org:: version_management_by_git.org:.gitignore
+version_management_by_git.org:: version_management_by_git.org:- .gitignore
+version_management_by_git.org:: version_management_by_git.org:*** リポジトリで管理するファイルを設定する/.gitignoreファイル
+version_management_by_git.org:version_management_by_git.org:|            | excludesfile  | =         | /Users/ahayashi/.gitignore_global                         |                |          |              |
+version_management_by_git.org:version_management_by_git.org:.gitignore
+version_management_by_git.org:version_management_by_git.org:- .gitignore
+version_management_by_git.org:version_management_by_git.org:**** .gitignoreファイルとの関係
+version_management_by_git.org:version_management_by_git.org:.gitignoreで無視しているファイルは，gitコマンドを全てスルーするので，git cleanコマンドもスルーされ，消去できない．
+version_management_by_git.org:version_management_by_git.org:gitignore の内容を参照しないので，git cleanが通るようになる．
+version_management_by_git.org:version_management_by_git.org:*** リポジトリで管理するファイルを設定する/.gitignoreファイル
+version_management_by_git.org:*** リポジトリで管理するファイルを設定する/.gitignoreファイル
+#+end_example
+
+**** 利用する正規表現の文法を指定する
+***** POSIX規格 -G
+こっちがデフォルト．
+***** 拡張正規表現 -E
+git configにて，grep.extendedRegexpをtrueにするとデフォルトにできる．
+***** 正規表現のパターンをファイルで指定する -f
+****** パターンファイルを作る
+#+BEGIN_SRC sh
+echo ^gitignore > pattern.lst
+cat pattern.lst
+#+END_SRC
+
+#+RESULTS:
+****** パターンファイルを使って検索する
+no such file or directoryとなってできなかった．
+なぜだろう．
+#+BEGIN_SRC sh
+git grep -f pattern.lst
+#+END_SRC
+
+#+RESULTS:
+****** 正規表現の論理演算 --[and/or/not]
+-eとシングルクオートを忘れないように．
+- and: git grep -e '^A' --and -e 'B$'
+- or: git grep -e '^A' --or -e 'B$'
+- not: git grep -e '^A' --not -e 'B$'
+****** 大文字小文字を区別しない -i
 *** リポジトリで管理するファイルを設定する/.gitignoreファイル
 *** コミット内容を表示する/git show
 ** 複数人のプロジェクトでGitを利用する
