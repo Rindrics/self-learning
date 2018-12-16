@@ -56,35 +56,97 @@ Haskell は Lisp 方言ではないが，パラダイムを共有している
 ** はじめてのLisp プログラム
 *** 数当てゲーム
 *** Lisp でグローバル変数を定義する
-早速 defparameter が動かない
-**** defparameter 関数を定義する
-Elisp でグローバル変数を定義する特別な関数はあるだろうか？
-#+BEGIN_SRC sh
-pwd
+**** defparameter は値を上書きする
+#+BEGIN_SRC lisp
+(defparameter *foo* 5)
+(defparameter *foo* 200)
+*foo*
 #+END_SRC
 
 #+RESULTS:
-: /Users/ahayashi/Documents/GitHub/books
+: 200
+
+[[/Users/ahayashi/Documents/GitHub/study/Programing/land_of_lisp/code/guess.lisp][コード]]
+
+
+
 ***** TODO 文字列を変数として定義する方法を調べる
 ***** TODO 耳あて**つきの変数を定義する方法を調べる
-**** 使ってみる
-#+BEGIN_SRC elisp
-;(defparameter foo 2)
-(setq foo 3)
+**** defvar は値を上書きしない
+#+BEGIN_SRC lisp
+  (defvar *bar* 5)
+  (defvar *bar* 200)
+   *bar*
 #+END_SRC
 
 #+RESULTS:
-: 3
-**** defparameter と defvar の違い
-defvar はもとの値を上書きしない．
-elisp でも同様．
-#+BEGIN_SRC elisp
-(setq x 5)
-(defvar x 3)
+: 5
+*** 基本的な Lisp のエチケット
+括弧が必須．
+実は空白やインデントは全然関係ない．
+しかしスタイルの慣習は存在する．
+本書では，スタイルについてはとやかく言わない．
+*** グローバル関数を定義する
+**** guess-my-number 関数の定義
+探索範囲の下限と上限をそれぞれ*small* と *big*とした関数を作る．
+#+BEGIN_SRC lisp
+  (defparameter *small* 1)
+  (defparameter *big* 100)
+  (defun guess-my-number ()               ;引数なし
+       (ash (+ *small* *big*) -1))
 #+END_SRC
 
 #+RESULTS:
-: x
+: GUESS-MY-NUMBER
+***** ash 関数とは？
+ビット演算によく使われる関数．
+
+- 1を足す: 左に1つ動かす，つまり 2倍
+- 1を引く: 右に1つ動かす，つまり 1/2 倍
+***** ここでは ash で何をしている？
+数当てするためにバイナリサーチをやっている！！！
+***** 関数を使ってみる
+#+BEGIN_SRC lisp
+(guess-my-number)
+#+END_SRC
+
+#+RESULTS:
+: 50
+下限1，上限100の中間，50 が返っている．
+表示までしてしまうのは lisp の仕様．
+**** smaller と bigger 関数の定義
+#+BEGIN_SRC lisp
+(defun smaller ()
+     (setf *big* (1- (guess-my-number)))
+     (guess-my-number))
+
+(defun bigger ()
+     (setf *small* (1+ (guess-my-number)))
+     (guess-my-number))
+#+END_SRC
+
+#+RESULTS:
+: BIGGER
+どちらも，最後に(guess-my-number)を呼び，新しい条件で答えを再推定している．
+***** 使ってみる
+#+BEGIN_SRC lisp
+(guess-my-number)
+#+END_SRC
+
+#+RESULTS:
+: 100
+値が増えたまま，戻らなくなってしまった
+**** start-over 関数の定義
+#+BEGIN_SRC lisp
+(defun start-over ()
+   (defparameter *small* 1)
+   (defparameter *big* 100)
+   (guess-my-number))
+#+END_SRC
+
+#+RESULTS:
+: START-OVER
+初期の値にリセットしている
 
 ** Lisp の構文の世界を探検する
 * LISP は対称なり
