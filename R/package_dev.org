@@ -37,7 +37,13 @@ Xcode または Command-Line Tools for Xcode
 - 最後に r を追加する
 *** パッケージを作成する
 以下を実行
-devtools::create("path/to/package/pkgname")
+#+BEGIN_SRC R
+devtools::create("mytestpkg")
+#+END_SRC
+
+#+RESULTS:
+: TRUE
+
 
 以下が生成
 - R/: [[*R%E3%82%B3%E3%83%BC%E3%83%89][第3章 Rコード]]で説明
@@ -85,6 +91,25 @@ library() はパッケージが見つからないときエラーを返す．
 ディレクトリR/
 *** Rコードのワークフロー
 パッケージを使う利点の一番は，devtools::load_all() でコードを一括リロードできること．
+やってみよう
+**** コードを作る
+#+BEGIN_SRC sh
+echo 'greet <- function(name) {print(paste0("hello, ", name, "!"))}' > mytestpkg/R/hello.R
+cat mytestpkg/R/hello.R
+#+END_SRC
+
+#+RESULTS:
+| greet <- function(name) {print(paste0("hello | , name, !"))} |
+**** リロードする
+#+BEGIN_SRC R
+devtools::load_all("mytestpkg")
+library(mytestpkg)
+greet("akira")
+#+END_SRC
+
+#+RESULTS:
+: hello, akira!
+
 *** 関数をまとめる
 要件
 - 全ての関数を1つのファイルにしてはいけない
@@ -146,13 +171,16 @@ what ではなく，why を書くように心がける．
 ASCII文字だけを使うこと．
 Unicode も使えるが，エスケープが必要になる．
 ** パッケージのメタデータ
-DESCRIPTIONが説明すること
+file:mytestpkg/DESCRIPTION が説明すること
 - 作成したパッケージが何を解決するのか
 - 誰がパッケージを使えるのか
 - 不具合発見時の連絡先
+*** 必要最小限の DESCRIPTION を自動的に生成する
+#+BEGIN_SRC R
+devtools::create("mytestpkg")
+#+END_SRC
 
-devtools::create("mypackage")
-とすると，必要最小限の DESCRIPTION が自動的に生成する．
+#+RESULTS:
 **** たくさんのパッケージを書くなら
 以下をグローバルに設定可能．
 - devtools.desc.author
@@ -164,6 +192,11 @@ Debian 制御書式（DCF）
 フィールド名: 値
 インデントはスペース4つ．タブは不可．
 *** 依存関係: バッケージには何が必要か
+#+BEGIN_SRC R
+  devtools::use_package("beepr", "imports", "mytestpkg")
+#+END_SRC
+
+#+RESULTS:
 devtools::use_package()とすると，自動的に Imports を DESCRIPTION に追加できる．
 Suggests を追加したければ
 devtools::use_package("package", "Suggests")．
