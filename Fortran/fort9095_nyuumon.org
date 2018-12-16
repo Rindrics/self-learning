@@ -25,8 +25,11 @@
       enddo
       write(*, *) 'wa = ', wa
   end program loop
-
 #+END_SRC
+
+#+RESULTS:
+: wa =         5050
+
 * 配列を用いるプログラミング
 * モジュール副プログラム
 * 外部副プログラム
