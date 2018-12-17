@@ -2168,6 +2168,89 @@ grep -rl hello . | cat
 #+end_example
 
 ** TODO 単語や文字の数え上げ
+
+*** 文字数を数える wc
+**** 基本的な出力
+行数，単語数，バイト数
+#+BEGIN_SRC sh
+echo This is a pen | wc
+#+END_SRC
+
+#+RESULTS:
+: 1       4      14
+
+**** -m オプションで，現在のロケールに合わせてカウントする
+#+BEGIN_SRC sh
+cat mistery.txt
+cat mistery.txt | wc -m
+#+END_SRC
+
+#+RESULTS:
+| 朝目覚めると，                               |
+| 私は全身を繭で覆われた蛹になっていたのです． |
+| 私は大変困ってしまいました．                 |
+| 「会社に休みの連絡ができない」               |
+| 178                                          |
+
+**** ロケールを変更して再カウント
+#+BEGIN_SRC sh
+echo $LANG
+cat mistery.txt | LANG=ja_JP.UTF-8 wc -m
+#+END_SRC
+
+#+RESULTS:
+| en_JP.UTF-8 |
+|          62 |
+
+**** 改行記号を除外して数える
+#+BEGIN_SRC sh
+cat mistery.txt | wc -m
+cat mistery.txt | tr -d '\n' | wc -m
+#+END_SRC
+
+#+RESULTS:
+| 178 |
+| 174 |
+
+**** sed や awk を使った数え方
+1行目のワンライナーが期待したとおりに動かない．
+
+#+BEGIN_SRC bash
+cat mistery.txt | sed 's/./&\\n/g' | wc -l # 全ての文字に改行文字をくっつけて改行させ，wcに-lオプションをつけて行ごとにカウントさせたい，という意図．
+cat mistery.txt | sed 's/./&\\n/g' | awk 'NF!=0' | wc -l
+cat mistery.txt | awk '{a+=length($0)}END{print a}' #全ての列について長さをカウントし，aに累積的に足していく．足し終わったら，表示する．
+#+END_SRC
+
+#+RESULTS:
+|   4 |
+|   4 |
+| 174 |
+| 174 |
+
+**** grep -o を使う
+ただし，POSIX にはないので注意．
+#+BEGIN_SRC sh
+echo 隣の客はよく柿食う客だ | grep 客
+echo 隣の客はよく柿食う客だ | grep -o 客 # 1行1個で表示
+cat mistery.txt | grep -o . | wc -l
+#+END_SRC
+
+#+RESULTS:
+| 隣の客はよく柿食う客だ |
+| 客                     |
+| 客                     |
+| 174                    |
+
+*** 単語や語句を数える
+
+*** 文字の出現頻度を数える
+
+*** 斎藤さんの数を数える
+** テキストの比較
+
+** 文章の校正
+
+** その他テキストを扱うときの小技
 * ファイルの取扱いとシステムの操作
 * ファイルシステムをデータベースにする
 * 大きなデータを処理する
