@@ -52,7 +52,7 @@ write(ファイル番号, 書式)
 **** implicit none
 宣言していない変数をうっかり使ってしまうとバグの元になるので，必ずこれを書く．
 「エラーは出ないが，なぜか結果がおかしい」という悲劇を防げる．
-**** 演習1.1
+**** 演習 1.1
 リスト 1.2 のプログラムを実行して，コンパイルおよび実行時にどのような結果が得られるかを確かめよ．
 また，このプログラムに implicit none 宣言を加えて，コンパイル時のエラー出力を確認せよ．
 ***** implicit none なし
@@ -85,6 +85,130 @@ write(ファイル番号, 書式)
         write(*, *) 'wa = ', wa
         end program loop_err
 #+END_SRC
+*** 自由形式で見やすいプログラムを書く
+- 行末に & を書くと，次の行は継続行になる．
+- 適切にインデントせよ
+- 基本的に小文字で書け（実はFortran 90/95，FORTRAN では，大文字と小文字の区別は無いけど）
+
+*** 次のステップに移るための準備
+プログラムごとにディレクトリを分けると良い．
+
+**** 演習 1.2
+以下の3つの自然数の累乗の和を表す公式を，実際に計算を行って確かめよ．
+n の範囲は 100 以下の適当な自然数とする．
+
+k が 1 から n　まで変化するとき，
+- k の 1 乗和 = 1/2 * n (n + 1)
+- k の 2 乗和 = 1/6 * n (n + 1)(2n + 1)
+- k の 3 乗和 = 1/4 n^2 (n + 1)^2
+***** 1 乗和
+#+BEGIN_SRC fortran :results output
+  program power1_sum
+        implicit none
+        integer i, n, wa0, wa1
+
+        n = 10
+        wa0 = 0
+        wa1 = 0
+
+        wa1 = n * (n + 1) / 2
+
+        do i = 1, n
+           wa0 = wa0 + i ** 1
+        enddo
+        write(*, *) wa0, ' = ', wa1
+        end program power1_sum
+#+END_SRC
+
+#+RESULTS:
+: 55  =           55
+***** 2 乗和
+#+BEGIN_SRC fortran :results output
+  program power2_sum
+        implicit none
+        integer i, n, wa0, wa1
+
+        n = 100
+        wa0 = 0
+        wa1 = 0
+
+        wa1 = n * (n + 1) * (2 * n + 1) / 6
+
+        do i = 1, n
+           wa0 = wa0 + i ** 2
+        enddo
+        write(*, *) wa0, ' = ', wa1
+        end program power2_sum
+#+END_SRC
+
+#+RESULTS:
+: 338350  =       338350
+***** 3 乗和
+#+BEGIN_SRC fortran :results output
+  program power3_sum
+        implicit none
+        integer i, n, wa0, wa1
+
+        n = 10
+        wa0 = 0
+        wa1 = 0
+
+        wa1 = n ** 2 *  (n + 1) ** 2 / 4
+
+        do i = 1, n
+           wa0 = wa0 + i ** 3
+        enddo
+        write(*, *) wa0, ' = ', wa1
+        end program power3_sum
+#+END_SRC
+
+#+RESULTS:
+: 3025  =         3025
+
+**** 演習 1.3
+a_n = a_(n-1) + a_(n-2) (n >= 3) という関係で定められる関係を考える（フィボナッチ数列）．
+a_1 = 1, a_2 = 2 のとき，この数列の a_1 から a_10 までの値を出力するプログラムを do ループを用いて作成せよ．
+#+BEGIN_SRC fortran :results output
+  program fibonacci
+        implicit none
+        integer i, n, a1, a2, a_n, a_n1, a_n2, temp
+
+        a1 = 1
+        a2 = 2
+        temp = 0
+
+        n = 10
+
+        a_n2 = a1
+        a_n1 = a2
+
+        do i = 3, n
+           a_n = a_n1 + a_n2
+
+           temp = a_n1
+           a_n1 = a_n
+           a_n2 = temp
+
+           write(*, *) a_n
+        enddo
+
+        end program fibonacci
+#+END_SRC
+
+#+RESULTS:
+: 3
+:  5
+:  8
+: 13
+: 21
+: 34
+: 55
+: 89
+
+*** if 文と stop 文
+*** 無限ループ
+*** do ループの始値・終値とストライド（増分値）
+*** exit, cycle, goto 文
 * 配列を用いるプログラミング
 * モジュール副プログラム
 * 外部副プログラム
