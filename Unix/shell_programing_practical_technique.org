@@ -2035,9 +2035,139 @@ find . -type f | grep '\.org$' | xargs grep 'Finder'
 : ./Unix_for_OSX.org:ターミナルを仕えは，Finderより多くの情報を得られる．
 : ./Unix_for_OSX.org:|     8 | com.apple.preferences.extensions.FinderSync.plist                          |               |        |             |       |      |          |
 
-*** 検索対象の前後の行を出力する
+*** 検索対象の前後の行を出力する -A, -B, -C
+-A は After，-B は Before，と覚えようか．
+-C はダジャレ？
+
+**** ファイルを作る
+#+BEGIN_SRC sh
+echo hello \\n world \\n and Japan > greet
+cat greet
+#+END_SRC
+
+#+RESULTS:
+| hello |       |
+| world |       |
+| and   | Japan |
+
+**** 使ってみる
+#+BEGIN_SRC sh :results output
+grep world greet
+echo -------------------
+grep world greet -A 1
+echo -------------------
+grep world greet -B 1
+echo -------------------
+grep world greet -C 1
+
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+ world 
+-------------------
+ world 
+ and Japan
+-------------------
+hello 
+ world 
+-------------------
+hello 
+ world 
+ and Japan
+#+end_example
+
 *** 検索語句を含むファイルのリストを作る
-** 単語や文字の数え上げ
+欲しいのは行ではなく，ファイル名．
+
+**** ファイルを作る
+#+BEGIN_SRC sh
+for n in $(seq 1 10); do echo hello > greet$n; done
+#+END_SRC
+
+#+RESULTS:
+| #shell_programing_practical_technique.org# |
+| Unix_for_OSX.org                           |
+| Unix_for_OSX.org~                          |
+| ans                                        |
+| data                                       |
+| dir                                        |
+| error                                      |
+| file1                                      |
+| file1.backup                               |
+| file2                                      |
+| file2.backup                               |
+| file3                                      |
+| file3.backup                               |
+| file4                                      |
+| greet                                      |
+| greet1                                     |
+| greet10                                    |
+| greet2                                     |
+| greet3                                     |
+| greet4                                     |
+| greet5                                     |
+| greet6                                     |
+| greet7                                     |
+| greet8                                     |
+| greet9                                     |
+| hoge                                       |
+| hoge.bash                                  |
+| if.bash                                    |
+| mistery.txt                                |
+| read.bash                                  |
+| shell_programing_practical_technique.html~ |
+| shell_programing_practical_technique.org   |
+| shell_programing_practical_technique.org~  |
+| test.docx                                  |
+| tmpfile.bash                               |
+| zipcode                                    |
+
+**** 検索する
+#+BEGIN_SRC sh :results output
+grep -r hello . | sed 's/:.*//' | uniq
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+./greet
+./#shell_programing_practical_technique.org#
+./greet5
+./greet2
+./greet3
+./greet4
+./greet10
+./shell_programing_practical_technique.org
+./greet1
+./greet6
+./greet8
+./greet9
+./greet7
+#+end_example
+
+**** 一応，-l オプションでもできる（実力がつかないので非推奨）
+#+BEGIN_SRC sh :results output
+grep -rl hello . | cat
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+./greet
+./#shell_programing_practical_technique.org#
+./greet5
+./greet2
+./greet3
+./greet4
+./greet10
+./shell_programing_practical_technique.org
+./greet1
+./greet6
+./greet8
+./greet9
+./greet7
+#+end_example
+
+** TODO 単語や文字の数え上げ
 * ファイルの取扱いとシステムの操作
 * ファイルシステムをデータベースにする
 * 大きなデータを処理する
