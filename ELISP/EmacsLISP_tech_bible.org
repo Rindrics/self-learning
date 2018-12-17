@@ -189,6 +189,68 @@ emacs 25 の整数範囲はどうなってるんだろう
 
 #+END_SRC
 ** 文字列
+*** 文字列の例
+#+BEGIN_SRC elisp
+  "abc"                                   ; => "abc"
+
+  "
+  first
+  second"                                 ; => "\nfirst\nsecond"
+
+  ;;; ヒアドキュメントもどき．上の出力と比べよ．
+  "\
+  first
+  second"                                 ; => "first\nsecond"
+
+#+END_SRC
+*** バックスラッシュ記法
+特殊な文字を表現するために使う．
+例えば，\t はタブ記号．
+
+その他は (info "(elisp)CharacterType") を評価せよ．
+
+Meta の評価結果が直感に反する．
+#+BEGIN_SRC elisp
+  "Ctrl-A = \C-a"                         ; => "Ctrl-A = "
+  "Meta-x = \M-x"                         ; => "Meta-x = \370"
+  "newline\n"                             ; => "newline\n"
+  "double-quote = \""                     ; => "double-quote = \""
+  "backslash = \\"                        ; => "backslash = \\"
+#+END_SRC
+
+*** 文字
+文字そのものの実態は整数．
+#+BEGIN_SRC elisp
+  ?a                                      ; => 97
+
+  ;;; ヌル文字
+  ?\0                                     ; => 0
+
+  ?\C-a                                   ; => 1
+
+  ?あ                                     ; => 12354
+  ?\x3042                                 ; => 12354
+  "?\x3042"                               ; => "?あ"
+
+#+END_SRC
+*** 書式文字列
+#+BEGIN_SRC elisp
+  (format "%s" "foo")                     ; => "foo"
+
+  ;;; 整数は %s または%d
+  (format "%s" 1)                         ; => "1"
+
+  ;;; 右寄せ，左寄せ，0詰め
+  (format "[%2d] [%-2d] [%02d]" 3 3 3)    ; => "[ 3] [3 ] [03]"
+
+  ;;; %c は文字を文字列に変換する
+  (format "文字から文字列へ: %c" ?a)      ; => "文字から文字列へ: a"
+
+  ;;; %% は % そのものを表す
+  (format "%d 円の商品の消費税は，
+  税率 %d%% で %d 円です．" 500 8 (* 500 0.08)) ; => "500 円の商品の消費税は，\n税率 8% で 40 円です．"
+#+END_SRC
+
 * Emacs Lisp の基礎
 * バッファ・ファイル
 * ウィンドウ
