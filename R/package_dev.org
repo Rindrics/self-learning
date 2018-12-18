@@ -1015,8 +1015,112 @@ NAMESPACE ファイルは，自分のパッケージにおいて，
 - どの関数が他のパッケージに依存しているか
 を定義する．
 roxygen2 を使って生成する．
+
+苦労の割にメリットが少なく感じるかもしれないが，そんなことはない．
+よく設計すれば，パッケージをうまくカプセル化し，自己完結性を向上させられる．
+*** 動機付け
+summarize()は，plyrにも，Hmiscにもある．
+こんなとき，::をつかったことあるだろ．
+関数名は，パッケージのロード順に上書きされる．
+::を使えば，依存がなくなる．
+**** パッケージの自己完結性を高めるために
+インポートとエクスポートを使う．
+***** インポート
+nrow関数の中身
+: function (x)
+: dim(x)[1L]
+: <bytecode: 0x7f8576310720>
+: <environment: namespace:base>
+
+nrow() は dim() を使って書かれていることがわかる．
+では，dim()を書き換えてしまうと，nrow()は動かなくなってしまうのか？
+
+そんなことはない．
+base の名前空間のdim()を使っているから．
+***** エクスポート
+外部に公開する関数だけ，エクスポートする．
+衝突の可能性を減らすため，必要最小限の関数だけエクスポートしたくなるはず．
+
+*** 検索パス
+アタッチしている全てのパッケージのリスト．
+#+BEGIN_SRC R
+search()
+#+END_SRC
+
+#+RESULTS:
+| .GlobalEnv        |
+| package:stats     |
+| package:graphics  |
+| package:grDevices |
+| package:utils     |
+| package:datasets  |
+| package:formatR   |
+| package:beepr     |
+| MacJapanEnv       |
+| package:methods   |
+| Autoloads         |
+| package:base      |
+
+**** ロードとアタッチは別物
+library()とrequire()がやっているのはアタッチ．
+
+インストール済みのパッケージをロードすると（どうやって？），
+- コード，データ，DLLがロードされる
+- S3 と S4 のメソッドが登録される
+- onLoad() 関数が実行される
+
+
+***** アタッチしないときはエラー
+#+BEGIN_SRC R
+old <- search()
+testthat::expect_equal(1, 1)
+setdiff(search(), old)
+expect_true(TRUE)
+#+END_SRC
+
+#+RESULTS:
+
+***** アタッチすれば通る
+#+BEGIN_SRC R
+library(testthat)
+old <- search()
+testthat::expect_equal(1, 1)
+setdiff(search(), old)
+expect_true(TRUE)
+#+END_SRC
+
+#+RESULTS:
+: TRUE
+
+***** ロード，アタッチ関数の挙動の違い
+| 実行内容                              | 動作     | パッケージがないとき | 使い所               |
+|---------------------------------------+----------+----------------------+----------------------|
+| loadNamespace("x")                    | ロード   | エラー発生           | ない                 |
+| requireNamespace("x", quietly = TRUE) | ロード   | FALSEを返す          | *パッケージ内部*     |
+| library(x)                            | アタッチ | エラー発生           | データ分析スクリプト |
+| require(x, quietly = TRUE)            | アタッチ | FALSEを返す          | ない                 |
+
+パッケージ内部では，アタッチは絶対にしてはいけない！
+つまり，require() と library() は絶対だめ．
+DESCRIPTION の Depends や Imports を使おう．
+
+***** Depends と Imports はどう違うか
+- Imports: ロードだけ
+- Depends: ロードとアタッチをする
+基本的に，Imports にしとけ．
+他のパッケージと組み合わせて使うことを前提に設計する場合のみ，Depends にする．
+*** 名前空間
+*** ワークフロー
+*** エクスポート
+**** S3
+**** S4
+**** RC
+**** データ
 *** インポート
-*** S4
+**** R関数
+**** S3
+**** S4
+**** コンパイル済みの関数
 ** 外部データ
 data/を使えば，パッケージ内にデータを含められる．
 - ユーザが簡単にデータにアクセスするため
