@@ -646,6 +646,141 @@ AIの性能をけっこう上げたので，もっとゲーム盤を大きくす
 - アルファベータ法を使うと，手の評価に影響を与えない枝を刈ることで，AI が考慮すべき状態数を大きく減らし，さらに性能を向上させることができる．
 まるで，棋士の脳みたい．
 ** ダイス・オブ・ドゥームにグラフィカルな Web インターフェースをつける
+- 見やすく
+- 手の指示を出しやすく
+*** ゲーム盤を SVG フォーマットで描画する
+[[*Web%E3%82%B5%E3%83%BC%E3%83%90%E3%82%92%E4%BD%9C%E3%82%8D%E3%81%86%EF%BC%81%EF%BC%81][Web サーバはもう作った]]し，[[*%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E7%89%B9%E5%8C%96%E8%A8%80%E8%AA%9E][DSL で SVG グラフィクスも書いた]]．
+***** 必要なファイルをロードする
+#+BEGIN_SRC lisp
+  (load "dice_of_doom_v2.lisp")
+  (load "webserver.lisp")
+  (load "svg.lisp")
+#+END_SRC
+
+#+RESULTS:
+: T
+***** ゲーム盤の各部の大きさを決める定数を定義する
+#+BEGIN_SRC lisp
+  (defparameter *board-width* 900)
+  (defparameter *board-height* 500)
+  (defparameter *board-scale* 64)
+  (defparameter *top-offset* 3)
+  (defparameter *dice-scale* 40)
+  (defparameter *dot-size* 0.05)
+#+END_SRC
+
+#+RESULTS:
+: *DOT-SIZE*
+**** サイコロを描く draw-die-svg
+***** 関数を定義する
+draw-die-svg(x座標，y座標，色)
+#+BEGIN_SRC lisp
+  (defun draw-die-svg (x y col)
+    (labels ((calc-pt (pt)
+               (cons (+ x (* *dice-scale* (car pt)))
+                     (+ y (* *dice-scale* (cdr pt)))))
+             (f (pol col)
+               (polygon (mapcar #'calc-pt pol) col)))
+    (f '((0 . -1) (-0.6 . -0.75) (0 . -0.5) (0.6 . -0.75))
+       (brightness col 40))
+    (f '((0 . -0.5) (-0.6 . -0.75) (-0.6 . 0) (0 . 0.25))
+       col)
+    (f '((0 . -0.5) (0.6 . -0.75) (0.6 . 0) (0 . 0.25))
+       (brightness col -40))
+    (mapc (lambda (x y)
+            (polygon (mapcar (lambda (xx yy)
+                               (calc-pt (cons (+ x (* xx *dot-size*))
+                                              (+ y (* yy *dot-size*)))))
+                             '(-1 -1 1 1)
+                             '(-1 1 1 -1))
+                     '(255 255 255)))
+          '(-0.05 0.125 0.3 -0.3 -0.125 0.05 0.2 0.2 0.45 0.45 -0.45 -0.2)
+          '(-0.875 -0.80 -0.725 -0.775 -0.70 -0.625
+            -0.35 -0.05 -0.45 -0.15 -0.45 -0.05))))
+#+END_SRC
+
+#+RESULTS:
+: DRAW-DIE-SVG
+***** 描いてみる
+#+BEGIN_SRC lisp
+  (svg 100 100 (draw-die-svg 50 50 '(255 0 0)))
+#+END_SRC
+
+#+RESULTS:
+: #\>
+**** マスを描く draw-tile-svg
+***** 関数を定義する
+#+BEGIN_SRC lisp
+  (defun draw-tile-svg (x y pos hex xx yy col chosen-tile)
+    (loop for z below 2
+          do (polygon (mapcar (lambda (pt)
+                                (cons (+ xx (* *board-scale* (car pt)))
+                                      (+ yy (* *board-scale*
+                                               (+ (cdr pt) (* (- 1 z) 0.1))))))
+                              '((-1 . -0.2) (0 . -0.5) (1 . -0.2)
+                                (1 . 0.2) (0 . 0.5) (-1 . 0.2)))
+                      (if (eql pos chosen-tile)
+                          (brightness col 100)
+                          col)))
+    (loop for z below (second hex)
+          do (draw-die-svg (+ xx
+                              (* *dice-scale*
+                                 0.3
+                                 (if (oddp (+ x y z))
+                                     -0.3
+                                     0.3)))
+                           (- yy (* *dice-scale* z 0.8)) col)))
+#+END_SRC
+
+#+RESULTS:
+: DRAW-TILE-SVG
+***** 描いてみる
+#+BEGIN_SRC lisp
+  (svg 300 300 (draw-tile-svg 0 0 0 '(0 3) 100 150 '(255 0 0) nil))
+#+END_SRC
+
+#+RESULTS:
+: #\>
+**** ゲーム盤を描く draw-board-svg
+***** 関数を定義する
+#+BEGIN_SRC lisp
+  (defparameter *die-colors* '((255 63 63) (63 63 255)))
+
+  (defun draw-board-svg (board chosen-tile legal-tiles)
+    (loop for y below *board-size*
+          do (loop for x below *board-size*
+                   for pos = (+ x (* *board-size* y))
+                   for hex = (aref board pos)
+                   for xx = (* *board-scale* (+ (* 2 x) (- *board-size* y)))
+                   for yy = (* *board-scale* (+ (* y 0.7) *top-offset*))
+                   for col = (brightness (nth (first hex) *die-colors*)
+                                         (* -15 (- *board-size* y)))
+                   do (if (or (member pos legal-tiles) (eql pos chosen-tile))
+                          (tag g ()
+                            (tag a ("xlink:href" (make-game-link pos))
+                              (draw-tile-svg x y pos hex xx yy col shosen-tile)))
+                          (draw-tile-svg x y pos hex xx yy col chosen-tile)))))
+  (defun make-game-link (pos)
+    (format nil "=game.html?chosen=~a" pos))
+#+END_SRC
+
+#+RESULTS:
+: MAKE-GAME-LINK
+
+***** 描いてみる
+#+BEGIN_SRC lisp
+  (svg *board-width* *board-height* (draw-board-svg (gen-board) nil nil))
+#+END_SRC
+*** Web サーバインターフェースを作る
+**** リクエストハンドラの作成
+**** このゲーム Web サーバの制限
+**** ゲームを初期化する
+**** 勝者を表示する
+**** 人間のプレーヤの処理
+**** コンピュータプレーヤを処理する
+**** HTML の中に SVG ゲーム盤を描く
+*** ダイス・オブ・ドゥーム，バージョン 3 をプレーする
+*** 本章で学んだこと
 ** ダイス・オブ・ドゥームをさらに面白く
 * エピローグ
 * 索引で調べた関数
