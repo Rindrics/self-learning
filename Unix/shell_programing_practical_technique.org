@@ -120,6 +120,7 @@ grep grep *org
 ファイル名とマッチした行ではなく，ファイル名のリストだったとき，どうするか？
 実際には，grepのオプションに-lをつければ済む．
 しかし，sedとuniqをパイプで繋げば以下のように実現できる．
+（本題からははずれるが，uniq を使う時は，事前にsortしておくこと cf. [[*%E6%96%8E%E8%97%A4%E3%81%95%E3%82%93%EF%BC%88%E5%90%8C%E9%9F%B3%E7%95%B0%E5%AD%97%EF%BC%89%E3%81%AE%E6%95%B0%E3%82%92%E6%95%B0%E3%81%88%E3%82%8B][斎藤さん（同音異字）の数を数える]]）．
 
 #+BEGIN_SRC sh
 grep grep *org | sed 's/:..*$//' | uniq
@@ -2167,8 +2168,7 @@ grep -rl hello . | cat
 ./greet7
 #+end_example
 
-** TODO 単語や文字の数え上げ
-
+** 単語や文字の数え上げ
 *** 文字数を数える wc
 **** 基本的な出力
 行数，単語数，バイト数
@@ -2242,14 +2242,178 @@ cat mistery.txt | grep -o . | wc -l
 | 174                    |
 
 *** 単語や語句を数える
+**** grep で抽出，uniq -c で数える
+#+BEGIN_SRC sh :results output
+cat mistery.txt
+echo '----------------------------grep -o'
+cat mistery.txt | grep -o 私は
+echo '----------------------------grep -o uniq -c'
+cat mistery.txt | grep -o 私は | uniq -c
+#+END_SRC
 
+#+RESULTS:
+: 朝目覚めると，
+: 私は全身を繭で覆われた蛹になっていたのです．
+: 私は大変困ってしまいました．
+: 「会社に休みの連絡ができない」
+: ----------------------------grep -o
+: 私は
+: 私は
+: ----------------------------grep -o uniq -c
+:    2 私は
+**** grep -o を使いたくないなら sed
+でも自分の環境ではうまくいかない．
+改行がうまくできていない．なんで？
+-> GNU sed の機能だから．
+Mac や BSD にインストールされている，オリジナルの sed にはない．
+Mac ではLcoreutils をインストールすれば，gsed コマンドで GNU sed が使えるらしい．
+#+BEGIN_SRC sh
+  cat mistery.txt | sed 's/私は/\\n&\\n/g' | cat
+#+END_SRC
+
+#+RESULTS:
+| 朝目覚めると，                                   |
+| \n私は\n全身を繭で覆われた蛹になっていたのです． |
+| \n私は\n大変困ってしまいました．                 |
+| 「会社に休みの連絡ができない」                   |
+**** Tsukubai の count を使う
+cat mistery | grep -o '私は' | count 1 1
+
+cout 1 1
+は，1列目から1列目までをきぞ得る対象のキーにする，という意味．
+**** 検索したい単語がたくさんあるとき
+検索したい単語をファイルに書いておき，grepに渡す
+**** 拡張正規表現を使う
+#+BEGIN_SRC sh
+grep -oE '(会社|私は)' mistery.txt
+#+END_SRC
+
+#+RESULTS:
+| 私は |
+| 私は |
+| 会社 |
+**** 英単語を数える
+tr に，スペースを改行に変換させればいいので，比較的簡単．
+ただし，文末の単語などはピリオドがついた別の単語としてカウントされてしまうので，
+記号類は tr -d で除去してから数える．
+cat file | tr ' ' '\n' | tr -d '.;' | sort | count 1 1
+
+大文字小文字を区別したくないときも trを使う．
+cat file | tr ' ' '\n' | tr -d '.;' | tr 'A-Z' 'a-z' | sort | count 1 1
 *** 文字の出現頻度を数える
+まず1文字1行にする．
+cat mistery.txt | sed 's/./&\n/g'
 
-*** 斎藤さんの数を数える
-** テキストの比較
+それをsort して count
+cat mistery.txt | sed 's/./&\n/g' | sort | count 1 1
+
+改行，半角スペース以外で一番使われている文字を調べる．
+cat mistery.txt | sed 's/./&\n/g' | sort | count 1 1 |
+ awk 'NF==2' | # 1列しかないレコード（改行？）を除去
+ sort -k2,2nr | # 下で説明
+ head
+
+sort のオプション
+- k: キーとするフィールド
+- n: 数の大きさでソート
+- r: ソート順を反転して降順に
+つまり，-k2,2nr は，「2列目から2列目をキーとし，n, rオプションを2列目だけに適用する」という意味．
+*** 斎藤さん（同音異字）の数を数える
+データ管理の現場では「名寄せ」と呼ばれる作業．
+形態素解析エンジン MeCab を使う．
+**** インストール
+sudo apt-get install mecab libmecab-dev
+sudo apt-get install mecab-ipadic-utf8
+**** 使う
+echo 私の血にはシェルが混ざっています． | mecab
+
+cat yayakoshi.txt
+斉藤さんが，斎藤さんに，1000円借りたのですが，
+（以下略）
+
+cat yayakoshi.txt | mecab | grep 人名 | grep 固有名詞
+
+あとは読みを取り出して集計するだけ．
+
+ただし， uniq するときは前もって sort しておくこと．
+重複が生じる．
+uniq にはソート機能は入っていない．まさにUNIX哲学．
+でも，実は sort -u で同じことができる．
+
+** TODO テキストの比較
+*** 2つのテキストファイルを比較する
+左を古いファイルにするといい．
+diff old.txt new.txt
+出力
+< old sentence
+---
+> new sentence
+
+*** ディレクトリのファイルを比較する
+ディレクトリをまるごとバックアップしているとき．
+バックアップと，現行のものを比べたいことがある．
+
+**** バックアップと現行，それぞれを見てみる
+> tree backup/ | head
+
+（出力）
+
+> tree current/ | head
+（出力）
+自分の環境にはtree コマンドがない!!!
+**** diff -r を使う
+>diff -r backup/ current/
+
+Common subdirectories: 同一なディレクトリA
+Common subdirectories: 同一なディレクトリB
+（略）
+diff backup/違うディレクトリ current/違うディレクトリ
+**** 差分だけみたいなら -rq
+**** 時間がかかりすぎるなら
+それぞれのディレクトリに入り，ファイルリストを作ってdiff
+cd backup/
+find . > list_backup
+cd current # 相対ディレクトリの場合は適宜変更
+find . > list_current
+diff list_backup list_current
+
+
+それぞれのディレクトリに一度入らないとだめ．
+ディレクトリ名が違うので，リストの全部の行が違う，とされてしまう．
+**** ディレクトリ移動が面倒，あるいは中間ファイルを作るのが面倒なら :目から鱗:
+bash の機能，プロセス置換を使う．
+<( )
+というコマンド．
+
+本来ファイルがあるべきところに，コマンドを書く時に使う．
+diffなら，
+diff fileA fileB
+というふうにつかうので，
+diff <(コマンド) <(コマンド)
+とする．
+
+つまり，
+diff <(cd backup/; find) <(cd current/; find)
+とする．
+
+cd コマンドは()の外に影響を及ぼさないので，ディレクトリがかわってしまうこともない．
+自動化の際に便利．
+**** ファイルの大きさを手がかりとして比較する                   :目から鱗:
+cd backup/
+find . -type f | xargs ls -l | self 5 NF > fsize_backup
+cd current/
+find . -type f | xargs ls -l | self 5 NF > fsize_current
+diff fsize_{backup,currnt} #うまい!!!
+***** 解説
+self 5 NF
+
+self はTsukubaiの列抽出コマンド（awkではだめなのか？）．
+"5" は，ls -l の出力の5列目，ファイルサイズの列を指定している．
+NFは最終列，つまりファイルパス．
+
+*** ファイルが同じだったら/違ったら✕✕する
 
 ** 文章の校正
-
 ** その他テキストを扱うときの小技
 * ファイルの取扱いとシステムの操作
 * ファイルシステムをデータベースにする
