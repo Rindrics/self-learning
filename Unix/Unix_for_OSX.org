@@ -1,4 +1,5 @@
 #+TITLE: Unix for OSX
+#+STARTUP:overview
 #+TAGS: 知らなかった
 * Unixを使う理由
 ** Unixの威力
@@ -1624,13 +1625,103 @@ df -h
 | map          | auto_home | 0Bi   | 0Bi   |      0Bi |    100% |                     0 |      0 | 100%            | /home |
 
 ** ファイルの保護と共有
+*** ファイルのパーミッション（アクセス権）
+*** chmod コマンドによるパーミッション（アクセス権）の設定
+*** グループとオーナーの変更
 ** パスワードの変更
 ** sudoコマンドによる管理者の権限
 ** 外部ボリュームの利用
 * ファイル管理
 * ファイル検索と情報取得
+** 「grep」という変わった名前のコマンド
+** locate コマンドでファイルを検索
+起動したままにしておけば，cronコマンドが定期的にlocete用データベースを更新してくれる．
+
+** find コマンドでファイルシステムを調査
+** Spotlight の輝き
 * 入出力のリダイレクト機能
+** 標準入力と標準出力
+** パイプとフィルタ
+** 印刷
+Bonjour 機構が構築済みであることが前提
+*** Unix 流の印刷方法
+**** lpstat コマンド
+***** 検索可能な全てのプリンタの情報を取得する -a
+#+BEGIN_SRC sh
+lpstat -a
+#+END_SRC
+
+#+RESULTS:
+: EPSON_EP_879A_Series accepting requests since Mon Aug 13 13:00:00 2018
+***** デフォルトのプリンタを確認する -d
+#+BEGIN_SRC sh
+lpstat -d
+#+END_SRC
+
+#+RESULTS:
+: system default destination: EPSON_EP_879A_Series
+***** 詳細なキューを確認する -t
+#+BEGIN_SRC sh :results output
+lpstat -t
+#+END_SRC
+
+#+RESULTS:
+: scheduler is running
+: system default destination: EPSON_EP_879A_Series
+: device for EPSON_EP_879A_Series: dnssd://EPSON%20EP-879A%20Series._ipps._tcp.local./?uuid=cfe92100-67c4-11d4-a45f-9caed3d99a23
+: EPSON_EP_879A_Series accepting requests since Mon Aug 13 13:00:00 2018
+: printer EPSON_EP_879A_Series is idle.  enabled since Mon Aug 13 13:00:00 2018
+
+**** lp コマンド
+印刷してみる．
+ヘッダやフッタ，ページ番号などはない．
+#+BEGIN_SRC sh
+# ls -l | lp
+#+END_SRC
+
+#+RESULTS:
+
+**** pr コマンド
+ウインドウやプリンタへの出力に対してだけ，書式を整形する．
+pr -数 -d -h ヘッダ -f
+上のコマンドは，テキストを「数」段組みにし，ダブルスペースにし（-d），
+各ページの先頭にヘッダを付け，ヘッダと上下のマージンを除去（-f）している．
+
+印刷は，
+pr -2 -h "header" foo.txt | lp
+とするだけ．
+
 * マルチタスク
+
+** バックグラウンドでコマンドを実行 &
+時間のかかる作業などに最適．
+ただし，fish は違うっぽい．
+どうやるんだろう？
+
+最後に & を付ける．
+PID が返ってくる．
+
+ps -fp "PID"
+
+とすれば，状況を確認できる．
+
+kill "PID"
+で終了．
+
+*** 途中からバックグラウンドに切り替える
+Ctrl-zで一時停止し，
+bg
+を押す．
+** 実行中コマンドの確認
+
+** コマンドの実行中止
+
+** GUI を持ったアプリケーションの起動
+
+*** open コマンド
+複数ファイルも一気に開ける．
+一応．
+
 * Unixのネットワーク環境
 * ウインドウシステムとX11
 * 今後
