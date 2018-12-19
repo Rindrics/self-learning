@@ -256,6 +256,115 @@ Webベースのゲームを作るためにここがある．
 文字のデコード方法
 日本語のデコードはやはり特殊（訳注）
 安全のためにはreadでなくinternを使え
+
+**** 本章のコード
+#+BEGIN_SRC lisp
+; This program is free software; you can redistribute it and/or modify
+; it under the terms of the GNU General Public License as published by
+; the Free Software Foundation; version 2 of the License.
+;
+; This program is distributed in the hope that it will be useful,
+; but WITHOUT ANY WARRANTY; without even the implied warranty of
+; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+; GNU General Public License for more details.
+;
+; Partial Author: Conrad Barski, M.D.
+; Parts Adapted with permission from http.lisp by Ron Garret
+
+(defun decode-param (s)
+   (labels ((f (lst)
+               (when lst
+                 (case (car lst)
+                     (#\% (cons (code-char (parse-integer (coerce (list (cadr lst) (caddr lst)) 'string) :radix 16 :junk-allowed t))
+                                (f (cdddr lst))))
+                     (#\+ (cons #\space (f (cdr lst))))
+                     (otherwise (cons (car lst) (f (cdr lst))))))))
+       (coerce (f (coerce s 'list)) 'string)))
+
+(defun parse-params (s)
+   (let* ((i1 (position #\= s))
+          (i2 (position #\& s)))
+      (cond (i1 (cons (cons (intern (string-upcase (subseq s 0 i1)))
+                            (decode-param (subseq s (1+ i1) i2)))
+                      (and i2 (parse-params (subseq s (1+ i2))))))
+            ((equal s "") nil)
+            (t s))))
+
+(defun parse-url (s)
+  (let* ((url (subseq s
+                      (+ 2 (position #\space s))
+                      (position #\space s :from-end t)))
+         (x (position #\? url)))
+     (if x
+         (cons (subseq url 0 x) (parse-params (subseq url (1+ x))))
+         (cons url '()))))
+
+(defun get-header (stream)
+  (let* ((s (read-line stream))
+         (h (let ((i (position #\: s)))
+               (when i
+                     (cons (intern (string-upcase (subseq s 0 i)))
+                           (subseq s (+ i 2)))))))
+     (when h
+        (cons h (get-header stream)))))
+
+(defun get-content-params (stream header)
+  (let ((content (assoc 'content-length header)))
+    (when content
+      (parse-params (read-sequence (make-string (read content)) stream)))))
+
+(defun serve (request-handler)
+  (let ((socket (socket-server 8080)))
+    (unwind-protect
+       (loop (with-open-stream (stream (socket-accept socket))
+                 (let* ((url    (parse-url (read-line stream)))
+                        (path   (car url))
+                        (header (get-header stream))
+                        (params (append (cdr url)
+                                        (get-content-params stream header)))
+                        (*standard-output* stream))
+                   (funcall request-handler path header params))))
+       (socket-server-close socket))))
+
+(defun hello-request-handler (path header params)
+  (if (equal path "greeting")
+      (let ((name (assoc 'name params)))
+        (if (not name)
+            (princ "<form>What is your name?<input name='name' /></form>")
+            (format t "Nice to meet you, ~a!" (cdr name))))
+      (princ "Sorry... I don't know that page.")))
+#+END_SRC
+
+#+RESULTS:
+: HELLO-REQUEST-HANDLER
+**** 使ってみる
+***** 不正なページへリクエストを出してみる
+#+BEGIN_SRC lisp
+(hello-request-handler "lolcats" '() '())
+#+END_SRC
+
+#+RESULTS:
+: Sorry... I don't know that page.
+***** 正しいページへリクエストを出してみる
+#+BEGIN_SRC lisp :results output
+(hello-request-handler "greeting" '() '())
+#+END_SRC
+
+#+RESULTS:
+: <form>What is your name?<input name='name' /></form>
+素晴らしい．
+***** 名前を渡してもう一度
+#+BEGIN_SRC lisp :results output
+(hello-request-handler "greeting" '() '((name . "Bob")))
+#+END_SRC
+
+#+RESULTS:
+: Nice to meet you, Bob!
+**** Web サイトの立ち上げ
+#+BEGIN_SRC lisp
+  (serve #'hello-request-handler)
+#+END_SRC
+流石にEmacsからはむり．iTermからならいけそう．
 ** 美しき哉 関数型プログラミング
 * LISP は科学なり
 ** 関数型プログラミングで Lisp をレベルアップ
@@ -470,7 +579,7 @@ my-lengthを再掲し，冗長なポイントにコメントをつけてみた�
          (format "Split to ~a and ~a." head tail)
          (format "Cannot be split."))
 #+END_SRC
-, 
+,
 #+RESULTS:
 : Split to ~a and ~a.
 split関数は，headとtailという変数を作り出し，これらは関数の外からも参照できる．
@@ -573,7 +682,7 @@ game-actionの引数は，
 - 任意のコード
 
 ゲームのエンディングの分岐も実装できる．
-**** 完成した魔法使いのアドベンチャーゲームをプレーしよう 
+**** 完成した魔法使いのアドベンチャーゲームをプレーしよう
 *** 本章で学んだこと
 LispでDSLをどう作るかを学んだ．
 - 特定の領域で，その領域に特別なやり方でプログラムを書く場合，マクロは非常に良い道具となる．マクロを使えば，自分のDSLが作れる．
@@ -669,7 +778,7 @@ AIが手を読む直前にこれを使えばいい．
 - ab-get-ratings-max
 - ab-get-ratings-min
 で置き換える（2つになってしまったのは[[*1%E3%81%A4%E3%82%81%E3%81%AE%E6%B3%A8%E6%84%8F%E7%82%B9][アルファとベータという名前を使わなかったから]]）．
-****** MAX ノード（AI にとって自分の手番） 
+****** MAX ノード（AI にとって自分の手番）
 ****** MIN ノード（相手の手番）
 ****** 盤面の状態を評価する関数 ab-rate-position
 まず自分の手番か相手の手番かをチェックする．
@@ -824,15 +933,139 @@ draw-die-svg(x座標，y座標，色)
   (svg *board-width* *board-height* (draw-board-svg (gen-board) nil nil))
 #+END_SRC
 *** Web サーバインターフェースを作る
-**** リクエストハンドラの作成
+**** リクエストハンドラの作成 dod-request-handler
+#+BEGIN_SRC lisp
+  (defparameter *cur-game-tree* nil)
+  (defparameter *from-tile* nil)
+
+  (defun dod-request-handler (path header params)
+    (if (equal path "game.html")
+        (progn (princ "<!doctype html>")
+               (tag center ()
+                    (princ "Welcome to DICE OF DOOM!")
+                    (tag br ())
+                    (let ((chosen (assoc 'chosen params)))
+                      (when (or (not *cur-game-tree*) (not chosen)) ;ニューゲーム（ゲーム木が空||マスが選択されていない）なら
+                        (setf chosen nil)
+                        (web-initialize))
+                      (cond ((lazy-null (caddr *cur-game-tree*)) ;ゲームが終了してるよね？（可能な手はないよね？）
+                             (web-announce-winner (cadr *cur-game-tree*))) ;勝者をアナウンス
+                            ((zerop (car *cur-game-tree*)) ; プレーヤ番号は0（人間）だよね？
+                             (web-handle-human
+                              (when chosen
+                                (read-from-string (cdr chosen))))) ; ここに脆弱性あり
+                            (t (web-handle-computer)))) 　;　コンピュータの手番
+                    (tag br ())
+                    (draw-dod-page *cur-game-tree* *from-tile*)))
+        (princ "Sorry... I don't know that page.")))
+#+END_SRC
+
+#+RESULTS:
+: DOD-REQUEST-HANDLER
+
 **** このゲーム Web サーバの制限
-**** ゲームを初期化する
-**** 勝者を表示する
-**** 人間のプレーヤの処理
-**** コンピュータプレーヤを処理する
-**** HTML の中に SVG ゲーム盤を描く
+- 誰からWebリクエストが来たかを一切チェックしていないので，複数人からアクセスがきたら，大混乱になる．
+- URL情報を読むのにread-from-stringを使っており，悪意あるコードを実行させられてしまう可能性がある
+
+***** 読者への宿題
+このゲームをマルチプレーヤに対応させよ．
+実装のヒントは p.409
+**** ゲームを初期化する web-initialize
+ランダムなゲーム盤からゲーム木をつくり，*cur-game-tree*に格納する
+#+BEGIN_SRC lisp
+  (defun web-initialize ()
+    (setf *from-tile* nil)
+    (setf *cur-game-tree* (game-tree (gen-board) 0 0 t)))
+#+END_SRC
+
+#+RESULTS:
+: WEB-INITIALIZE
+
+**** 勝者を表示する web-announce-winner
+以前作ったannounce-winnerとの違いは，最後に新しいゲームを始めるリンクを埋め込んでいるだけ．
+#+BEGIN_SRC lisp
+  (defun web-announce-winner (board)
+    (fresh-line)
+    (let ((w (winnern board)))
+      (if (> (length w) 1)
+          (format t "The game is a tie between ~a" (mapcar #'player-letter w))
+          (format t "The winner is ~a" (player-letter (car w)))))
+    (tag a (href "game.html")
+         (princ " play again")))
+#+END_SRC
+
+#+RESULTS:
+: WEB-ANNOUNCE-WINNER
+
+**** 人間のプレーヤの処理 web-handle-human
+#+BEGIN_SRC lisp
+  (defun web-handle-human (pos)
+    (cond ((not pos) (princ "Please choose a hex to move from:"))
+          ((eq pos 'pass) (setf *cur-game-tree*
+                                (cadr (lazy-car (caddr *cur-game-treeC))))
+           (princ "Your reinforcements have been placed.")
+           (tag a (href (make-game-link nil))
+                (princ "continue")))
+          ((not *from-tile*) (setf *from-tile* pos)
+           (princ "Now choose a destination:"))
+          ((eq pos *from-tile*) (setf *from-tile* nil) ; 同じタイルがクリックされたら選択を解除
+           (princ "Move cancelled."))
+          (t (setf *cur-game-tree*
+                   (cadr (lazy-find-if (lambda (move)
+                                         (equal (car move)
+                                                (list *from-tile* pos)))
+                                       (caddr *cur-game-tree*))))
+             (setf *from-tile* nil)
+             (princ "You may now ")
+             (tag a (href (make-game-link 'pass))
+                  (princ "pass"))
+             (princ " or make another move:"))))
+#+END_SRC
+
+#+RESULTS:
+: WEB-HANDLE-HUMAN
+
+**** コンピュータプレーヤを処理する web-handle-computer
+#+BEGIN_SRC lisp
+  (defun web-handle-computer ()
+    (setf *cur-game-tree* (handle-computer *curgame-tree*))
+    (princ "The computer has moved. ")
+    (tag script ()
+         (princ
+          "window.setTimeout('window.location=\"game.html?chosen=NIL\',5000)"))) ;AIプレーヤが指している時，原始的なアニメーションを見せる
+#+END_SRC
+
+#+RESULTS:
+: WEB-HANDLE-COMPUTER
+
+**** HTML の中に SVG ゲーム盤を描く drow-dod-page
+#+BEGIN_SRC lisp
+  (defun draw-dod-page (tree selected-tile)
+    (svg *board-width*
+         ,*board-height*
+         (draw-doard-svg (cadr tree)
+                         selected-tile
+                         (take-all (if selected-tile
+                                       (lazy-mapcar
+                                        (lambda (move)
+                                          (when (eql (caar move)
+                                                     selected-tile)
+                                            (cadar move)))
+                                        (caddr tree))
+                                       (lazy-mapcar #'caar (caddr tree)))))))
+#+END_SRC
+
+#+RESULTS:
+: DRAW-DOD-PAGE
+
 *** ダイス・オブ・ドゥーム，バージョン 3 をプレーする
+#+BEGIN_SRC lisp
+  (serve #'dod-request-handler)
+#+END_SRC
 *** 本章で学んだこと
+- ゲーム盤をSVGフォーマットで描画することによって，ダイス・オブ・ドゥームのグラフィックバージョンを作った
+- HTML5ではインラインSVG画像がサポートされているので，Webを使ったインタラクティブゲームを作ることができる
+- この章のバージョンでは複数のプレーヤがプレイすることはできないが，そうできるように拡張することはできる
 ** ダイス・オブ・ドゥームをさらに面白く
 * エピローグ
 * 索引で調べた関数
