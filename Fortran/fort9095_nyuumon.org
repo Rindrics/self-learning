@@ -29,7 +29,7 @@
 
 #+RESULTS:
 : wa =         5050
-**** プログラムと変数の名称 
+**** プログラムと変数の名称
 program 文，31字まで許される．
 - プログラム名や変数名は，必ず英字から始める
 - プログラム名や変数名には，- や . を使ってはいけない
@@ -205,8 +205,7 @@ a_1 = 1, a_2 = 2 のとき，この数列の a_1 から a_10 までの値を出�
 : 55
 : 89
 
-*** TODO if 文と stop 文
-
+*** if 文と stop 文
 **** List 1.3
 偶数と奇数について，それぞれ和を算出する．
 剰余関数 mod(割られる数, 割る数) を使う．
@@ -235,6 +234,25 @@ else
 
 *** 無限ループ
 ループを抜ける仕組みを作らないと，無限ループになる．
+
+**** List 1.4
+#+BEGIN_SRC fortran :tangle list0104.f90
+  program loop_inf
+  implicit none
+  integer wa, n, i
+  do
+     write(*, *) ' input n (if n <=, stop)) : ' !
+     read (*, *) n
+     if (n <= 0) stop ' good bye ... ' !
+     wa = 0
+     do i = 1, n
+        wa = wa + i
+     enddo
+     write(*, *) 'wa = ', wa
+  enddo
+  end program loop_inf
+#+END_SRC
+
 
 do ループ
 制御変数使っても，使わなくてもいい．
@@ -336,6 +354,114 @@ The value of i is           0
 #+end_example
 
 *** exit, cycle, goto 文
+- exit: 1つ分のループから抜けて，enddo 文の次の実行文に移る
+- cycle: 以降の処理はせず，上の do 文に戻る
+- goto: goto 文が指定する番号を持った continue 文へジャンプする．多重ループから抜けるときに使う．
+**** List 1.5
+ok.
+**** List 1.6
+ok.
+**** DONE 演習 1.5
+List 1.4 のプログラムを改良して，入力値を2つの整数m, n (m <= n) とし，
+その範囲の整数の和を計算するプログラムとせよ．
+
+#+BEGIN_SRC fortran :tangle ex0105.f90
+  program loop_inf
+  implicit none
+  integer wa, m, n, i
+  do
+     write(*, *) ' input m and n (if n <= m, stop)) : ' !
+     write(*, *) 'm, the smaller:'
+     read (*, *) m
+     write(*, *) 'n, the larger:'
+     read (*, *) n
+     if (n <= m) stop ' good bye ... ' !
+     wa = 0
+     do i = m, n
+        wa = wa + i
+     enddo
+     write(*, *) 'wa = ', wa
+  enddo
+  end program loop_inf
+#+END_SRC
+
+**** DONE 演習 1.6
+演習 1.5 のプログラムを改良して， m > n の場合でもその範囲の整数の和を計算できるようなプログラムとせよ．
+#+BEGIN_SRC fortran :tangle ex0106.f90
+  program loop_inf
+  implicit none
+  integer wa, m, n, i
+  do
+     write(*, *) ' input m and n (if n == m, stop)): '
+     write(*, '(a)', advance = 'no') 'm:'
+     read (*, *) m
+     write(*, '(a)', advance = 'no') 'n:'
+     read (*, *) n
+     wa = 0
+     if (m < n)  then
+        do i = m, n
+           wa = wa + i
+        enddo
+     else if (n < m) then
+        do i = n, m
+           wa = wa + i
+        enddo
+     else
+        stop ' good bye ... '
+     endif
+     write(*, *) 'wa = ', wa
+  enddo
+  end program loop_inf
+#+END_SRC
+**** DONE 演習 1.7
+相異なるn個のものからr個を取るときの
+- 順列
+- 組み合わせ
+を出力するプログラムを，do ループを用いて作成せよ．
+ただし(0 <= r <= n, n <= 10)
+
+#+BEGIN_SRC fortran :tangle ex0107.f90
+    program loop_inf
+      implicit none
+      integer n, r, sa, i, npr, ncr, progr
+        do
+         write(*, '(a)', advance = 'no') 'input n (if n > 10, stop):'
+         read (*, *) n
+         write(*, '(a)', advance = 'no') 'input r (if r < 0 or n < r, stop):'
+         read (*, *) r
+         npr = 1
+         ncr = 1
+         progr = 1
+         sa = n - r
+
+         if (n > 10) then
+            stop ' good bye ...'
+         else if (r < 0 .or. n < r) then
+            stop ' good bye ...'
+         else if (r == 0) then
+         else
+            do i = sa + 1, n
+               npr = npr * i
+            enddo
+            do i = 1, r
+               progr = progr * i
+            enddo
+            ncr = npr / progr
+         endif
+         write(*, *) 'npr = ', npr
+         write(*, *) 'ncr = ', ncr
+      enddo
+    end program loop_inf
+#+END_SRC
+
+
+**** 演習 1.8
+**** 演習 1.9
+**** 演習 1.10
+** 実数型変数を用いる反復計算
+** 反復計算の簡単な応用例
+** 入出力に関する機能
+** 本章で扱われた基本プログラミングの要約
 * 配列を用いるプログラミング
 * モジュール副プログラム
 * 外部副プログラム
@@ -356,4 +482,3 @@ character(30) : char1 = 'Fortran'
 write(*, '(a5)') char ! charを5文字幅で出力
 
 桁数を指定しないと，全部書き出す．
-
