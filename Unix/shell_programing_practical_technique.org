@@ -1,6 +1,7 @@
 #+TITLE: シェルプログラミング実用テクニック
 #+TAGS: 知らなかった
 #+STARTUP: overview
+#+PROPERTY: header-args :results output
 * 準備運動
 ** UNIXとは何者なのか？
 パイプを契機として，UNIXがUNIXになっていった
@@ -266,7 +267,7 @@ groups ahayashi
 #+RESULTS:
 : staff com.apple.sharepoint.group.1 everyone localaccounts _appserverusr admin _appserveradm _lpadmin _appstore _lpoperator _developer _analyticsusers com.apple.access_ftp com.apple.access_screensharing-disabled com.apple.access_ssh-disabled
 
-**** パーミッションの読み方 
+**** パーミッションの読み方
 - 先頭のd: ディレクトリか，ファイルか．
 - 次の3桁: 所有者のパーミッション
 - 次の3桁: グループに属するユーザのパーミッション
@@ -432,7 +433,7 @@ for n in $(seq 1 3); do echo $n; done
   echo "ファイルがない!"
   elif grep hoge "$1" > /dev/null ; then # ファイル中に文字列があるか判断
   echo hoge!
-  else 
+  else
   echo hegeじゃない!
   fi
 #+END_SRC
@@ -644,12 +645,11 @@ AWKやgrepが基本と心得よ．
 *** AWKを使う
 **** 必要な「列」だけを抽出
 ***** サンプルデータの作成
-#+BEGIN_SRC sh 
+#+BEGIN_SRC sh
   seq 1 10 | xargs -n 5 > data    # 5列で出力
   cat data
 #+END_SRC
 
-#+RESULTS:
 | 1 | 2 | 3 | 4 |  5 |
 | 6 | 7 | 8 | 9 | 10 |
 ***** AWKで2列目と4列目を取り出す
@@ -1299,34 +1299,34 @@ grep '80/..p' /etc/services
 #+begin_example
 http             80/udp     www www-http # World Wide Web HTTP
 http             80/tcp     www www-http # World Wide Web HTTP
-ris             180/udp     # Intergraph                         
-ris             180/tcp     # Intergraph                         
+ris             180/udp     # Intergraph
+ris             180/tcp     # Intergraph
 http-mgmt       280/udp     # http-mgmt
 http-mgmt       280/tcp     # http-mgmt
 is99s           380/udp     # TIA/EIA/IS-99 modem server
 is99s           380/tcp     # TIA/EIA/IS-99 modem server
 iafdbase        480/udp     # iafdbase
 iafdbase        480/tcp     # iafdbase
-sntp-heartbeat  580/udp	    # SNTP HEARTBEAT
+sntp-heartbeat  580/udp     # SNTP HEARTBEAT
 sntp-heartbeat  580/tcp     # SNTP HEARTBEAT
-entrust-aaas	680/udp     # entrust-aaas 
-entrust-aaas	680/tcp     # entrust-aaas 
-wpgs		780/udp # 
-wpgs		780/tcp # 
-socks           1080/udp    # Socks    
-socks           1080/tcp    # Socks    
+entrust-aaas	680/udp     # entrust-aaas
+entrust-aaas	680/tcp     # entrust-aaas
+wpgs		780/udp #
+wpgs		780/tcp #
+socks           1080/udp    # Socks
+socks           1080/tcp    # Socks
 mc-client       1180/udp    # Millicent Client Proxy
 mc-client       1180/tcp    # Millicent Client Proxy
 pictrography    1280/udp    # Pictrography
 pictrography    1280/tcp    # Pictrography
-telesis-licman  1380/udp    # Telesis Network License Manager     
-telesis-licman  1380/tcp    # Telesis Network License Manager     
-pacerforum      1480/udp     # PacerForum  
-pacerforum      1480/tcp     # PacerForum  
+telesis-licman  1380/udp    # Telesis Network License Manager
+telesis-licman  1380/tcp    # Telesis Network License Manager
+pacerforum      1480/udp     # PacerForum
+pacerforum      1480/tcp     # PacerForum
 tn-tl-r2        1580/udp     # tn-tl-r2
 tn-tl-r1        1580/tcp     # tn-tl-r1
-microcom-sbp    1680/udp   # microcom-sbp	
-microcom-sbp    1680/tcp   # microcom-sbp	
+microcom-sbp    1680/udp   # microcom-sbp
+microcom-sbp    1680/tcp   # microcom-sbp
 dpkeyserv       1780/udp     # dpkeyserv
 dpkeyserv       1780/tcp     # dpkeyserv
 vsat-control    1880/udp     # Gilat VSAT Control
@@ -1393,8 +1393,8 @@ cddbp-alt	8880/udp     # CDDBP
 cddbp-alt	8880/tcp     # CDDBP
 glrpc           9080/udp     # Groove GLRPC
 glrpc           9080/tcp     # Groove GLRPC
-amanda          10080/udp   # Amanda 
-amanda          10080/tcp   # Amanda 
+amanda          10080/udp   # Amanda
+amanda          10080/tcp   # Amanda
 tcc-http        24680/tcp   # TCC User HTTP Service
 tcc-http        24680/udp   # TCC User HTTP Service
 ethercat        34980/tcp   # EtherCAT Port
@@ -1406,7 +1406,7 @@ grep '[^2-8]000/tcp' /etc/services
 #+END_SRC
 
 #+RESULTS:
-: cadlock2	1000/tcp # 
+: cadlock2	1000/tcp #
 : cslistener      9000/tcp     # CSlistener
 : ndmp            10000/tcp   # Network Data Management Protocol
 : irisa		11000/tcp   # IRISA
@@ -1442,7 +1442,7 @@ octopus         10008/tcp   # Octopus Multiplexer
 swdtp-sv        10009/tcp   # Systemwalker Desktop Patrol
 zabbix-agent    10050/tcp   # Zabbix Agent
 zabbix-trapper  10051/tcp   # Zabbix Trapper
-amanda          10080/tcp   # Amanda 
+amanda          10080/tcp   # Amanda
 famdc           10081/tcp   # FAM Archive Server
 itap-ddtp       10100/tcp   # VERITAS ITAP DDTP
 ezmeeting-2     10101/tcp   # eZmeeting
@@ -1459,7 +1459,7 @@ qb-db-server    10160/tcp   # QB Database Server
 trisoap         10200/tcp   # Trigence AE Soap Service
 apollo-relay    10252/tcp   # Apollo Relay Port
 axis-wimp-port  10260/tcp   # Axis WIMP Port
-blocks		10288/tcp   # Blocks 
+blocks		10288/tcp   # Blocks
 gap             10800/tcp   # Gestor de Acaparamiento para Pocket PCs
 lpdg            10805/tcp   # LUCIA Pareja Data Group
 rmiaux          10990/tcp   # Auxiliary RMI Port
@@ -1501,7 +1501,7 @@ linogridengine  12300/tcp   # LinoGrid Engine
 warehouse-sss   12321/tcp   # Warehouse Monitoring Syst SSS
 warehouse       12322/tcp   # Warehouse Monitoring Syst
 italk           12345/tcp   # Italk Chat System
-tsaf            12753/tcp   # tsaf port   
+tsaf            12753/tcp   # tsaf port
 i-zipqd		13160/tcp   # I-ZIPQD
 powwow-client   13223/tcp   # PowWow Client
 powwow-server   13224/tcp   # PowWow Server
@@ -1518,7 +1518,7 @@ dsmcc-session	13819/tcp   # DSMCC Session Messages
 dsmcc-passthru	13820/tcp   # DSMCC Pass-Thru Messages
 dsmcc-download	13821/tcp   # DSMCC Download Protocol
 dsmcc-ccp	13822/tcp   # DSMCC Channel Change Protocol
-sua	        14001/tcp   # SUA
+sua         14001/tcp   # SUA
 sage-best-com1  14033/tcp   # sage Best! Config Server 1
 sage-best-com2  14034/tcp   # sage Best! Config Server 2
 vcs-app         14141/tcp   # VCS Application
@@ -1547,7 +1547,7 @@ amt-soap-http   16992/tcp   # Intel(R) AMT SOAP/HTTP
 amt-soap-https  16993/tcp   # Intel(R) AMT SOAP/HTTPS
 amt-redir-tcp   16994/tcp   # Intel(R) AMT Redirection/TCP
 amt-redir-tls   16995/tcp   # Intel(R) AMT Redirection/TLS
-isode-dua	17007/tcp # 
+isode-dua	17007/tcp #
 soundsvirtual   17185/tcp   # Sounds Virtual
 chipper		17219/tcp   # Chipper
 ssh-mgmt        17235/tcp   # SSH Tectia Manager
@@ -1556,7 +1556,7 @@ zep             17754/tcp   # Encap. ZigBee Packets
 zigbee-ip       17755/tcp   # ZigBee IP Transport Service
 zigbee-ips      17756/tcp   # ZigBee IP Transport Secure Service
 biimenu         18000/tcp   # Beckman Instruments, Inc.
-opsec-cvp	18181/tcp   # OPSEC CVP 
+opsec-cvp	18181/tcp   # OPSEC CVP
 opsec-ufp	18182/tcp   # OPSEC UFP
 opsec-sam       18183/tcp   # OPSEC SAM
 opsec-lea       18184/tcp   # OPSEC LEA
@@ -1567,14 +1567,14 @@ checkpoint-rtm  18241/tcp   # Check Point RTM
 ac-cluster	18463/tcp   # AC Cluster
 ique            18769/tcp   # IQue Protocol
 infotos         18881/tcp   # Infotos
-apc-necmp       18888/tcp   # APCNECMP 
+apc-necmp       18888/tcp   # APCNECMP
 igrid           19000/tcp   # iGrid Server
 opsec-uaa       19191/tcp   # OPSEC UAA
 ua-secureagent  19194/tcp   # UserAuthority SecureAgent
 keysrvr         19283/tcp   # Key Server for SASSAFRAS
 keyshadow       19315/tcp   # Key Shadow for SASSAFRAS
 mtrgtrans       19398/tcp   # mtrgtrans
-hp-sco		19410/tcp   # hp-sco 
+hp-sco		19410/tcp   # hp-sco
 hp-sca		19411/tcp   # hp-sca
 hp-sessmon      19412/tcp   # HP-SESSMON
 fxuptp          19539/tcp   # FXUPTP
@@ -1584,7 +1584,7 @@ dnp             20000/tcp   # DNP
 microsan        20001/tcp   # MicroSAN
 commtact-http   20002/tcp   # Commtact HTTP
 commtact-https  20003/tcp   # Commtact HTTPS
-opendeploy      20014/tcp   # OpenDeploy Listener 
+opendeploy      20014/tcp   # OpenDeploy Listener
 nburn_id        20034/tcp   # NetBurner ID Port
 tolfab          20167/tcp   # TOLfab Data Change
 ipdtp-port      20202/tcp   # IPD Tunneling Port
@@ -1618,7 +1618,7 @@ inovaport4      23003/tcp   # Inova LightLink Server Type 4
 inovaport5      23004/tcp   # Inova LightLink Server Type 5
 inovaport6      23005/tcp   # Inova LightLink Server Type 6
 novar-dbase     23400/tcp   # Novar Data
-novar-alarm     23401/tcp   # Novar Alarm 
+novar-alarm     23401/tcp   # Novar Alarm
 novar-global    23402/tcp   # Novar Global
 med-ltp		24000/tcp  # med-ltp
 med-fsp-rx	24001/tcp  # med-fsp-rx
@@ -1630,7 +1630,7 @@ med-net-svc	24006/tcp  # med-net-svc
 filesphere      24242/tcp  # fileSphere
 vista-4gl       24249/tcp  # Vista 4GL
 ild             24321/tcp   # Isolv Local Directory
-intel_rci	24386/tcp  # Intel RCI 
+intel_rci	24386/tcp  # Intel RCI
 binkp           24554/tcp  # BINKP
 flashfiler      24677/tcp  # FlashFiler
 proactivate     24678/tcp  # Turbopower Proactivate
@@ -1646,7 +1646,7 @@ icl-twobase7    25006/tcp  # icl-twobase7
 icl-twobase8    25007/tcp  # icl-twobase8
 icl-twobase9    25008/tcp  # icl-twobase9
 icl-twobase10   25009/tcp  # icl-twobase10
-vocaltec-hos    25793/tcp   # Vocaltec Address Server      
+vocaltec-hos    25793/tcp   # Vocaltec Address Server
 tasp-net        25900/tcp   # TASP Network Comm
 niobserver      25901/tcp   # NIObserver
 niprobe         25903/tcp   # NIProbe
@@ -1656,15 +1656,15 @@ ezproxy         26260/tcp   # eZproxy
 ezmeeting       26261/tcp   # eZmeeting
 k3software-svr  26262/tcp   # K3 Software-Server
 k3software-cli  26263/tcp   # K3 Software-Client
-gserver         26264/tcp   # Gserver 
-exoline-tcp     26486/tcp   # EXOline-TCP 
+gserver         26264/tcp   # Gserver
+exoline-tcp     26486/tcp   # EXOline-TCP
 exoconfig       26487/tcp   # EXOconfig
 exonet          26489/tcp   # EXOnet
 imagepump       27345/tcp   # ImagePump
 jesmsjc         27442/tcp   # Job controller service
 kopek-httphead  27504/tcp   # Kopek HTTP Head Port
 ars-vista       27782/tcp   # ARS VISTA Application
-tw-auth-key     27999/tcp   # TW Authentication/Key Distribution and 
+tw-auth-key     27999/tcp   # TW Authentication/Key Distribution and
 nxlmd           28000/tcp   # NX License Manager
 siemensgsm      28240/tcp   # Siemens GSM
 otmp            29167/tcp   # ObTools Message Protocol
@@ -1680,23 +1680,23 @@ iceedcp_rx      31949/tcp   # Embedded Device Configuration Protocol RX
 t1distproc60    32249/tcp   # T1 Distributed Processor
 apm-link        32483/tcp   # Access Point Manager Link
 sec-ntb-clnt    32635/tcp   # SecureNotebook-CLNT
-filenet-powsrm  32767/tcp   # FileNet BPM WS-ReliableMessaging Client 
+filenet-powsrm  32767/tcp   # FileNet BPM WS-ReliableMessaging Client
 filenet-tms     32768/tcp    # Filenet TMS
 filenet-rpc     32769/tcp    # Filenet RPC
 filenet-nch     32770/tcp    # Filenet NCH
 filenet-rmi     32771/tcp    # FileNET RMI
-filenet-pa      32772/tcp    # FileNET Process Analyzer 
+filenet-pa      32772/tcp    # FileNET Process Analyzer
 filenet-cm      32773/tcp   # FileNET Component Manager
 filenet-re      32774/tcp   # FileNET Rules Engine
 filenet-pch     32775/tcp   # Performance Clearinghouse
-filenet-peior   32776/tcp   # FileNET BPM IOR 
+filenet-peior   32776/tcp   # FileNET BPM IOR
 filenet-obrok   32777/tcp   # FileNet BPM CORBA
 idmgratm        32896/tcp    # Attachmate ID Manager
 diamondport     33331/tcp    # DiamondCentral Interface
 traceroute      33434/tcp    # traceroute use
-snip-slave      33656/tcp   # SNIP Slave 
+snip-slave      33656/tcp   # SNIP Slave
 turbonote-2     34249/tcp    # TurboNote Relay Server Default Port
-p-net-local     34378/tcp   # P-Net on IP local 
+p-net-local     34378/tcp   # P-Net on IP local
 p-net-remote    34379/tcp   # P-Net on IP remote
 profinet-rt     34962/tcp   # PROFInet RT Unicast
 profinet-rtm    34963/tcp   # PROFInet RT Multicast
@@ -1727,7 +1727,7 @@ pmcd            44321/tcp    # PCP server (pmcd)
 pmcdproxy       44322/tcp   # PCP server (pmcd) proxy
 rbr-debug       44553/tcp   # REALbasic Remote Debug
 rockwell-encap  44818/tcp    # Rockwell Encapsulation
-invision-ag     45054/tcp    # InVision AG 
+invision-ag     45054/tcp    # InVision AG
 eba             45678/tcp    # EBA PRISE
 ssr-servermgr   45966/tcp    # SSRServerMgr
 mediabox        46999/tcp   # MediaBox Server
@@ -1764,8 +1764,8 @@ grep '^u' /etc/services | head -n 5
 : uucp-path       117/udp     # UUCP Path Service
 : uucp-path       117/tcp     # UUCP Path Service
 : uma		144/udp     # Universal Management Architecture
-: uma 		144/tcp     # Universal Management Architecture
-: uaac            145/udp     # UAAC Protocol             
+: uma       144/tcp     # Universal Management Architecture
+: uaac            145/udp     # UAAC Protocol
 ***** 行末がa
 #+BEGIN_SRC sh :results output
 grep 'a$' /etc/services | head -n 5
@@ -2065,16 +2065,16 @@ grep world greet -C 1
 
 #+RESULTS:
 #+begin_example
- world 
+ world
 -------------------
- world 
+ world
  and Japan
 -------------------
-hello 
- world 
+hello
+ world
 -------------------
-hello 
- world 
+hello
+ world
  and Japan
 #+end_example
 
@@ -2412,8 +2412,130 @@ self はTsukubaiの列抽出コマンド（awkではだめなのか？）．
 NFは最終列，つまりファイルパス．
 
 *** ファイルが同じだったら/違ったら✕✕する
-
+Tsukubai を使うようなのでとばす
 ** 文章の校正
+*** 特定の語句を置き換える
+sed の数珠つなぎでできる．
+バックアップをとること（手作業がめんどくさければ次節 [[*%E8%A4%87%E6%95%B0%E3%81%AE%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%A7%E7%89%B9%E5%AE%9A%E3%81%AE%E8%AA%9E%E5%8F%A5%E3%82%92%E7%BD%AE%E3%81%8D%E6%8F%9B%E3%81%88%E3%82%8B][複数のファイルで特定の語句を置き換える]]）．
+cp -p で，ファイルのタイムスタンプを変えずにコピー！！
+---------------------------------------------
+cp -p genkou genkou.org
+cat genkou | sed | sed | ... > genkou.new
+---------------------------------------------
+
+*** 複数のファイルで特定の語句を置き換える
+上書きで一気にやろう．
+でも，バックアップファイルも作る．
+ただし，この方法を2回以上繰り返すと，古いバックアップファイルを上書きしてしまって後戻りできなくなるので注意．
+
+i- オプションは，バックアップファイルに使いたい拡張子
+
+sed -i.bak 's/卵/玉子/g' file{1,2,3}
+
+*** 表記揺れや記号の不統一をチェックする
+**** 簡単な表記揺れチェック
+
+普通に
+grep エクセル ファイル名
+grep Excel ファイル名
+
+***** もっとたくさんのキーワードを検索するときは，拡張正規表現を使うと良い．
+
+grep -E "(個所|個所|ヶ所|か所|カ所|ヵ所|ケ所)" ファイル名
+
+**** 記号の調査
+集計する
+#+BEGIN_SRC sh
+  # cat #.tex | grep -o '[． . 。 ]' | sort | uniq -c
+#+END_SRC
+***** 凶悪なチルダ問題
+環境によってばらばら．
+入力ができなければ grep もできないので凶悪．
+
+
+#+BEGIN_SRC bash
+echo -e U+007E '\u007E'
+echo -e U+02DC '\u02DC'
+echo -e U+02F7 '\u02F7'
+echo -e U+223C '\u223C'
+echo -e U+301C '\u301C'
+echo -e U+FF5E '\uFF5E'
+#+END_SRC
+
+#+RESULTS:
+: U+007E \u007E
+: U+02DC \u02DC
+: U+02F7 \u02F7
+: U+223C \u223*
+: U+301C \u301C
+: U+FF5E \uFF5E
+そして，これらをどうやって grep にわたすか？
+変数に一度格納する．
+
+#+BEGIN_SRC bash
+TILDE=$(echo -e '\u007E\u02DC\u02F7\u223C\u301C\uFF5E')
+echo $TILDE
+# cat *.tex | grep -o "[$TILDE]" | sort | uniq -c
+#+END_SRC
+
+#+RESULTS:
+: \u007E\u02DC\u02F7\u223C\u301C\uFF5E
+
+grepに渡す正規表現はクォートする．
+こうすると変数が値に置き換わって渡される．
+**** 文字コードを駆使したややこしい調査の一例
+- 全角文字の後に半角ピリオド
+- 半角文字の後に全角句点
+これらの調査は，文字コードを使うと便利．
+***** 半角ピリオドと全角句点を，1つ前の文字と一緒に抽出する
+#+BEGIN_SRC bash
+# cat *.tex | grep -o '.[.。]'
+#+END_SRC
+***** 4バイトのレコードを探す
+全角文字は3バイト，ASCII文字は1バイトなので．
+#+BEGIN_SRC bash
+# cat *.tex | grep -o '.[.。]' | LANG=C awk 'length($0)==4' | head
+#+END_SRC
+ここで，LANG=C とするのがポイント．これでバイト数が返る．
+日本語環境だとGNU Awk の length は文字数を返してきてしまう．
+***** 何件あったか？
+#+BEGIN_SRC bash
+# cat *.tex | grep -o '.[.。]' | LANG=C akw 'length($0)==4' | wc -l
+#+END_SRC
+***** それらはどこにあったか？
+一度，リストにし，それを grep に渡す．
+#+BEGIN_SRC bash
+# cat *.tex | grep -o '.[.。]' | LANG=C akw 'length($0)==4' | sort -u > tmp.list
+# cat *.tex | grep -F -f tmp.list | less
+#+END_SRC
+grep -F は，正規表現を使わず，文字列をそのまま検索する
+**** 「です・ます」「だ・である」チェック
+***** mecab に分かち書きさせる
+#+BEGIN_SRC bash
+echo 私の血にはシェルが混ざっています． | mecab -Owakati
+#+END_SRC
+***** 語尾を抽出する
+
+#+BEGIN_SRC bash
+echo '私 の 血 に は シェル が 混ざっ て い ます 。
+こんにちは と おもい ます 。
+こんばんは で ある 。
+おはよう です 。
+おはよう で ある 。
+今日 は 良い 天気 です 。
+' > temp
+cat temp
+cat temp | sed 's/ 。/。/g' | grep -o
+#+END_SRC
+
+#+RESULTS:
+
+*** スペルチェックを行う
+*** 変なバイナリが混入していないか調査する
+*** 長い行を折り返す
+*** 不必要なマークアップ/コメント/スペースを消す
+*** マークアップ/スペースを後から差し込む
+*** 特定のフォーマットにデータを流し込む
 ** その他テキストを扱うときの小技
 * ファイルの取扱いとシステムの操作
 * ファイルシステムをデータベースにする
