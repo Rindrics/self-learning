@@ -81,7 +81,7 @@ No commits yet
 Untracked files:
 ..." to include in what will be committed)
 
-	test.txt
+    test.txt
 
 nothing added to commit but untracked files present (use "git add" to track)
 #+end_example
@@ -92,15 +92,15 @@ git status
 #+END_SRC
 
 #+RESULTS:
-: 
+:
 : On branch master
-: 
+:
 : No commits yet
-: 
+:
 : Changes to be committed:
 : ..." to unstage)
-: 
-: 	new file:   test.txt
+:
+:   new file:   test.txt
 ***** リポジトリへのコミットとコミットログの確認
 コミット
 #+BEGIN_SRC sh :session *git* :results output
@@ -126,7 +126,7 @@ Changes not staged for commit:
 ..." to update what will be committed)
 ..." to discard changes in working directory)
 
-	modified:   test.txt
+    modified:   test.txt
 
 no changes added to commit (use "git add" and/or "git commit -a")
 #+end_example
@@ -137,7 +137,7 @@ git commit -m "Say hello to world"
 #+END_SRC
 
 #+RESULTS:
-: 
+:
 : [master 6a99f5c] Say hello to world
 :  1 file changed, 1 insertion(+)
 
@@ -334,7 +334,7 @@ git log b6c5b8eefc75158a7361c1f8b9022be29e1146f3..
 : commit a5d63c3e55cabadc3666a255223f075044c9322e
 : Author: Akira Hayashi <smxshxishxad@me.com>
 : Date:   Fri Dec 14 02:19:30 2018 +0900
-: 
+:
 :     Learn sed
 ***** あるファイルに関係するコミット                          :important:
 git log ブランチ名 ファイル名
@@ -393,7 +393,7 @@ index fd4b1ea..eeec78f 100644
 --- a/Unix/shell_programing_practical_technique.org
 +++ b/Unix/shell_programing_practical_technique.org
 @@ -1009,7 +1009,171 @@ echo オバチャンオバチャン | awk '{$0 = gensub(/オバ/,"オッ",$0);pr
- 
+
  ,*** sedを使う
  ,**** 置換
 +たいていは文字列の置換に使われる．
@@ -618,46 +618,46 @@ Changes not staged for commit:
   (use "git add <file>..." to update what will be committed)
   (use "git checkout -- <file>..." to discard changes in working directory)
 
-	modified:   version_management_by_git.org
+    modified:   version_management_by_git.org
 
 Untracked files:
   (use "git add <file>..." to include in what will be committed)
 
-	../C/.qrinput
-	../C/a.out
-	../C/chap09/a.out
-	../C/chap09/list0907.qrinput
-	../C/meikai_nyuumon.html
-	../C/meikai_nyuumon.txt_archive
-	../C/qr_425068qL.out
-	../C/qr_425068qL.txt[ C ]*]
-	../C/studynote_c.txt
-	../Confucious/
-	../Fortran/list1_1.f90
-	../Fortran/practice1_2.f90
-	../Fortran/practice1_3.f90
-	../Fortran/practice1_4.f90
-	.#version_management_by_git.org
-	test.txt
-	../Processing/GenerativeDesign/GenerativeDesign.html
-	../Processing/GenerativeDesign/GenerativeDesign.pde
-	../Unix/ans
-	../Unix/data
-	../Unix/error
-	../Unix/file1
-	../Unix/file1.backup
-	../Unix/file2
-	../Unix/file2.backup
-	../Unix/file3
-	../Unix/file3.backup
-	../Unix/file4
-	../Unix/hoge
-	../Unix/hoge.bash
-	../Unix/if.bash
-	../Unix/read.bash
-	../Unix/test.docx
-	../Unix/tmpfile.bash
-	../Unix/zipcode
+    ../C/.qrinput
+    ../C/a.out
+    ../C/chap09/a.out
+    ../C/chap09/list0907.qrinput
+    ../C/meikai_nyuumon.html
+    ../C/meikai_nyuumon.txt_archive
+    ../C/qr_425068qL.out
+    ../C/qr_425068qL.txt[ C ]*]
+    ../C/studynote_c.txt
+    ../Confucious/
+    ../Fortran/list1_1.f90
+    ../Fortran/practice1_2.f90
+    ../Fortran/practice1_3.f90
+    ../Fortran/practice1_4.f90
+    .#version_management_by_git.org
+    test.txt
+    ../Processing/GenerativeDesign/GenerativeDesign.html
+    ../Processing/GenerativeDesign/GenerativeDesign.pde
+    ../Unix/ans
+    ../Unix/data
+    ../Unix/error
+    ../Unix/file1
+    ../Unix/file1.backup
+    ../Unix/file2
+    ../Unix/file2.backup
+    ../Unix/file3
+    ../Unix/file3.backup
+    ../Unix/file4
+    ../Unix/hoge
+    ../Unix/hoge.bash
+    ../Unix/if.bash
+    ../Unix/read.bash
+    ../Unix/test.docx
+    ../Unix/tmpfile.bash
+    ../Unix/zipcode
 
 no changes added to commit (use "git add" and/or "git commit -a")
 #+end_example
@@ -936,7 +936,7 @@ git show コミット名
 
 何も指定しなければHEADが出る．
 
-** TODO 複数人のプロジェクトでGitを利用する
+** 複数人のプロジェクトでGitを利用する
 これこそ分散型システムであるGitの醍醐味．
 複数人で使う時には，集中型のシステムと大きく異なる．
 
@@ -1043,13 +1043,29 @@ git remote
 （リモートリポジトリが出力される）
 ----------------------------------------------------------------------
 *** 開発スタート
-
+**** コンフリクトの確認
+git blame
+**** コンフリクトの解消
+不要なコンフリクトを避けるために，まずリモートリポジトリの変更を取り込む癖を付ける．
 *** 他のメンバーのリポジトリを参照する
-
+信洋が伸一郎のリモートリポジトリを登録するには
+#+BEGIN_SRC sh
+# git remote add shin ssh://nob@gitrepos/srv/repos/shin.git
+#+END_SRC
 *** プロジェクトの終了と納品
+タグもブランチと同じ構文でpushする必要がある
+#+BEGIN_SRC sh
+# git tag release-YYYYMMDD
+# git push origin release-YYYYMMDD
+#+END_SRC
 
+納品用のファイルを git archive で作成する
+#+BEGIN_SRC sh
+# git archive --format=tar master | gzip > tmp/blog-system-YYYYMMDD.tar.gz
+#+END_SRC
 *** この章のまとめ
-** 複数人で開発する場合に利用するGitコマンド
+
+** TODO 複数人で開発する場合に利用するGitコマンド
 * 発展編
 ** Gitを使った大規模プロジェクトに挑戦してみよう
 ** 大規模プロジェクトでよく利用するGitコマンド
