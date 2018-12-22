@@ -454,8 +454,25 @@ List 1.4 のプログラムを改良して，入力値を2つの整数m, n (m <=
     end program loop_inf
 #+END_SRC
 
-
 **** 演習 1.8
+#+BEGIN_SRC fortran :tangle ex0108.f90
+  program prime
+  implicit none
+  integer n, i
+
+  write(*, *) 'Enter natural number:'
+        read(*, *) n
+        if (n == 1) stop 'Yes'
+        do i = 2, n
+           if ((mod(n, i) == 0) .and. (i /= n)) then
+             stop 'No'
+          endif
+        enddo
+write(*, *) 'Yes'
+  end program prime
+#+END_SRC
+
+
 **** 演習 1.9
 **** 演習 1.10
 ** 実数型変数を用いる反復計算
