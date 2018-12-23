@@ -2340,7 +2340,7 @@ cat yayakoshi.txt | mecab | grep 人名 | grep 固有名詞
 uniq にはソート機能は入っていない．まさにUNIX哲学．
 でも，実は sort -u で同じことができる．
 
-** TODO テキストの比較
+** テキストの比較
 *** 2つのテキストファイルを比較する
 左を古いファイルにするといい．
 diff old.txt new.txt
@@ -2413,7 +2413,7 @@ NFは最終列，つまりファイルパス．
 
 *** ファイルが同じだったら/違ったら✕✕する
 Tsukubai を使うようなのでとばす
-** 文章の校正
+** TODO 文章の校正
 *** 特定の語句を置き換える
 sed の数珠つなぎでできる．
 バックアップをとること（手作業がめんどくさければ次節 [[*%E8%A4%87%E6%95%B0%E3%81%AE%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%A7%E7%89%B9%E5%AE%9A%E3%81%AE%E8%AA%9E%E5%8F%A5%E3%82%92%E7%BD%AE%E3%81%8D%E6%8F%9B%E3%81%88%E3%82%8B][複数のファイルで特定の語句を置き換える]]）．
@@ -2531,8 +2531,75 @@ cat temp | sed 's/ 。/。/g' | grep -o
 #+RESULTS:
 
 *** スペルチェックを行う
+GNU aspell を使う．
+普通はチェックオプション -c を使い，対話的に
+
+aspell -c file
+
+とする．
+
+他のコマンドと組み合わせて使いたい時には -a オプションを使う．
+#+BEGIN_SRC sh
+echo "All four base are berong to us" | aspell -a
+#+END_SRC
+
+#+RESULTS:
+: @(#) International Ispell Version 3.1.20 (but really Aspell 0.60.6.1)
+: *
+: *
+: *
+: *
+: & berong 27 18: Bering, bronc, belong, Behring, bearing, baronage, bring, wrong, bong, brink, bronco, baring, boring, Bronx, Byron, Byronic, baron, boron, prong, barony, barons, sarong, throng, Bering's, Byron's, baron's, boron's
+: *
+: *
+:
+
 *** 変なバイナリが混入していないか調査する
+Windows とのファイルのやりとりで生じる，文字コード問題．
+
+**** 改行記号
+***** 文字コードを調べる
+#+BEGIN_SRC sh
+nkf -g Unix_for_OSx.org
+#+END_SRC
+
+#+RESULTS:
+: UTF-8
+
+***** 改行コードもきちんと変更すること．
+nkf -wLux と打つのを習慣にするといい．
+
+- w: UTF-8 にする
+- Lu: 改行コードをUNIX式にする
+- x: 半角カナをそのままにする
+
+***** od コマンドで検索
+
+**** テキストの表記上必要ないバイナリの削除（ASCII コードのみを含むファイルの場合）
+
+***** バイナリを全部出力してみる
+#+BEGIN_SRC sh
+awk 'BEGIN{for(i=0; i<256; i++){printf("%c", i)}}' > ascii
+wc -c ascii
+#cat ascii # これは文字化けしてしまう
+#+END_SRC
+
+#+RESULTS:
+:      256 ascii
+
+印字できるものだけを表示する（-d は削除，-cは出力の反転）
+#+BEGIN_SRC sh
+cat ascii | tr -dc "[:print:]\n\t"
+#+END_SRC
+
+#+RESULTS:
+:
+:  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+
+**** 文字コードに対して不正なバイナリをチェック
+iconv を使う．
 *** 長い行を折り返す
+
 *** 不必要なマークアップ/コメント/スペースを消す
 *** マークアップ/スペースを後から差し込む
 *** 特定のフォーマットにデータを流し込む
