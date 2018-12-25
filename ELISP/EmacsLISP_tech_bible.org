@@ -272,7 +272,7 @@ Meta の評価結果が直感に反する．
   税率 %d%% で %d 円です．" 500 8 (* 500 0.08)) ; => "500 円の商品の消費税は，\n税率 8% で 40 円です．"
 #+END_SRC
 
-* Emacs Lisp の基礎
+* TODO Emacs Lisp の基礎 [0%]
 ** Emacs Lisp プログラムの編集方法
 *** S式を操作するコマンド                                            :必修:
 - C-M-f: 次のS式へ移動する
@@ -407,7 +407,7 @@ org.el に登場する関数名・変数名はみなorg-という接頭辞を使
         y                                 ; => 10
         )
 #+END_SRC
-** コンスセル・リスト・ベクタ
+** TODO コンスセル・リスト・ベクタ
 *** コンスセル
 S式の「ペア」のこと
 #+BEGIN_SRC elisp
@@ -427,13 +427,48 @@ S式の「ペア」のこと
 
   ;;; cdr で右側を取得．クオートが必要
   (cdr '(10 . "ten"))                     ; => "ten"
+
+  ;;; car や cdr はコンスセル以外に使うとエラーになる
+  ;;(car 'foo)                              ; エラーになるのでコメントアウト
+
+  ;;; car-safe なら nil を返すので 安全
+  (car-safe 'foo)                         ; => nil
 #+END_SRC
 *** リスト
 コンスセルのcdrにコンスセルをつなげたもの．
 データはcarに入っている．cdrではない．
 一番最後のcdrにnilが入っている．
 #+BEGIN_SRC elisp
+  ;;; リストを作る方法
+  ;;; 原理的にはコンスセルの連続
+  (cons 1 (cons 2 (cons 3 nil)))          ; => (1 2 3)
 
+  ;;; 上の方法は煩雑なので list 関数を使おう
+  (list 1 2 3)                            ; => (1 2 3)
+
+  ;;; 新しい要素が追加される順番に注目
+  (setq list (cons 3 nil))                ; => (3)
+  (setq list (cons 2 list))               ; => (2 3)
+  (setq list (cons 1 list))               ; => (1 2 3)
+
+  ;;; car と cdr
+  (car list)                            ; => 1
+  (cdr list)                            ; => (2 3)
+  ;;(car 'list)                             ; これはエラー
+  list                                    ; => (1 2 3)
+  'list                                   ; => list
+
+  ;;; nth 関数で要素にアクセス
+  (nth 0 list)                            ; => 1
+  (nth 1 list)                            ; => 2
+  (nth 2 list)                            ; => 3
+  (nth 3 list)                            ; => nil
+
+  ;;; elt 関数は，nth 関数の引数の順序を逆にしたもの．汎用性が高いらしい．
+  (elt list 0)                            ; => 1
+  (elt list 1)                            ; => 2
+  (elt list 2)                            ; => 3
+  (elt list 3)                            ; => nil
 #+END_SRC
 *** コンスセルとリストとnil                                      :わからん:
 nil は空のリスト．コンスセルではない．
@@ -446,12 +481,79 @@ nilがリストとして振る舞えるとべんりなので，(car nil)も(cdr 
 
 nil はシンボルであるが，どんな数も設定できない．
 nil を評価すると必ず nil になってしまう．
+
+#+BEGIN_SRC elisp
+  ;;; null かどうか
+  (null ())                               ; => t
+  (null 1)                                ; => nil
+  (null '1)                               ; => nil
+  (null nil)                              ; => t
+  (null 'nil)                             ; => t
+  nil                                     ; => nil
+  'nil                                    ; => nil
+  (null '(nil))                           ; => nil
+  '(nil)                                  ; => (nil)
+  '(1)                                    ; => (1)
+
+  ;;; コンスセルかどうか
+  (consp nil)                             ; => nil
+  (consp '(1 . 2))                        ; => t
+  (consp '(1 2))                          ; => t
+  (consp '(1 nil))                        ; => t
+  (consp '(nil nil))                      ; => t
+  (consp '(1))                            ; => t
+  (cdr '(1))                              ; => nil
+  (car '(1))                              ; => 1
+
+  ;;; リストかどうか
+  (listp nil)                             ; => t
+  (listp '(1 . 2))                        ; => t
+  (listp '(1 2))                          ; => t
+  (listp '(1))                            ; => t
+
+  ;;; アトム（コンスセル以外）かどうか
+  (atom nil)                              ; => t
+  (atom '(1 . 2))                         ; => nil
+  (atom '(1 2))                           ; => nil
+  (atom 1)                                ; => t
+  (atom '(1))                             ; => nil
+  (atom "foo")                            ; => t
+
+  ;;; シンボルかどうか
+  (symbolp nil)                           ; => t
+  (symbolp "foo")                         ; => nil
+  (setq a 1)                              ; => 1
+  a                                       ; => 1
+  (symbolp a)                             ; => nil
+  (symbolp "a")                           ; => nil
+  (symbolp 'a)                            ; => t
+  (symbolp 'setq)                         ; => t
+  (symbolp '1)                            ; => nil
+#+END_SRC
 *** ベクタ
 **** ベクタがリストより優れている点は？
 アクセスの早さ，要素の「変更」の容易さ
 配列の一種で，データが横一列に並んでいる．
 **** ベクタがリストに劣っている点は？
 要素の「追加」ができない点
+
+#+BEGIN_SRC elisp
+  ;;; ベクタを作る方法
+  [foo bar baz]                           ; => [foo bar baz]
+  (vector 'foo 'bar 'baz)                 ; => [foo bar baz]
+
+  ;;; [] は評価されない
+  [(+ 1 1) 2]                             ; => [(+ 1 1) 2]
+  (vector (+ 1 1) 2)                      ; => [2 2]
+
+  ;;; ベクタの要素にアクセスする
+  (aref [3 6 9 ] 1)                       ; => 6
+  (elt [3 6 9 ] 1)                        ; => 6
+
+  ;;; ベクタの要素を変更する
+  (setq v [3 6 9])                        ; => [3 6 9]
+  (aset v 2 999)                          ; => 999
+#+END_SRC
 *** 配列としての文字列
 文字列も配列なので，ベクタと同じようにアクセスできる．
 書く要素は，文字コードを表す数値．
