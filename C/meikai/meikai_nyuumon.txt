@@ -1820,8 +1820,86 @@ List 11-4では，各配列の文字列の個数 3 が，定数としてプロ�
 | a[5] | = | \335\355\376          |
 
 
-
 ** ポインタによる文字列の操作
+
+*** 文字列の長さを調べる
+**** List 11-5
+[[*%E6%BC%94%E7%BF%929-8][演習9-8]] の実装を，ポインタを使う方法に変えたもの．
+添字演算子[]を使わず，間接演算子*と増分演算子++ を使う方法は，C言語での常套手段．
+
+#+BEGIN_SRC C
+/*
+	文字列の長さを調べる（ポインタによる走査）
+*/
+
+#include <stdio.h>
+
+/*--- 文字列sの長さを返す ---*/
+int str_length(const char *s)
+{
+	int len = 0;
+
+	while (*s++)
+		len++;
+	return len;
+}
+
+int main(void)
+{
+	char str[128];
+
+	printf("文字列を入力してください：");
+	scanf("%s", str);
+
+	printf("文字列\"%s\"の長さは%dです。\n", str, str_length(str));
+
+	return 0;
+}
+
+#+END_SRC
+*** 文字列のコピー
+**** List 11-6
+*d++ = *s++
+は，*d に *s を代入したあと，両方をインクリメントしている．
+
+#+BEGIN_SRC C
+/*
+	文字列をコピーする
+*/
+
+#include <stdio.h>
+
+/*--- 文字列sをdにコピーする ---*/
+char *str_copy(char *d, const char *s)
+{
+	char *t = d;
+
+	while (*d++ = *s++)
+		;
+	return t;
+}
+
+int main(void)
+{
+	char str[128] = "ABC";
+	char tmp[128];
+
+	printf("str = \"%s\"\n", str);
+
+	printf("コピーするのは：", tmp);
+	scanf("%s", tmp);
+
+	str_copy(str, tmp);
+
+	puts("コピーしました。");
+	printf("str = \"%s\"\n", str);
+
+	return 0;
+}
+
+#+END_SRC
+*** 文字列の不正なコピー
+*** ポインタを返す関数
 ** 文字列を扱うライブラリ関数
 ** まとめ
 
