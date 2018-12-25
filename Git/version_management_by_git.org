@@ -1,6 +1,7 @@
 #+TITLE: Gitによるバージョン管理
 #+STARTUP: overview
 #+TAGS: important
+#+PROPERTY: header-args :results scalar
 * 入門編
 ** Gitとは
 *** バージョン管理システムとは
@@ -1071,7 +1072,7 @@ git blame
 
 *** リモートリポジトリの管理および更新を行う
 
-*** TODO ブランチをマージする
+*** DONE ブランチをマージする
 マージコミットの差分の見方
 @@@ -1, 4 -1, 3 +1, 8 @@@
   A               <- ここは共通部分．Base または stage 1 という．
@@ -1088,6 +1089,68 @@ git blame
 *** ローカルリポジトリにリモートリポジトリのデータを反映する
 
 *** TODO ローカルブランチの作成・削除・確認・トラッキング
+**** ローカルブランチの確認 git branch
+#+BEGIN_SRC bash
+git branch
+#+END_SRC
+
+#+RESULTS:
+: * master
+
+**** リモートトラッキングブランチの確認 git branch -r
+#+BEGIN_SRC bash
+git branch -r
+#+END_SRC
+
+#+RESULTS:
+:   origin/HEAD -> origin/master
+:   origin/master
+
+**** 両方表示 git branch -a
+#+BEGIN_SRC bash
+git branch -a
+#+END_SRC
+
+#+RESULTS:
+: * master
+:   test
+:   remotes/origin/HEAD -> origin/master
+:   remotes/origin/master
+
+**** ブランチを作成する git branch 新ブランチ名 起点ブランチ名
+-v(erbose) でコミットメッセージ確認
+#+BEGIN_SRC bash
+git branch test master
+git branch -av
+#+END_SRC
+
+#+RESULTS:
+: * master                7224ebb [ahead 10] Solve ex 1.9
+:   test                  7224ebb Solve ex 1.9
+:   remotes/origin/HEAD   -> origin/master
+:   remotes/origin/master 3225319 Update
+
+****  ブランチ名の変更 git branch -m 旧ブランチ名 新ブランチ名
+通常，既存のブランチ名には変えられないが，-M をつけると上書きできる．ただし，当然履歴も上書きされるので注意．
+
+**** ブランチの削除 git branch -d 削除対象ブランチ名
+
+**** ブランチのトラッキング先
+
+***** あとから指定
+ローカルで開発用に作成したブランチ．
+pull しても当然失敗する．これを「トラッキング先がない状態」という．
+
+たとえば，リモートの master の変更をマージしたければ，
+git pull origin master
+と，明示的に指定すれば，以後 origin/master をトラッキングするようになる（のか？）．
+
+.git/config で指定してもよい（p. 135）．
+
+***** 作成時に指定-t
+上のような状況にならないように，ブランチ作成時にトラッキング先を指定することもできる．
+git branch fix-bug -t origin/master
+など．
 
 *** TODO ファイルの特定の行が最後に編集された履歴を追跡する git blame
 
