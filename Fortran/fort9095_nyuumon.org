@@ -1,5 +1,6 @@
 #+TITLE: 数値計算のためのFortran 90/95プログラミング入門
 #+STARTUP: overview
+#+OPTIONS: header-args :results output
 * はじめに
 ** Fortran 90/95の特徴
 - 簡単かつ簡潔
@@ -454,7 +455,7 @@ List 1.4 のプログラムを改良して，入力値を2つの整数m, n (m <=
     end program loop_inf
 #+END_SRC
 
-**** 演習 1.8
+**** DONE 演習 1.8
 #+BEGIN_SRC fortran :tangle ex0108.f90
   program prime
   implicit none
@@ -472,8 +473,38 @@ write(*, *) 'Yes'
   end program prime
 #+END_SRC
 
-
 **** 演習 1.9
+#+BEGIN_SRC fortran :tangle ./ex0109.f90
+program max_common_devisor
+implicit none
+integer m, n, tmp, r
+
+write(*, *) 'm:'
+read(*, *) m
+write(*, *) 'n:'
+read(*, *) n
+
+if (n .gt. m) then
+   tmp = n
+   n = m
+   m = tmp
+endif
+
+r = modulo(m, n)
+do
+   if (r /= 0) then
+      exit
+   endif
+   m = n
+   n = r
+   r = modulo(m, n)
+enddo
+   
+write(*, *) '最大公約数は', r, 'です．'
+
+
+end program max_common_devisor
+#+END_SRC
 **** 演習 1.10
 ** 実数型変数を用いる反復計算
 ** 反復計算の簡単な応用例
@@ -499,3 +530,12 @@ character(30) : char1 = 'Fortran'
 write(*, '(a5)') char ! charを5文字幅で出力
 
 桁数を指定しないと，全部書き出す．
+* つまづきポイント
+剰余関数はmodulo(a, p)
+
+これは間違い -> write(*, *) '答えは%dです', ans
+こう書くこと -> write(*, *) '答えは', ans, 'です'
+
+while はないので，do ループを使い，exit させる．
+
+stop 文はプログラム自体を終了させてしまうので，ループを抜けるのには使えない．
