@@ -1,5 +1,6 @@
 #+TITLE: Rパッケージ開発入門
 #+STARTUP: overview
+#+PROPERTY: header-args :results output
 * 第一歩
 ** はじめに
 なぜ本書で学ぶスキルが重要か
@@ -1371,11 +1372,60 @@ C++ の関数がエクスポートされると，自動的にラッパー関数�
 *** 開発ワークフロー
 *** CRAN に関する課題
 ** TODO インストール済のファイル
-inst/
-任意の追加ファイルを入れる．
-- 引用
-- ライセンス
-- 著作権
+パッケージがインストールされると，inst/ の中のファイルが全てパッケージディレクトリのトップにコピーされる．
+この動作は，トップレベルからファイルを取り除く.Rbuildignore とまるで反対．
+
+inst/ には何を置いてもいいが，既存のディレクトリと同じ名前の左図ディレクトリは当然だめ．
+
+inst/ の一般的なファイルの説明
+- inst/AUTHOR と inst/COOPYRIGHT: パッケージの作者などが複雑なとき，別途これらのテキストファイルに情報を入れても良い
+- inst/CITATION: パッケージの引用方法
+- inst/docs: 昔，vignette の代わりに使われていたもの．今は使わないべき
+- inst/extdata: 例や vignette のための外部データを置く．
+- inst/java, inst/python: [[*R %E4%BB%A5%E5%A4%96%E3%81%AE%E8%A8%80%E8%AA%9E][R 以外の言語]] 参照
+
+
+*** パッケージの利用
+citation()
+
+**** 引数なしだとR の引用方法が出る
+#+BEGIN_SRC R
+citation()
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+
+To cite R in publications use:
+
+  R Core Team (2018). R: A language and environment for statistical
+  computing. R Foundation for Statistical Computing, Vienna, Austria.
+  URL https://www.R-project.org/.
+
+A BibTeX entry for LaTeX users is
+
+  @Manual{,
+    title = {R: A Language and Environment for Statistical Computing},
+    author = {{R Core Team}},
+    organization = {R Foundation for Statistical Computing},
+    address = {Vienna, Austria},
+    year = {2018},
+    url = {https://www.R-project.org/},
+  }
+
+We have invested a lot of time and effort in creating R, please cite it
+when using it for data analysis. See also ‘citation("pkgname")’ for
+citing R packages.
+
+#+end_example
+
+
+**** 自分のパッケージ用にカスタムするには
+inst/CITATION を作成し，bibtex っぽく書く．
+書き方は略．
+*** R 以外の言語
+他の言語で書かれた補助スクリプトを含める場合，inst/python/ などにスクリプトを置くことになっている．
+しかし，外部への依存関係が出てしまうので，一般に他の言語の使用は推奨されない．
 ** その他のコンポーネント
 - demo/
 - exec/
