@@ -1,0 +1,199 @@
+#+TITLE: Docker
+#+startup: overview
+* 第I部 背景と基本
+** 第1章 コンテナとはなにか
+*** コンテナとVM
+VMとはちがう
+どこが？
+**** 各種特徴
+- ホストOSとリソースを共有する
+- 環境が完全に同じになる
+- 軽いので，同時にたくさん実行できる
+- エンドユーザーからすると，設定やインストールに時間をとられない
+**** そもそものゴール
+VMは環境のエミュレート，コンテナはポータビリティ
+*** Dockerとコンテナ
+コンテナの概念自体は古いが，Dockerがもたらした新技術によって普及した
+- Swarm: クラスタマネージャ
+- Kitematic: コンテナを扱うGUI
+- Machine: ホストをプロビジョニングするためのコマンドラインutil
+- Docker Hub: コンテナ配布のためのクラウドサービス
+** 第2章 インストール
+** 第3章 はじめの一歩
+*** 初めてのイメージ実行
+ダウンロードも自動でされる．
+*** 基本のコマンド群
+- docker run -h -i -t
+- docker inspect: 詳細な情報
+- docker diff: 変更履歴
+- docker logs:
+- docker rm:
+- docker commit: イメージ化．でも，手作業はめんどい．
+fortuneの格言を，cowsayに喋らせて遊ぶ．
+*** Dockerfile からのイメージ構築
+- docker build: これでイメージができる
+- docker run: cowsayコマンドいらなくなる．でも，fortuneとの連携がなくなってしまった．
+- entrypoint.sh: 引数があるときはそれをcowsayにわたす．ないときは，fortuneの出力をcowsayにわたす．
+イメージとコンテナの違い: 複数のレイヤがイメージを作っており，docker runやdocker createによってイメージがコンテナに変換される．
+*** レジストリでの作業
+Docker Hubにアップロードできる
+*** Redisの公式イメージの利用
+よくわからんが，データを追加し，それをバックアップして永続化できるらしい．
+** 第4章 Dockerの基礎
+ポイントだけ見ておき，第5章を読んだあとに戻ってきてもいいとのこと．
+*** Dockerのアーキテクチャ
+- デーモン
+- クライアント
+- イメージ:
+- レジストリ: イメージの保存と配布．ふつうDocker Hubがやる．
+**** 基盤の技術
+Dockerデーモンは，実行ドライバを使ってコンテナを作成する．
+これはDocker独自のruncドライバで，以下のカーネルの機能と密接につながっている．
+- cgroups
+- namespaces: コンテナの隔離
+- Union File System
+**** 周辺の技術
+以下の支援技術から成り立っている．
+- Swarm: 複数のDockerホストをまとめる
+- Compose: アプリ構築と実行
+- Machine: Dockerホストをインストール，設定
+- Kitematic: コンテナ実行と管理のためのGUI．MacOSとWindowsのためのもの．
+- Docker Trusted Registry:
+- ネットワーキング
+- サービスディスカバリ
+- オーケストレーションおよびクラスタ管理
+**** Dockerのホスティング
+クラウドプロバイダの多くが，Dockerを提供している．
+*** イメージの構築
+**** ビルドコンテキスト
+DockerfileのADDやCOPYから参照できる，ローカルファイルやディレクトリの集合．
+**** イメージのレイヤ
+Dockerfileの命令の数だけレイヤが作られる？
+**** キャッシュ
+高速化が目的
+**** ベースイメージ
+公式のイメージを使うと，いい結果が得られることか多い．
+先人たちの努力の恩恵に預かることができる
+**** Dockerfileの命令
+- ADD
+- CMD
+- COPY
+- ENTRYPOINT
+- ENV
+- EXPOSE
+- FROM
+- MAINTAINER
+- ONBUILD
+- RUN
+- USR
+- VOLUME
+- WORKDIR
+*** 外界とのコンテナの接続
+コンテナ内でWebサーバを動作させ，外部からアクセスできる．
+*** コンテナのリンク
+コンテナ同士で通信させる．
+*** ボリュームとデータコンテナを使ったデータの管理
+ボリュームの宣言方法
+- 実行時に -vオプションで
+- Dockerfile内でVOLUME命令で（おすすめ？）
+- -v HOST_DIR:CONTAINER_DIRとする（ポータブルでなくなるのてよくない）
+**** データの共有
+--volumes-from CONTAINERとして，データを共有できる
+**** データコンテナ
+他のコンテナとデータを共有することだけを目的としたコンテナを作ってもいい．
+*** Dockerの一般的なコマンド
+日々進化しているので，公式HPを見ること．
+**** run
+***** -a, --attach
+コンテナのstdoutなどをターミナルにアタッチ
+***** -d, --detach
+コンテナはバックグラウンドで動く
+***** -i, --interactive
+stdinをオープンにしたままで
+***** --restart
+終了したコンテナをDockerが再起動しようとするタイミングを指定
+***** --rm
+終了時にコンテナを自動的に削除
+***** -t, --tty
+キーボードからの制御
+***** -e, --env
+コンテナ内の環境変数を設定
+***** -h, --hostname
+コンテナのUnixホスト名を設定
+***** -name NAME
+NAMEという名前空間をコンテナに割り当てる
+***** -v --volume
+ボリュームを宣言する
+***** --volumes-from
+指定されたコンテナからボリュームをマウントする
+***** --expose
+コンテナで使われるポートやその範囲を指定する．-pコマンドとともに使う
+***** --link
+プライベートなネットワークをつくる
+***** -p, --publish
+コンテナのポートを公開
+***** -p, --publish-all
+コンテナの開放されたポートをすべて公開
+***** --entrypoint
+コンテナのエントリポイントを指定された引数に設定する．
+***** -u, user
+コマンドを実行するユーザを指定する
+***** -w, --workdir
+作業ディレクトリを指定
+**** コンテナの管理
+***** docker attach [OPT] CONTAINER
+***** docker create
+***** docker cp
+***** docker exec
+***** docker kill
+***** docker pause
+***** docker restart
+***** docker rm
+***** docker start
+***** docker stop
+***** docker unpause
+**** Dockerの情報
+***** docker info
+***** docker help
+***** docker version
+**** コンテナの情報
+***** docker diff
+***** docker events
+***** docker inspect
+***** docker logs
+***** docker port
+***** docker ps
+***** docker top
+**** イメージの扱い
+***** docker build
+***** docker commit
+***** docker export
+***** docker history
+***** docker images
+***** docker import
+***** docker load
+***** docker rmi
+remove image
+***** docker save
+***** docker tag
+デフォルトは，latest
+**** レジストリの利用
+Docker Hubを利用するためのコマンド
+***** docker login
+***** docker logout
+***** docker pull
+***** docker push
+***** docker search
+*** まとめ
+ここまでの内容は，第II部の実践の様子を見てからの方が，わかりやすいだろう．
+* 第II部 Dockerのあるソフトウェアライフサイクル
+** 第5章 開発でのDockerの利用
+** 第6章 シンプルなWebアプリケーションの作成
+** 第7章 イメージの配布
+** 第8章 Dockerを使った継続的インテグレーションとテスト
+** 第9章 コンテナのデプロイ
+** 第10章 ロギングとモニタリング
+* 第III部 ツールとテクニック
+** 第11章 ネットワーキングとサービスディスカバリ
+** 第12章 オーケストレーション，クラスタリング，管理
+** 第13章 セキュリティとコンテナに対する制限
