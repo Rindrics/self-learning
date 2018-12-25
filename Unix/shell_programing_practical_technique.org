@@ -2654,6 +2654,18 @@ echo オジｻンのメール | nkf | nkf -Z4
 ** オフィススイートとの連携
 * CLI的インターネットとの付き合い方
 ** Web サイトの活用
+*** Web サイトをまるごとダウンロードする
+#+BEGIN_SRC bash
+cd ../C/meikai/answer
+#wget -r http://meikaicansewer.blogspot.com
+#tree
+ls -l
+#+END_SRC
+
+#+RESULTS:
+: total 0
+: drwxr-xr-x  7 ahayashi  staff  238 Dec 25 13:21 meikaicansewer.blogspot.com
+
 ** HTML 文書の加工
 ** サーバをまたいだ処理
 ** 電子メールの活用
