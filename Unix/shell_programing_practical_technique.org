@@ -2267,6 +2267,7 @@ cat mistery.txt | grep -o 私は | uniq -c
 -> GNU sed の機能だから．
 Mac や BSD にインストールされている，オリジナルの sed にはない．
 Mac ではLcoreutils をインストールすれば，gsed コマンドで GNU sed が使えるらしい．
+
 #+BEGIN_SRC sh
   cat mistery.txt | sed 's/私は/\\n&\\n/g' | cat
 #+END_SRC
@@ -2652,6 +2653,172 @@ echo オジｻンのメール | nkf | nkf -Z4
 ** 画像処理
 ** フォーマットの換
 ** オフィススイートとの連携
+*** 基本（数字しかない場合）
+**** 解凍する
+#+BEGIN_SRC bash
+cd example
+ls book*
+unzip book.xlsx
+#unzip book.xlsx
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+book.xlsx
+Archive:  book.xlsx
+  inflating: [Content_Types].xml     
+  inflating: _rels/.rels             
+  inflating: xl/_rels/workbook.xml.rels  
+  inflating: xl/workbook.xml         
+  inflating: xl/sharedStrings.xml    
+  inflating: xl/theme/theme1.xml     
+  inflating: xl/styles.xml           
+  inflating: xl/worksheets/sheet1.xml  
+ extracting: docProps/thumbnail.jpeg  
+  inflating: docProps/core.xml       
+  inflating: docProps/app.xml        
+#+end_example
+**** 解凍後のディレクトリ構造
+数字のデータは sheet1.xml の中にある
+#+BEGIN_SRC bash
+cd example
+tree
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+.
+|-- [Content_Types].xml
+|-- _rels
+|-- book.xlsx
+|-- docProps
+|   |-- app.xml
+|   |-- core.xml
+|   `-- thumbnail.jpeg
+`-- xl
+    |-- _rels
+    |   `-- workbook.xml.rels
+    |-- sharedStrings.xml
+    |-- styles.xml
+    |-- theme
+    |   `-- theme1.xml
+    |-- workbook.xml
+    `-- worksheets
+        `-- sheet1.xml
+
+6 directories, 11 files
+#+end_example
+**** データを取り出す
+#+BEGIN_SRC bash
+cd example
+cat xl/worksheets/sheet1.xml | # 改行されていない！！
+ grep -o 'r="[A-Z]*[0-9]*"><v>[^<]*' | # <c r="A3"><v>3</v></c> みたいなタグを頼りに，改行する．
+ tr '"<>' ' '| awk '{print $2,$4}' # セル位置と値を取り出す
+#+END_SRC
+
+#+RESULTS:
+: A1 1
+: A2 2
+: A3 3
+: A4 -4.2300000000000004
+**** hxselect を使う
+#+BEGIN_SRC bash
+# brew install html-xml-utils
+cd example
+cat xl/worksheets/sheet1.xml | # 改行されていない！
+ hxselect c |# データは取り出せたがまだ改行がない!
+ sed 's;</c>;&\\n;g' # babel 環境では表示されないけどできた！
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC org
+<c r="A1"><v>1</v></c>\n<c r="C1" t="s"><v>0</v></c>\n<c r="A2"><v>2</v></c>\n<c r="C2" t="s"><v>1</v></c>\n<c r="A3"><v>3</v></c>\n<c r="C3" t="s"><v>2</v></c>\n<c r="A4"><v>-4.2300000000000004</v></c>\n
+#+END_SRC
+*** 文字列が存在する場合
+#+BEGIN_SRC bash
+cd example
+rm [Content_Types].xml
+rm -r docProps
+rm -r _rels
+rm -r xl
+unzip book2.xlsx
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Archive:  book2.xlsx
+  inflating: [Content_Types].xml     
+  inflating: _rels/.rels             
+  inflating: xl/_rels/workbook.xml.rels  
+  inflating: xl/workbook.xml         
+  inflating: xl/sharedStrings.xml    
+  inflating: xl/theme/theme1.xml     
+  inflating: xl/styles.xml           
+  inflating: xl/worksheets/sheet1.xml  
+ extracting: docProps/thumbnail.jpeg  
+  inflating: docProps/core.xml       
+  inflating: docProps/app.xml        
+#+end_example
+**** 文字がない？
+#+BEGIN_SRC bash
+cd example
+cat xl/worksheets/sheet1.xml | hxselect c | sed 's;</c>;&\\n;g'
+#+END_SRC
+
+#+RESULTS:
+: <c r="A1"><v>1</v></c>\n<c r="C1" t="s"><v>0</v></c>\n<c r="A2"><v>2</v></c>\n<c r="C2" t="s"><v>1</v></c>\n<c r="A3"><v>3</v></c>\n<c r="C3" t="s"><v>2</v></c>\n<c r="A4"><v>-4.2300000000000004</v></c>\n
+**** 文字はsharedStrings にある
+この番号とsheet1.xml の番号が対応しているというまどろっこしい方法．
+#+BEGIN_SRC bash
+cd example
+cat xl/sharedStrings.xml
+#+END_SRC
+
+#+RESULTS:
+: <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+: <sst xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" count="3" uniqueCount="3"><si><t>方</t></si><si><t>眼</t></si><si><t>紙</t></si></sst>
+**** 各セルの文字列を取り出すにはどうするか？
+- sharedStrings.xml の si 要素に番号をつけてマスタを作る
+- sheet1.xml の文字列のセルと join する
+これをやるために，Tsukubai の cjoin1 が便利．
+**** 文字列のマスタファイルを作る
+#+BEGIN_SRC bash :results vervatim
+cd example
+#cat xl/sharedStrings.xml | hxselect si | sed 's;</si>;&\\n;g' | sed 's/<si><t>//' | sed 's/<.*//' | awk '{print NR-1,$1}' > master
+cat master
+#+END_SRC
+
+#+RESULTS:
+: 0 方
+: 1 眼
+: 2 紙
+
+**** 文字列のリストを作る
+#+BEGIN_SRC bash
+cd example
+#cat xl/worksheets/sheet1.xml | hxselect c | sed 's;</c>;\n;g' | grep 't="s"' | sed 's;<c r="\(.*\)" t="s"><v>\(.*\)</v>;\1 \2;' > tmp
+cat tmp
+#+END_SRC
+
+#+RESULTS:
+: C1 0
+: C2 1
+: C3 2
+
+
+**** join1 する
+#+BEGIN_SRC bash
+cd example
+cat tmp | cjoin1 key=2 master ~ | delf 2 > strings
+cat strings
+cat tmp
+#+END_SRC
+
+#+RESULTS:
+: C1 0
+: C2 1
+: C3 2
+
 * CLI的インターネットとの付き合い方
 ** Web サイトの活用
 *** Web サイトをまるごとダウンロードする
