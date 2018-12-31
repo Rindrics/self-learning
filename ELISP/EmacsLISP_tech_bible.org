@@ -2,23 +2,6 @@
 #+STARTUP: overview
 #+TAGS: 必修 知らなかった 気づき わからん
 * 必修
-** S式編集
-- C-M-f: 次のS式へ移動する
-- C-M-b: 前のS式へ移動する
-- C-M-d: リストの内側へ入る
-- C-M-u: リストの外側へ出る
-- C-M-SPC: S式をマークする
-- C-M-k: S式をカットする
-- C-M-t: S式を入れ替える
-- M-(: 括弧で囲む
-- M-s: 括弧を外す
-#+BEGIN_SRC elisp
-  (defun a (test)
-    (test (foo bar baz) hello) bye
-    (foo bar baz))
-  (defun hello ()
-    (setq a b))
-#+END_SRC
 ** マニュアル
 - <f1> m: describe-mode．キーバインドも見れる．
 * 逆引き目次
@@ -593,6 +576,8 @@ nil を評価すると必ず nil になってしまう．
   (eq obj '(1 (2)))                       ; => nil
 #+END_SRC
 ** 条件分岐
+when とか unless とか if とか言ってるけど，
+結局，全部 cond でできる．
 *** 真偽値
 真はt, 偽はnil．
 elisp の予約語はこれだけ．
@@ -655,10 +640,113 @@ if は，条件を満たした時に真フォームが実行され，満たさ�
         "10 は偶数"
       "10 は奇数"))                       ; => "10 は偶数"
 #+END_SRC
-*** 複数の式をひとまとめにする
-*** if + progn をすっきり書く
-*** 多重条件分岐
-*** 論理式
+*** 複数の式をひとまとめにする progn（欠点あり）　
+if の真フォームとして複数のフォームを置きたい時，progn にまとめ役をやってもらう．
+**** 3種類のprogn
+***** 普通のprogn/ 最後に評価したフォーム返す
+#+BEGIN_SRC elisp
+  (progn
+    1
+    2)                                    ; => 2
+#+END_SRC
+***** prog1/ 最初のフォームを返す
+不思議なインデントだなぁ
+#+BEGIN_SRC elisp
+  (prog1
+      1
+    2)                                    ; => 1
+#+END_SRC
+***** prog2/ 2番目のフォームを返す
+#+BEGIN_SRC elisp
+  (prog2
+      1
+      2)                                  ; => 2
+#+END_SRC
+**** ifとの連携（かっこ悪いので非推奨）
+#+BEGIN_SRC elisp
+  (let (a b)
+    (if (= 1 1)
+        (progn                            ;真フォーム
+          (setq a 2)                      ;ここのインデントが偽フォームと揃っていない
+          (setq b 3))                     ;ここのインデントが偽フォームと揃っていない
+      (setq a 10)                         ;偽フォーム
+      (setq b 20))                        ;偽フォーム
+    (list a b))                           ; => (2 3)
+#+END_SRC
+*** cond を使ってすっきり書く
+#+BEGIN_SRC elisp
+  ;;; if + progn だとインデントが揃わない
+  (let (a b)
+    (if (= 1 1)
+        (progn
+          (setq a 2)
+          (setq b 3))
+      (setq a 10)
+      (setq b 20))
+    (list a b))                           ; => (2 3)
+
+  ;;; cond を使ってスッキリ書こう
+  (let (a b)
+    (cond ((= 1 1)
+           (setq a 2)
+           (setq b 3))
+          (t
+           (setq a 10)
+           (setq b 20)))
+    (list a b))                           ; => (2 3)
+#+END_SRC
+*** 多重条件分岐 cond もネストできる
+#+BEGIN_SRC elisp
+  ;;; ネストしたif
+  (if (zerop (% 10 4))
+      "10 は 4 の倍数"
+    (if (zerop (% 10 2))
+        "10 は偶数"
+      "10 は奇数"))                   ; => "10 は偶数"
+
+  ;;; cond で書いてみる
+  (cond ((zerop (% 10 4))
+         "10 は 4 の倍数")
+         ((zerop (% 10 2))
+             "10 は偶数")
+         (t
+          "10 は奇数"))                   ; => "10 は偶数"
+#+END_SRC
+*** 論理式 or と and
+or や and は関数ではなく，スペシャルフォーム．
+なので，真偽が確定するまではフォームを評価していくが，確定した時点で以後のフォームは無視する．
+
+#+BEGIN_SRC elisp
+  ;;; and
+  (and t t)                               ; => t
+  (and nil t)                             ; => nil
+
+
+  ;;; or
+  (or nil nil)                            ; => nil
+  (or nil t)                              ; => t
+  (or t nil)                              ; => t
+
+  ;;; or は論理値が確定した時点で後のフォームは評価しない
+  (or 1 2)                                ; => 1
+  (or 1 2 3)                              ; => 1
+  ;;; and との挙動の違いに注意
+  (and 1 2)                               ; => 2
+  (if 1 2)                                ; => 2
+  (and 1 2 3)                             ; => 3
+
+  ;;; ド・モルガンの法則
+  ;;;  and not not は not or と同じこと
+  (not t)                                 ; => nil
+  (not nil)                               ; => t
+  (and (not t) (not nil))                 ; => nil
+  ;;; not一つで表現すると
+  (not (or t nil))                        ; => nil
+
+  ;;; or not not は not and と同じこと
+  (or (not t) (not nil))                  ; => t
+  (not (and t nil))                       ; => t
+#+END_SRC
 ** ループ
 ** 正規表現
 
