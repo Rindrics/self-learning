@@ -1,7 +1,6 @@
 #+TITLE: Gitによるバージョン管理
 #+STARTUP: overview
 #+TAGS: important
-#+PROPERTY: header-args :results scalar
 * 入門編
 ** Gitとは
 *** バージョン管理システムとは
@@ -1067,12 +1066,11 @@ git blame
 *** この章のまとめ
 
 ** TODO 複数人で開発する場合に利用するGitコマンド
-
 *** リモートリポジトリをローカルにコピーする
 
 *** リモートリポジトリの管理および更新を行う
 
-*** DONE ブランチをマージする
+*** TODO ブランチをマージする
 マージコミットの差分の見方
 @@@ -1, 4 -1, 3 +1, 8 @@@
   A               <- ここは共通部分．Base または stage 1 という．
@@ -1151,6 +1149,7 @@ git pull origin master
 上のような状況にならないように，ブランチ作成時にトラッキング先を指定することもできる．
 git branch fix-bug -t origin/master
 など．
+*** TODO ローカルブランチの作成・削除・確認・トラッキング
 
 *** TODO ファイルの特定の行が最後に編集された履歴を追跡する git blame
 
