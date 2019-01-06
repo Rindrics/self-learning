@@ -809,7 +809,38 @@ while を使うべき状況は，カーソル移動を実装するときのみ�
 *** 正規表現に一致した文字列を得る
 *** M-x re-builder で正規表現を対話的に組み立てる
 ** 関数定義
+*** 関数定義の方法 defun
+elispでプログラミングするということは，関数を定義することに他ならない！！！
+elispプログラムを使うということは，関数を呼び出すこと！！！
+#+BEGIN_SRC elisp
+  ;;; ただのformat文
+  (format "身長%.2fm 体重%.1fkg BMI%.1f" 1.63 60.0 (/ 60.0 1.63 1.63)) ; => "身長1.63m 体重60.0kg BMI22.6"
 
+  ;;; 関数化する
+  (defun bmi-string (height weight)
+    (format "身長%.2fm 体重%.1fkg BMI%.1f" height weight (/ weight height height))) ; => bmi-string
+
+  ;;; 使ってみる
+  (bmi-string 1.75 65.0)                  ; => "身長1.75m 体重65.0kg BMI21.2"
+#+END_SRC
+*** 関数定義の意義 もう1段階関数化する
+#+BEGIN_SRC elisp
+  ;; 部品としてbmi関数を作る
+  (defun bmi (height weight)
+    "体格指数 = 体重 / （身長 * 身長）"   ; ここは関数の説明文字列
+    (/ weight height height))             ; => bmi
+
+  ;; bmi-string 関数を bmi 関数を使って書き直す
+  (defun bmi-string (height weight)
+    (format "身長%.2fm 体重%.1fkg BMI%.1f" height weight (/ weight height height))) ; => bmi-string
+
+  ;;; 使ってみる
+  (bmi 1.63 60 )                          ; => 22.582709172343712
+  (bmi-string 1.63 60)                    ; => "身長1.63m 体重60.0kg BMI22.6"
+#+END_SRC
+*** 省略可能引数
+*** 可変長引数
+*** 無名関数
 ** コマンド定義
 
 ** コード
