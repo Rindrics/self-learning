@@ -1,6 +1,7 @@
 #+TITLE: Emacs LISP テクニックバイブル
 #+STARTUP: overview
 #+TAGS: 必修 知らなかった 気づき わからん
+#+PROPERTY header-args :session *elisp*
 * 必修
 ** マニュアル
 - <f1> m: describe-mode．キーバインドも見れる．
@@ -823,9 +824,14 @@ elispプログラムを使うということは，関数を呼び出すこと！
   ;;; 使ってみる
   (bmi-string 1.75 65.0)                  ; => "身長1.75m 体重65.0kg BMI21.2"
 #+END_SRC
+
+#+RESULTS:
+: 身長1.75m 体重65.0kg BMI21.2
+
 *** 関数定義の意義 もう1段階関数化する
+**** 部品としてbmi関数を作る
 #+BEGIN_SRC elisp
-  ;; 部品としてbmi関数を作る
+
   (defun bmi (height weight)
     "体格指数 = 体重 / （身長 * 身長）"   ; ここは関数の説明文字列
     (/ weight height height))             ; => bmi
@@ -838,9 +844,59 @@ elispプログラムを使うということは，関数を呼び出すこと！
   (bmi 1.63 60 )                          ; => 22.582709172343712
   (bmi-string 1.63 60)                    ; => "身長1.63m 体重60.0kg BMI22.6"
 #+END_SRC
-*** 省略可能引数
-*** 可変長引数
-*** 無名関数
+
+#+RESULTS:
+: 身長1.63m 体重60.0kg BMI22.6
+
+**** 肥満化どうかを返す関数を作る
+#+BEGIN_SRC elisp
+  (defun bmi-fat-p (height weight)
+    "肥満ならばtを返す"
+    (<= 25 (bmi height weight)))          ; => bmi-fat-p
+
+  ;;; 使ってみる
+  (bmi-fat-p 1.75 65)                     ; => nil
+  (bmi-fat-p 1.75 78)                     ; => t
+#+END_SRC
+
+#+RESULTS:
+
+**** 教訓: 関数化せよ
+コメントではなく，極力関数化せよ．
+*** 省略可能引数 &optional
+#+BEGIN_SRC elisp
+  ;;; aは必須引数
+  ;;; bとcは省略可能引数
+  (defun optional-arg (a &optional b c)
+    (setq c (or c 20))                    ; or を使ってデフォルト引数もどき
+    (list a b c))                         ; => optional-arg
+
+  ;;; 使ってみる
+  (optional-arg 'apple nil nil)           ; => (apple nil 20)
+  (optional-arg nil 30 'orange)           ; => (nil 30 orange)
+#+END_SRC
+*** 可変長引数 &rest
+**** 可変長引数をとる関数の例
+- 四則演算
+- format関数
+**** &rest で指定する
+#+BEGIN_SRC elisp
+  (defun rest-arg (a &optional b &rest c)
+    (list a b c))                         ; => rest-arg
+
+  ;;; 使ってみる
+  (rest-arg 1)                            ; => (1 nil nil)
+  (rest-arg 1 2)                          ; => (1 2 nil)
+  (rest-arg 1 2 3)                        ; => (1 2 (3))
+  (rest-arg 1 2 3 4 5 6)                  ; => (1 2 (3 4 5 6))
+  (caaddr (rest-arg 1 2 3 4 5 6))         ; => 3
+#+END_SRC
+*** 無名関数 重要なので詳しくは後で
+関数そのものが返る．
+#+BEGIN_SRC elisp
+  (lambda a b c)                          ; => (lambda a b c)
+#+END_SRC
+
 ** コマンド定義
 
 ** コード
