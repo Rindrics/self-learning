@@ -1,6 +1,7 @@
 #+TITLE: Land of Lisp
 #+TAGS: cannot beyond important
 #+STARTUP: overview
+#+PROPERTY: header-args :results scalar
 * はじめに
 * LISP は力なり
 ** さあLisp を始めてみよう
@@ -67,8 +68,6 @@ Haskell は Lisp 方言ではないが，パラダイムを共有している
 : 200
 
 [[/Users/ahayashi/Documents/GitHub/study/Programing/land_of_lisp/code/guess.lisp][コード]]
-
-
 
 ***** TODO 文字列を変数として定義する方法を調べる
 ***** TODO 耳あて**つきの変数を定義する方法を調べる
@@ -213,13 +212,50 @@ print("hello, world!!")
 独立した単語．
 多言語に比べて使える記号の種類が多い．
 **** 数値
-**** 文字列
-*** Lisp はコードとデータをどう区別するか
+他の言語に比べて巨大な数値も扱える．
+有理数をそのまま保持しておけるので，浮動小数点に汚染されずに済む．
+#+BEGIN_SRC lisp
+(/ 4 6)
+#+END_SRC
+
+#+RESULTS:
+: 2/3
+#+BEGIN_SRC lisp
+(/ 4.0 6)
+#+END_SRC
+
+#+RESULTS:
+: 0.6666667
+
+**** 文字列 princ
+#+BEGIN_SRC lisp
+  (princ "Tutti Frutti")
+#+END_SRC
+
+#+RESULTS:
+: "Tutti Frutti"
+エスケープ文字はバックスラッシュ\とダブルクオート"．
+
+*** Lisp はコードとデータをどう区別するか/ クオートで．
 **** コードモード
 デフォルト．
 リストの最初の要素が関数，あとは引数．
+#+BEGIN_SRC lisp
+  (expt 2 3)
+#+END_SRC
+
+#+RESULTS:
+: 8
+
 **** データモード
 ' を付けたフォームは評価されずに保持される
+#+BEGIN_SRC lisp
+'(expt 2 3)
+#+END_SRC
+
+#+RESULTS:
+: (EXPT 2 3)
+
 *** Lisp とリスト
 (expt 2 3) というフォームは，expt というシンボルと，2つの数値からできている．
 
@@ -230,9 +266,60 @@ Lisp で家を建てるなら，壁はリストでできている．
 ***** cons
 コンスセルの連続とリストは同じもの．
 でもLisp は基本的にリストとして表示する．見やすいから．
+#+BEGIN_SRC lisp
+  (cons 'chicken 'cat)
+#+END_SRC
+
+#+RESULTS:
+: (CHICKEN . CAT)
+#+BEGIN_SRC lisp
+(cons 'chicken nil)
+#+END_SRC
+
+#+RESULTS:
+: (CHICKEN)
+****** 空のリストはnilと同じ．
+
+#+BEGIN_SRC lisp
+(cons 'chicken ())
+#+END_SRC
+
+#+RESULTS:
+: (CHICKEN)
+
+
+#+BEGIN_SRC lisp
+(cons 'beef (cons 'chicken ()))
+#+END_SRC
+
+#+RESULTS:
+: (BEEF CHICKEN)
+
 ***** car と cdr
 - car: 1番目の要素を取り出す．
 - cdr: 2番目の要素を取り出す．リストの場合は1番目以外の全てとなる．
+#+BEGIN_SRC lisp
+(car '(beef chicken pork))
+#+END_SRC
+
+#+RESULTS:
+: BEEF
+
+#+BEGIN_SRC lisp
+(cdr '(beef chicken pork))
+#+END_SRC
+
+#+RESULTS:
+: (CHICKEN PORK)
+
+****** cadr: cdr の car
+#+BEGIN_SRC lisp
+(cadr '(beef chicken pork))
+#+END_SRC
+
+#+RESULTS:
+: CHICKEN
+
 ***** list
 コンスセルの連続を書くのはめんどいだろ？
 list 関数を使うといいよ．
@@ -246,8 +333,31 @@ cdar は　(cdr (car '()) と同じ意味
 #+END_SRC
 
 #+RESULTS:
+: (CARROTES TOMATOES)
+***** 練習
+tomatoesを取り出そう．
+#+BEGIN_SRC lisp
+  (cddar '((peas carrotes tomatoes) (pork beef chicken)))
+#+END_SRC
+
+#+RESULTS:
+: (TOMATOES)
+
+nutsを取り出そう．エラーになった．
+4段階までしか，実装されていないみたい．
+それ以上の深さは，自分で定義するしかない．
+#+BEGIN_SRC lisp
+;  (cadddar '((peas carrotes tomatoes cucumbers pumpkins nuts peaches) (pork beef chicken)))
+#+END_SRC
+
+#+RESULTS:
+: TOMATOES
 
 *** 本章で学んだこと
+- Lispの括弧は，シンタックスの合理的な目印である
+- リストはコンスセルの連続である
+- cosnでコンスセルをつくっていくことで，リストが構成される
+- car と cdr を使ってリストの中身を調べることができる
 * LISP は対称なり
 ** 条件と判断
 ** テキストゲームのエンジンを作る
