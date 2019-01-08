@@ -2733,6 +2733,84 @@ r: 逆順
 テキストファイルを，dir構造もテキストで表しながら，1つのファイルにまとめる．
 逆もできる．
 ** ファイルの暗号化
+- 公開鍵暗号方式: ちゃんとした方法
+- パスワード方式: 弱い
+*** ファイルを公開鍵暗号方式で暗号化する
+**** 鍵の作成 *それぞれのコマンドで何をやっているのだろう？*
+
+#openssl genrsa -out seckey.pem -aes256 2048
+とすると，パスワードを2回聞かれる．
+
+#openssl rsa -in seckey.pem -pubout -out pubkey.pem
+とすると，パスワードを1聞かれる．
+
+すると，pubkey.pem （公開鍵）と seckey.pem （秘密鍵）ができている．
+#+BEGIN_SRC bash
+ls *pem
+#+END_SRC
+
+#+RESULTS:
+: pubkey.pem
+: seckey.pem
+**** 秘密のファイルを作る
+#+BEGIN_SRC bash
+echo 'ここだけの話，部長の鼻毛，付け鼻毛らしいよ．' > himitsu
+cat himitsu
+#+END_SRC
+
+#+RESULTS:
+: ここだけの話，部長の鼻毛，付け鼻毛らしいよ．
+**** 暗号化してみる
+#+BEGIN_SRC bash
+openssl rsautl -pubin -inkey pubkey.pem -in himitsu -encrypt -out himitsu.secret
+#+END_SRC
+
+#+RESULTS:
+*** パスワード方式の暗号化を行う/破る
+**** 内緒のファイルを作る
+#+BEGIN_SRC bash
+echo '内緒なのですが，隣の奥さん，ジャンボタニシなんですって．' > naishyo.txt
+cat naishyo.txt
+#+END_SRC
+
+#+RESULTS:
+: 内緒なのですが，隣の奥さん，ジャンボタニシなんですって．
+**** パスワード付きで圧縮する
+#+BEGIN_SRC bash
+zip -P 1234 naishyo.zip naishyo.txt
+#+END_SRC
+
+#+RESULTS:
+:   adding: naishyo.txt (deflated 5%)
+**** 読もうとしてみる
+そなままだともちろん文字化けして読めない
+#+BEGIN_SRC bash
+#cat naishyo.zip
+#+END_SRC
+
+パスワードを聞いてきて解凍できない
+#+BEGIN_SRC bash
+#unzip naishyo.zip
+#+END_SRC
+**** 総当たりで破ってみる
+破れてしまう．恐ろしい！！
+#+BEGIN_SRC bash
+seq -w 0 9999 | while read n ; do unzip -P $n -pq naishyo.zip ; done > log
+cat log
+#+END_SRC
+
+#+RESULTS:
+: 内緒なのですが，隣の奥さん，ジャンボタニシなんですって．
+
+破れたらすぐに止めるようにする
+2秒で破れてしまう
+#+BEGIN_SRC bash
+seq -w 0 9999 | while read n ; do unzip -P $n -pq naishyo.zip && exit 0; done 2> /dev/null
+#+END_SRC
+
+#+RESULTS:
+: 内緒なのですが，隣の奥さん，ジャンボタニシなんですって．
+
 ** 自動化
 ** ログからの情報抽出と活用
 ** プロセスに関する注意点
