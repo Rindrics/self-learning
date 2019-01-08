@@ -17,7 +17,7 @@ Python の規則と応用例を紹介する．
 広く浅く見ていく．
 まだ完全に理解できなくてOK．
 とりあえず楽しめ．
-*** The Taks
+*** TODO The Task
 *** Step1: Representing Records
 **** Using Lists
 *** Step2: Storing Records Persistently
