@@ -1,3 +1,4 @@
+
 #+TITLE: Emacs LISP テクニックバイブル
 #+STARTUP: overview
 #+TAGS: 必修 知らなかった 気づき わからん
@@ -898,6 +899,19 @@ elispプログラムを使うということは，関数を呼び出すこと！
 #+END_SRC
 
 ** コマンド定義
+コマンドとは，関数の一種．
+定義の最初にinteractiveが置いてあるだけ．
+*** はじめての自作コマンド/ message を使って
+#+BEGIN_SRC elisp
+  (defun hello-world ()
+    (interactive)
+    (message "%s" "Hello, world!"))       ; => hello-world
+
+  ;;; M-x hello-world で実行してみよう
+#+END_SRC
+*** interactive 宣言
+
+*** キーボードマクロをコマンドとして使えるようにする
 
 ** コード
 

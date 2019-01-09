@@ -1,5 +1,6 @@
 #+TITLE: Docker
 #+startup: overview
+#+property: header-args :results output :session *shell:docker*
 * 第I部 背景と基本
 ** 第1章 コンテナとはなにか
 アプリケーションを依存対象とともにカプセル化したもの．
@@ -198,6 +199,9 @@ Docker Hubを利用するためのコマンド
 *** まとめ
 ここまでの内容は，第II部の実践の様子を見てからの方が，わかりやすいだろう．
 * 第II部 Dockerのあるソフトウェアライフサイクル
+第I部では，コンテナの背後にある考え方を紹介し，その基本的な使い方に触れた．
+第II部では，Dockerを使ってWebアプリ構築，テスト，デプロイをやってみる．
+コンテナは，数ヶ月単位
 ** 第5章 開発でのDockerの利用
 テキストに対して画像を表示するアプリを開発する（GitHubのアカウントイメージなど）．
 Python と Flask を使うが，依存性の管理は全てDockerでやるので，インストール作業は必要ない．
@@ -205,6 +209,178 @@ Python と Flask を使うが，依存性の管理は全てDockerでやるので
 - コンテナベースのワークフローの利用方法
 - ツールの準備
 について学ぶ．
+*** "Hello, World!"
+テキストに従い，identidock.py と Dockerfile を作成した．
+p.72のflaskのインポートのインデントが間違っていた．
+#+BEGIN_SRC sh
+  tree
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+.
+|-- docker.org
+|-- docker.org~
+`-- identidock
+    |-- Dockerfile
+    `-- app
+        |-- identidock.py
+        `-- identidock.py~
+
+2 directories, 5 files
+#+end_example
+**** ビルド build -t
+#+BEGIN_SRC sh
+cd identidock
+docker build -t identidock .
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Sending build context to Docker daemon   5.12kB
+Step 1/5 : FROM python:3.4
+3.4: Pulling from library/python
+cd8eada9c7bb: Pulling fs layer
+c2677faec825: Pulling fs layer
+fcce419a96b1: Pulling fs layer
+045b51e26e75: Pulling fs layer
+83aa5374cd04: Pulling fs layer
+4700226d49ed: Pulling fs layer
+be308e58b7c7: Pulling fs layer
+c3da57aa10c1: Pulling fs layer
+2290aab05593: Pulling fs layer
+4700226d49ed: Waiting
+be308e58b7c7: Waiting
+c3da57aa10c1: Waiting
+045b51e26e75: Waiting
+83aa5374cd04: Waiting
+2290aab05593: Waiting
+fcce419a96b1: Verifying Checksum
+fcce419a96b1: Download complete
+c2677faec825: Verifying Checksum
+c2677faec825: Download complete
+cd8eada9c7bb: Download complete
+cd8eada9c7bb: Pull complete
+c2677faec825: Pull complete
+fcce419a96b1: Pull complete
+045b51e26e75: Verifying Checksum
+045b51e26e75: Download complete
+4700226d49ed: Verifying Checksum
+4700226d49ed: Download complete
+c3da57aa10c1: Verifying Checksum
+c3da57aa10c1: Download complete
+045b51e26e75: Pull complete
+2290aab05593: Verifying Checksum
+2290aab05593: Download complete
+be308e58b7c7: Verifying Checksum
+be308e58b7c7: Download complete
+83aa5374cd04: Verifying Checksum
+83aa5374cd04: Download complete
+83aa5374cd04: Pull complete
+4700226d49ed: Pull complete
+be308e58b7c7: Pull complete
+c3da57aa10c1: Pull complete
+2290aab05593: Pull complete
+Digest: sha256:5a813f0305e2edb26052f9490f321f7c515bf6f5a9461164891443695b85b293
+Status: Downloaded newer image for python:3.4
+ ---> ccbffa0d70d9
+Step 2/5 : RUN pip install Flask==0.10.1
+ ---> Running in 6b67b768eafb
+Collecting Flask==0.10.1
+  Downloading https://files.pythonhosted.org/packages/db/9c/149ba60c47d107f85fe52564133348458f093dd5e6b57a5b60ab9ac517bb/Flask-0.10.1.tar.gz (544kB)
+Collecting Werkzeug>=0.7 (from Flask==0.10.1)
+  Downloading https://files.pythonhosted.org/packages/20/c4/12e3e56473e52375aa29c4764e70d1b8f3efa6682bef8d0aae04fe335243/Werkzeug-0.14.1-py2.py3-none-any.whl (322kB)
+Collecting Jinja2>=2.4 (from Flask==0.10.1)
+  Downloading https://files.pythonhosted.org/packages/7f/ff/ae64bacdfc95f27a016a7bed8e8686763ba4d277a78ca76f32659220a731/Jinja2-2.10-py2.py3-none-any.whl (126kB)
+Collecting itsdangerous>=0.21 (from Flask==0.10.1)
+  Downloading https://files.pythonhosted.org/packages/76/ae/44b03b253d6fade317f32c24d100b3b35c2239807046a4c953c7b89fa49e/itsdangerous-1.1.0-py2.py3-none-any.whl
+Collecting MarkupSafe>=0.23 (from Jinja2>=2.4->Flask==0.10.1)
+  Downloading https://files.pythonhosted.org/packages/3e/a6/230a77104000937d717c300bcefe907a960d437e1a721e49c5fb40deb1c0/MarkupSafe-1.1.0-cp34-cp34m-manylinux1_x86_64.whl
+Building wheels for collected packages: Flask
+  Running setup.py bdist_wheel for Flask: started
+  Running setup.py bdist_wheel for Flask: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/e1/f2/be/1c4f307a41aad7e632f79c0242a2714ecde24b663da3519665
+Successfully built Flask
+Installing collected packages: Werkzeug, MarkupSafe, Jinja2, itsdangerous, Flask
+Successfully installed Flask-0.10.1 Jinja2-2.10 MarkupSafe-1.1.0 Werkzeug-0.14.1 itsdangerous-1.1.0
+Removing intermediate container 6b67b768eafb
+ ---> a8f11f056505
+Step 3/5 : WORKDIR /app
+ ---> Running in d6af8969da3b
+Removing intermediate container d6af8969da3b
+ ---> a51044a97e90
+Step 4/5 : COPY app /app
+ ---> b0302a02d215
+Step 5/5 : CMD ["python", "identidock.py"]
+ ---> Running in 230ca00cc63d
+Removing intermediate container 230ca00cc63d
+ ---> f6aa9810340a
+Successfully built f6aa9810340a
+Successfully tagged identidock:latest
+#+end_example
+**** コンテナ起動 run -d -p
+-d はコンテナをバックグラウンドで起動．出力を見たければこれはつけなくていい．これのせいでエラーが見えなくてハマった．
+-p 5000:5000 はコンテナの5000番ポートをホストの5000番ポートにフォワードするよう支持している．
+
+#+BEGIN_SRC sh
+docker run -d -p 5000:5000 identidock
+#+END_SRC
+
+#+RESULTS:
+: 0d22b919c274c6c60763e8004ed6bc3765d5ea8efdf4f64ad949e16cb97079b8
+**** 実行 curl
+identidock.py のインデントが間違っていたせいでうまくできなかったが，修正して，再度dokcer runしたらできた．
+#+BEGIN_SRC sh
+curl localhost:5000
+#+END_SRC
+
+#+RESULTS:
+: Hello World!
+
+**** ここまでワークフローの問題点とその解決法
+コードを少し変更するたびに，イメージを再構築してコンテナを再起動しないといけない．めんどくさい．
+どうするか？
+コンテナのソースコードのフォルダの上に，ホストのソースコードのフォルダを<<<バインドマウント>>>してしまえばいい．
+#+BEGIN_SRC sh
+docker stop $(docker ps -lq)
+docker rm $(docker ps -lq)
+docker run -d -p 5000:5000 -v "$(pwd)"/app:/app identidock
+#+END_SRC
+
+#+RESULTS:
+: 8a01eddc2af5
+: 8a01eddc2af5
+: e361948cc614b37ed9681138d8a5e074c53f6f5925de8d5adb35e19cf03c999c
+***** 解説
+$(pwd)/app:/app によって，コンテナ内で書き込みもできるようになる．
+-v への引数は絶対パスでないといけないので，$(pwd)で補完している．ということは前半がホストのフォルダ．作業手順もポータブルになってなおいい．
+**** バインドマウントした状態での動作確認
+#+BEGIN_SRC sh
+curl localhost:5000
+#+END_SRC
+
+#+RESULTS:
+: Hello World!
+できた！！
+**** .pyファイルを編集し，バインドマウントの効果を確認
+#+BEGIN_SRC sh
+sed -i '' s/World/Docker/ app/identidock.py
+curl localhost:5000
+#+END_SRC
+
+#+RESULTS:
+: 
+: Hello Docker!
+***** これが何を意味するか？
+ごく普通の開発環境がDockerコンテナの中にカプセル化できたことをいみする．
+**** 現状の問題
+実働環境では使えない．
+なぜか？
+*開発目的* のデフォルトのFlask Webサーバで動作しているので，
+- 効率が悪い
+- セキュアでない
+お客さんには提供できない．
+これから，開発環境と実働環境の差を減らしていく．
 ** 第6章 シンプルなWebアプリケーションの作成
 いよいよ開発する．
 ** 第7章 イメージの配布
