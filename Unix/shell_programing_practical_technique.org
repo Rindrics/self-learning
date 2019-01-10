@@ -2812,7 +2812,6 @@ seq -w 0 9999 | while read n ; do unzip -P $n -pq naishyo.zip && exit 0; done 2>
 : 内緒なのですが，隣の奥さん，ジャンボタニシなんですって．
 
 ** 自動化
-
 *** プログラムを定期的に自動実行する
 cron(8)を使う．
 Ubuntu では最初からcronが起動しているらしいが，Macでは起動していないみたいだが，一応入っているようだ．
@@ -2824,6 +2823,11 @@ ps cax | grep cron
 
 例ではcrontab -e で，親切な解説付きの設定ファイルが出ることになっていたが，
 自分の環境ではまっさらなファイルが開いた．
+
+時刻の引数は左から，分/時/日/月/曜日となっている．
+
+crantabの環境は普段の端末環境同じではないので，コマンドが通らないことがある．
+落ち着いて，パスを追加すること．
 *** ファイルが変更されたらアクションを起こす
 inotify(7)を使う
 
@@ -2863,17 +2867,17 @@ unzip book.xlsx
 #+begin_example
 book.xlsx
 Archive:  book.xlsx
-  inflating: [Content_Types].xml     
-  inflating: _rels/.rels             
-  inflating: xl/_rels/workbook.xml.rels  
-  inflating: xl/workbook.xml         
-  inflating: xl/sharedStrings.xml    
-  inflating: xl/theme/theme1.xml     
-  inflating: xl/styles.xml           
-  inflating: xl/worksheets/sheet1.xml  
- extracting: docProps/thumbnail.jpeg  
-  inflating: docProps/core.xml       
-  inflating: docProps/app.xml        
+  inflating: [Content_Types].xml
+  inflating: _rels/.rels
+  inflating: xl/_rels/workbook.xml.rels
+  inflating: xl/workbook.xml
+  inflating: xl/sharedStrings.xml
+  inflating: xl/theme/theme1.xml
+  inflating: xl/styles.xml
+  inflating: xl/worksheets/sheet1.xml
+ extracting: docProps/thumbnail.jpeg
+  inflating: docProps/core.xml
+  inflating: docProps/app.xml
 #+end_example
 **** 解凍後のディレクトリ構造
 数字のデータは sheet1.xml の中にある
@@ -2944,17 +2948,17 @@ unzip book2.xlsx
 #+RESULTS:
 #+begin_example
 Archive:  book2.xlsx
-  inflating: [Content_Types].xml     
-  inflating: _rels/.rels             
-  inflating: xl/_rels/workbook.xml.rels  
-  inflating: xl/workbook.xml         
-  inflating: xl/sharedStrings.xml    
-  inflating: xl/theme/theme1.xml     
-  inflating: xl/styles.xml           
-  inflating: xl/worksheets/sheet1.xml  
- extracting: docProps/thumbnail.jpeg  
-  inflating: docProps/core.xml       
-  inflating: docProps/app.xml        
+  inflating: [Content_Types].xml
+  inflating: _rels/.rels
+  inflating: xl/_rels/workbook.xml.rels
+  inflating: xl/workbook.xml
+  inflating: xl/sharedStrings.xml
+  inflating: xl/theme/theme1.xml
+  inflating: xl/styles.xml
+  inflating: xl/worksheets/sheet1.xml
+ extracting: docProps/thumbnail.jpeg
+  inflating: docProps/core.xml
+  inflating: docProps/app.xml
 #+end_example
 **** 文字がない？
 #+BEGIN_SRC bash
