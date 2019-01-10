@@ -1938,6 +1938,36 @@ int main(void)
 
 #+END_SRC
 *** ポインタを返す関数
+**** 演習11-3
+List 11-6 を書き換えて，str_copy 関数の呼び出しを printf 関数の実引数とするプログラムを作成せよ．
+#+BEGIN_SRC C :tangle ex1103.c
+#include <stdio.h>
+
+char *str_copy(char *d, const char *s){
+
+ char *t = d;
+
+ while((*d++ = *s++));
+
+ return t;
+}
+
+int main(){
+
+ char str[128] = "ABC";
+ char tmp[128];
+
+ printf("str = \"%s\"\n", str);
+
+ printf("コピーするのは:"); scanf("%s", tmp);
+
+ puts("コピーしました.");
+ printf("str = \"%s\"\n", str_copy(str, tmp));
+
+ return 0;
+}
+
+#+END_SRC
 ** 文字列を扱うライブラリ関数
 ** まとめ
 
