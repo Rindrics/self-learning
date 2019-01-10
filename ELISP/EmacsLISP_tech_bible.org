@@ -1,4 +1,3 @@
-
 #+TITLE: Emacs LISP テクニックバイブル
 #+STARTUP: overview
 #+TAGS: 必修 知らなかった 気づき わからん
@@ -909,9 +908,61 @@ elispプログラムを使うということは，関数を呼び出すこと！
 
   ;;; M-x hello-world で実行してみよう
 #+END_SRC
-*** interactive 宣言
 
-*** キーボードマクロをコマンドとして使えるようにする
+#+RESULTS:
+: hello-world
+
+*** interactive 宣言
+引数に文字列をとる．S式をとることもある．
+#+BEGIN_SRC elisp
+  (defun bmi (height weight)
+    "体格指数 = 体重 / (身長 * 身長)"
+    (/ weight height height))             ; => bmi
+
+  (defun bmi-show (height weight)
+    (interactive "n身長 (m): \nn体重 (kg): ")
+    (message "身長%.2fm 体重%.1fkg BMI%.1f" height weight (bmi height weight))) ; => bmi-show
+#+END_SRC
+
+#+RESULTS:
+: bmi-show
+
+M-x bmi-show をやってみよう!
+
+*** 練習問題
+#+BEGIN_SRC elisp
+  (defun testint-b (arg) (interactive "b既存バッファ: ") (message "%S" arg))
+  (defun testint-B (arg) (interactive "Bバッファ: ") (message "%S" arg)) ;上との違いがわからない
+  (defun testint-D (arg) (interactive "Dディレクトリ: ") (message "%S" arg))
+  (defun testint-f (arg) (interactive "f既存ファイル名: ") (message "%S" arg))
+  (defun testint-F (arg) (interactive "Fファイル名: ") (message "%S" arg))
+  (defun testint-n (arg) (interactive "n数値: ") (message "%S" arg))
+  (defun testint-s (arg) (interactive "s文字列: ") (message "%S" arg))
+#+END_SRC
+
+*** キーボードマクロをコマンドとして使えるようにする defvar
+せっかく定義したキーボードマクロ．再利用したい．
+しかし M-x name-last-kbd-macro は永続的でない．
+ファイルに保存すれば繰り返し使える．
+
+defvar は変数の宣言と初期化を一挙動で行える．
+その変数が既に使われている場合は何もしないので安全．
+#+BEGIN_SRC elisp
+  (defvar kmacro-save-file "~/.emacs.d/inits/00_kmacro-save.el" ;defvarで宣言と初期化を一挙動で
+    "キーボードマクロを保存するファイル")
+
+  (defun kmacro-save (symbol)
+    (interactive "SName for last kbd macro: ") ;コマンド名を入力
+    (name-last-kbd-macro symbol)          ;最後に定義したマクロに名前をつける
+    ;; kmacro-save-file を裏で開いて
+    (with-current-buffer (find-file-noselect kmacro-save-file)
+      (goto-char (point-max))             ;ファイルの末尾に
+      (insert-kbd-macro symbol)           ;マクロの定義を挿入して
+      (basic-save-buffer)))               ;保存する
+#+END_SRC
+
+#+RESULTS:
+: kmacro-save
 
 ** コード
 
@@ -929,3 +980,4 @@ elispプログラムを使うということは，関数を呼び出すこと！
 * 外部プログラムとの協調
 * 非同期プログラミング
 * anything.el で簡単アプリケーション作成
+*
