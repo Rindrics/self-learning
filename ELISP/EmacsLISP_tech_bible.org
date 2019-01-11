@@ -913,8 +913,61 @@ elispプログラムを使うということは，関数を呼び出すこと！
 
 *** キーボードマクロをコマンドとして使えるようにする
 
-** コード
+** ロード
+*** Lisp ファイルを置いているディレクトリを指定する add-to-list
+add-to-list関数の中身！
+#+BEGIN_SRC elisp
+  ;;(setq load-path (cons "~/.emacs.d" load-path))
 
+  ;;; いつもこんなの書いてられない！
+  ;; (add-to-list 'load-path "~/.emacs.d")
+
+#+END_SRC
+でも，両者は厳密には同じではない．
+add-to-list の方が優れている．重複が生じないから．
+#+BEGIN_SRC elisp
+  (setq list '(1))                        ; => (1)
+
+  ;;; 値を追加してみる
+  (add-to-list 'list 2)                   ; => (2 1)
+
+
+  ;;; 既にある値を追加しても何も起こらないので安全
+  (add-to-list 'list 2)                   ; => (2 1)
+
+  ;;; 一方，cons と setq の組み合わせでは重複して追加されてしまう
+  (setq list (cons 2 list))                ; => (2 2 1)
+#+END_SRC
+*** Lisp ファイルをロードする load （重複ロードするため，あまり使われない）
+読み込み方は3つ．
+ファイル名の書き方は3通り．
+(load "file.el") と(load "file.elc") の挙動はそのまま．
+拡張子なしで (load "file") とすると，.elc が優先的に読み込まれる．
+*** Lisp ファイルを1度だけロードする require
+file.el を読み込むためには拡張子をとって
+(require 'file) とする．
+
+ただし，require が機能するためには，パッケージソース側に，(provide 'file) と書かれていないといけない．
+普通はみんな書いてあるので大丈夫だが，もしない場合は load で読み込むしかない．
+*** 練習問題
+#+BEGIN_SRC elisp :tangle example/load-test.el
+  (defvar ltcount 0)
+  (setq ltcount (1+ ltcount))
+  (provide 'load-test)
+#+END_SRC
+
+#+BEGIN_SRC elisp
+  (add-to-list 'load-path "/Users/ahayashi/Documents/GitHub/study/ELISP/example/")
+  (load "load-test")                      ; => t
+  ;;; load を使うと評価するたびに数字が大きくなっていってしまう！！
+  ltcount                                 ; => 38
+
+
+  (unload-feature 'load-test)
+  (require 'load-test)
+
+
+#+END_SRC
 ** バイトコンパイル
 
 ** スタイル
