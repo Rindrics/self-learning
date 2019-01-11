@@ -1969,6 +1969,74 @@ int main(){
 
 #+END_SRC
 ** 文字列を扱うライブラリ関数
+*** strlen 関数: 文字列の長さを求める
+#+BEGIN_SRC C
+/*--- 文字列sの長さを返す ---*/
+size_t strlen(const char *s)
+{
+    size_t len = 0;
+
+    while (*s++)
+        len++;
+
+    return len;
+}
+
+#+END_SRC
+**** 解答を見て理解できた 演習 11-4
+文字列 s を表示する関数を作成せよ．添字演算子を使わずに実現すること
+#+BEGIN_SRC C :tangle ex1104.c
+  #include <string.h>
+  #include <stdio.h>
+
+  void put_string(const char *s) {
+      int i;
+      for (i = 0; i < strlen(s); i++) {
+          printf("%c", *(s + i)); /* %c は文字列でなく単一文字を表す． */
+      }
+  }
+
+  int main(void) {
+      char s[256];
+
+      printf("文字列を入力してください:");
+      scanf("%s", s);
+
+      put_string(s);
+
+      return 0;
+  }
+#+END_SRC
+**** 解答を見て理解できた 演習 11-5
+文字列 s の中に文字列 c が含まれている個数（含まれていなければ0とする）
+を返す関数を作成せよ．添字演算子を用いずに表すこと．
+#+BEGIN_SRC C :tangle ex1105.c
+  #include <stdio.h>
+  #include <string.h>
+
+  int str_chnum(const char *s, int c) {
+      int cnt;
+
+      while (*s++) {
+          if (*s == c) cnt++;
+      }
+      return cnt;
+  }
+
+  int main(void) {
+      char s[256];
+
+      printf("文字列: "); scanf("%s", s);
+
+      printf("cの個数は %d 個です\n", str_chnum(s, 'c'));
+
+      return 0;
+  }
+#+END_SRC
+*** strcpy 関数・strncpy 関数: 文字列をコピーする
+*** strcat 関数・strncat 関数: 文字列を連結する
+*** strcmp 関数・strncmp 関数: 文字列の大小関係を求める
+*** atoi 関数・atol 関数・atof 関数: 文字列を数値に変換する
 ** まとめ
 
 * 構造体
