@@ -360,6 +360,70 @@ nutsを取り出そう．エラーになった．
 - car と cdr を使ってリストの中身を調べることができる
 * LISP は対称なり
 ** 条件と判断
+*** nil と () の対称性
+**** 空とは偽なり
+#+BEGIN_SRC lisp
+  (if '()
+      'i-am-true
+      'i-am-false)
+#+END_SRC
+
+#+RESULTS:
+: I-AM-FALSE
+
+#+BEGIN_SRC lisp
+  (if '(1)
+      'i-am-true
+      'i-am-false)
+#+END_SRC
+
+#+RESULTS:
+: I-AM-TRUE
+***** これが何を意味するか？
+空のリストを検出するのが楽ということ．
+リストを頭から食っていく処理の多い Lisp では非常に重要．
+***** 異常を踏まえて，リストの長さを計算する関数
+古典的な書き方だが，この再帰の書き方こそ，推奨されたスタイル．
+#+BEGIN_SRC lisp
+  (defun my-length (list)
+    (if list
+        (1+ (my-length (cdr list)))
+        0))
+
+  (my-length '(list with four symbols))
+  (my-length '(I love studying lisp very much.))
+#+END_SRC
+
+#+RESULTS:
+: 6
+
+**** () の四つの顔
+どれも空リストを意味する
+#+BEGIN_SRC lisp
+(eq '() nil)
+#+END_SRC
+
+#+RESULTS:
+: T
+
+#+BEGIN_SRC lisp
+(eq '() ())
+#+END_SRC
+
+#+RESULTS:
+: T
+
+#+BEGIN_SRC lisp
+(eq '() 'nil)
+#+END_SRC
+
+#+RESULTS:
+: T
+ただし，Schemeでは () と nil は全く同等ではない．
+*** 条件分岐: if とその仲間たち
+*** ちょっとした条件式のテクニック
+*** 比較関数: eq, equal, そしてもっと
+*** 本章で学んだこと
 ** テキストゲームのエンジンを作る
 ** 世界とのインターフェース: Lisp でのデータの読み書き
 ** Lambda: とても大事な関数なので特別に章を分けて説明しよう
