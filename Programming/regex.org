@@ -1,5 +1,5 @@
 #+TITLE: 詳説正規表現
-#+PROPERTY: header-arguments :results scalar
+#+PROPERTY: header-args :results scalar
 * はじめに
 最初の6章，「効率のよい正規表現の作り方」までを，読み物として読むこと．
 * 正規表現入門/ egrepを例に
