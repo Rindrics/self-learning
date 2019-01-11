@@ -60,7 +60,118 @@ egrepはファイルの中のバイトと行を認識することはできるが
 そうすれば，^$ や ^ の挙動も理解できるだろう．
 - ^$: 行頭があり，その次に行末が続けばマッチする -> スペースもない，空行がマッチ
 - ^: 行頭だけがあればマッチする． -> 全ての行が行頭を持つので，全ての行がマッチする．
-*** 文字クラス
+*** 文字クラス []
+これ自体，1つの言語と考えると良い．
+**** 複数の文字のどれか一つとマッチさせる []
+grey と gray を検索するには
+#+BEGIN_SRC sh
+echo 'I wear grey T-shirt,
+yellow pants,
+green shoes,
+and gray cap.' | egrep 'gr[ae]y'
+#+END_SRC
+
+#+RESULTS:
+: I wear grey T-shirt,
+: and gray cap.
+***** gr[ae]y という正規表現の解釈のしかた
+[]の中は「または」という意味．ok
+この[]の外の，普通にタイプした正規表現は，「かつ次に」という意味である．（なるほど！！！）
+***** 使ってみる
+Smith と smith -> '[Ss]mith'
+blacksmith もマッチすることには注意．
+
+H[123456] -> HTML タグの検索など
+
+***** 範囲指定
+H[123456] を短縮するには H[1-6]
+
+範囲は複数指定できる！！！
+[0123456789abcdefABCDEF] は，[a-f0-9A-F] と書くことができる！！
+ちなみにこれは16進数を扱うときに役立つ．
+***** 文字クラスの中での振る舞い
+[0-9A-Z_!.?] とすると数字，大文字，アンダースコア，感嘆符， *ピリオド* ，疑問符にマッチする．
+文字クラスの中ではピリオドはメタ文字ではない．
+
+一方，ダッシュは，範囲を表すメタ文字になる．
+ところが文字クラス内の先頭や末尾に置いた場合は範囲を示せないので，ダッシュ文字そのものとして認識される．
+#+BEGIN_SRC sh
+echo 'ピリオド'
+echo 'I like high-lows' | egrep 'high[.]lows'
+echo '範囲指定ダッシュ'
+echo 'I like high-lows' | egrep 'high[0-9]lows'
+echo '頭のダッシュ'
+echo 'I like high-lows' | egrep 'high[-9]lows'
+echo '末尾のダッシュ'
+echo 'I like high-lows' | egrep 'high[9-]lows'
+echo '1つのダッシュ'
+echo 'I like high-lows' | egrep 'high[-]lows'
+
+#+END_SRC
+
+#+RESULTS:
+: ピリオド
+: 範囲指定ダッシュ
+: 頭のダッシュ
+: I like high-lows
+: 末尾のダッシュ
+: I like high-lows
+: 1つのダッシュ
+: I like high-lows
+
+**** 否定文字クラス [^]
+リストに含まれて *いない* 任意の文字にマッチする．
+#+BEGIN_SRC sh
+echo 1
+echo 'abcdef' | egrep '[^a]bcdef'
+echo 2
+echo 'abcdef' | egrep '[^xyz]bcdef'
+#+END_SRC
+
+#+RESULTS:
+: 1
+: 2
+: abcdef
+
+***** 振る舞い
+文字クラス内の先頭に置かれた時に，メタ文字として機能する．
+普段はご存知の通り，行頭アンカー．
+
+#+BEGIN_SRC sh
+echo 否定メタ文字として機能．エスケープも必要．
+echo ab^cdef | egrep [^a]b\\^cdef
+echo ただのキャレットとして機能
+echo ab^cdef | egrep [z^]
+
+#+END_SRC
+
+#+RESULTS:
+: 否定メタ文字として機能．エスケープも必要．
+: ただのキャレットとして機能
+: ab^cdef
+
+***** qの次に「u以外」の文字が続く，珍しい英単語を検索する
+egrep 'q[^u]' word.list
+とすると，珍しい単語がマッチしたが，
+わりと有名なQantas と Iraq はマッチしなかった．なぜか？
+- Qantas: Qが大文字だから．マッチさせるには，[Qq][^u] とする
+- Iraq: qの次が改行文字（ワードリストの場合）だが，egrep は改行文字を取り除いてから検索を開始するから．
+
+Iraqをマッチさせる
+#+BEGIN_SRC sh
+echo 'apple
+Iraq
+orange' | egrep 'q[^u]?'
+#+END_SRC
+
+#+RESULTS:
+: Iraq
+
+**** 任意の文字にマッチするドット
+**** 選択
+**** 大文字と小文字の違いを無視する
+**** 単語の境界
+**** これまでのまとめ
 *** 任意の文字にマッチするドット
 *** 選択
 *** 大文字と小文字の違いを無視する
