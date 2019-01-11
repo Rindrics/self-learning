@@ -1081,6 +1081,7 @@ git blame
 ++=======
 +C                <- ここはマージ元の最新コミットであるMERGE_HEAD．theirs または stage 3 という．
 ++>>>>>>>
+it
 
 *** リモートリポジトリにローカルリポジトリのデータを送信する
 
@@ -1153,6 +1154,62 @@ git branch fix-bug -t origin/master
 
 *** TODO ファイルの特定の行が最後に編集された履歴を追跡する git blame
 
+#+BEGIN_SRC sh :results output
+git blame -s version_management_by_git.org | head
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+d791a660    1) #+TITLE: Gitによるバージョン管理
+3887e098    2) #+STARTUP: overview
+179ea0d1    3) #+TAGS: important
+d9ee84fd    4) * 入門編
+d9ee84fd    5) ** Gitとは
+c0c1d4a5    6) *** バージョン管理システムとは
+c0c1d4a5    7) *** バージョン管理システムGit
+d9ee84fd    8) ** 一人でGitを利用する
+c0c1d4a5    9) *** Gitを使って設定ファイルを管理する
+c0c1d4a5   10) よく，日付付きのファイル名でバックアップしたりするが...
+#+end_example
+
+特定のリビジョン以降について調べたいなら，ファイル名の前にリビジョン番号．
+***** リビジョン名の付け方は？                                     :疑問:
+**** 指定した行範囲の変更履歴を表示する -L
+***** 普通に指定
+#+BEGIN_SRC sh :results output
+git blame -s -L 3,8 version_management_by_git.org
+#+END_SRC
+
+#+RESULTS:
+: 179ea0d1 3) #+TAGS: important
+: d9ee84fd 4) * 入門編
+: d9ee84fd 5) ** Gitとは
+: c0c1d4a5 6) *** バージョン管理システムとは
+: c0c1d4a5 7) *** バージョン管理システムGit
+: d9ee84fd 8) ** 一人でGitを利用する
+
+***** オフセットでの指定 +n
+#+BEGIN_SRC sh :results output
+git blame -s -L 3,+5 version_management_by_git.org
+#+END_SRC
+
+#+RESULTS:
+: 179ea0d1 3) #+TAGS: important
+: d9ee84fd 4) * 入門編
+: d9ee84fd 5) ** Gitとは
+: c0c1d4a5 6) *** バージョン管理システムとは
+: c0c1d4a5 7) *** バージョン管理システムGit
+
+**** ファイルで複製した部分を見つける -C
+数字は，チェックする文字数の下限．
+git blame -s -C30 file.txt   　　　　　　　<- 30文字以上の一致がコピーと見なされる
+
+当然，対象はgit管理しているファイルだけなので注意．
+実際にはコピーしていなくても，文字列が同じならコピーしたと見なされる．
+
+**** 同一ファイル内で移動した部分を見つける git blame -M
+リファクタリング時によくあるコードの移動も追跡できる．
+ただし英数字しかチェックできないので注意！
 *** ブランチのチェックアウト
 
 *** タグを付ける
@@ -1177,3 +1234,4 @@ git branch fix-bug -t origin/master
 ** 付録B　周辺ツールとの連携
 * 参考文献
 * 索引
+q
