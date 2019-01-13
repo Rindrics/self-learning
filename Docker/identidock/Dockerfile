@@ -6,8 +6,9 @@ RUN apt-get update -y && apt-get install -yq python3-pip python3-dev wget && \
     pip install Flask uWSGI
 WORKDIR /app
 COPY app /app
+COPY cmd.sh /
 
 EXPOSE 9090 9191
 USER uwsgi
 
-CMD ["uwsgi", "--http", "0.0.0.0:9090", "--wsgi-file", "/app/identidock.py", "--callable", "app"]
+CMD ["/cmd.sh"]
