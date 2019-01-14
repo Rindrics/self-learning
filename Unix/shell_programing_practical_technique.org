@@ -2842,12 +2842,49 @@ makeには時間がかかる場合，その更新は検知できない．
 & の使い方については [[*%E3%83%90%E3%83%83%E3%82%AF%E3%82%B0%E3%83%A9%E3%82%A6%E3%83%B3%E3%83%89%E5%87%A6%E7%90%86%E3%81%A7%E4%B8%A6%E5%88%97%E5%8C%96%E3%81%99%E3%82%8B][バックグラウンド処理で並列化する]] を参照．
 *** service(1)で自作のプログラムを起動/停止する
 automake を service を通じて実行してみる
-*** OS起動時に自作のプログラムを走らせる
+service はルートに移動してからプログラムを実行するので，
+automake のファイルのディレクトリは絶対パスで書くこと．
+tips: cd と make を && でつなぎ，括弧に入れると，make が終わった後には cd がなかったことになる．
+これを使わないときと比べて，どんないいことがあるんだろう？
+*** OS起動時に自作のプログラムを走らせる  :難しいので流し読み:
 automake を OS 起動時に走らせる．
 シンボリックリンクを置くとできる．
+update-rc.d を実行するとシンボリックリンクが一気に生成される．
+以下略．
+今の所 [2019-01-14 Mon] 理解できないし，使う予定もなさそうなので飛ばす．
+**** プロセスグループID/ セッションIDを確認/ 利用する
+ID の種類
+- プロセスID: 全てのコマンドは全て違うID
+- プロセスグループID: パイプでつながったコマンドが同じIDになる
+- セッションID: 同じ端末で実行されたプロセスは全て同じIDになる
+#+BEGIN_SRC sh
+echo $$
+#+END_SRC
 
-** ログからの情報抽出と活用
-** プロセスに関する注意点
+#+RESULTS:
+: 3413
+
+
+-----------------------------------
+Macだと sid が出せない？
+#+BEGIN_SRC sh
+ps -eo pid,pgid,args | head
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+  PID  PGID ARGS
+    1     1 /sbin/launchd
+   59    59 /usr/sbin/syslogd
+   60    60 /usr/libexec/UserEventAgent (System)
+   64    64 /System/Library/PrivateFrameworks/Uninstall.framework/Resources/uninstalld
+   65    65 /usr/libexec/kextd
+   66    66 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+   68    68 /System/Library/PrivateFrameworks/MediaRemote.framework/Support/mediaremoted
+   71    71 /System/Library/CoreServices/appleeventsd --server
+   72    72 /usr/sbin/systemstats --daemon
+#+end_example
+
 * ファイルシステムをデータベースにする
 ** データの置き方
 ** データの連結や集計
