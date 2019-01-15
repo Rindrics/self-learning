@@ -2885,6 +2885,50 @@ ps -eo pid,pgid,args | head
    72    72 /usr/sbin/systemstats --daemon
 #+end_example
 
+** ログからの情報抽出と活用
+何かあったらログを見よ．
+#+BEGIN_SRC bash
+ls -l /var/log/system.log*
+#+END_SRC
+
+#+RESULTS:
+: -rw-r-----@ 1 root  admin  61845 Jan 15 21:15 /var/log/system.log
+: -rw-r-----  1 root  admin  21178 Jan 15 01:48 /var/log/system.log.0.gz
+: -rw-r-----  1 root  admin  15594 Jan 14 00:50 /var/log/system.log.1.gz
+: -rw-r-----  1 root  admin  23228 Jan 13 01:18 /var/log/system.log.2.gz
+: -rw-r-----  1 root  admin  17865 Jan 12 01:39 /var/log/system.log.3.gz
+: -rw-r-----  1 root  admin  14250 Jan 11 01:45 /var/log/system.log.4.gz
+: -rw-r-----  1 root  admin  28122 Jan 10 01:25 /var/log/system.log.5.gz
+: -rw-r-----  1 root  admin  10815 Jan  9 01:50 /var/log/system.log.6.gz
+
+*** 検索する
+cat を grep や awk に渡して解析する．
+ただ，日付が DD dd 形式なので解析しづらい．
+*** 日付を正規化する
+**** bash スクリプトを書く場合
+#!/bin/bash
+
+sed 's/^Jan/01/' |
+sed 's/^Feb/02/' |...
+**** sed スクリプトを書く場合
+#!/bin/sed -f
+s/Jan/01/
+s/Feb/02/...
+なるほど．
+**** 日付の正規化
+tsukubai の dayslash を使う
+*** Apache のログ（不定長データ）をスペース区切りに整形する
+正規表現大活躍．
+*** データをキーバリュー形式に整形する
+cat を juni（行番号を表示）とmaezero （ゼロ埋め）に渡して，キーを自作する
+** プロセスに関する注意点
+*** 多数のプロセスから1つのログファイルに書き込む
+自分のプログラムにログを吐かせるtips
+ログファイルは一つでいい．
+よっぽど下手なプログラムを書かない限り，ログファイルがビジーになって壊れることはない（わざと壊した例はp. 171）．
+*** 制御構文が動作するプロセスについて
+exit 0 の挙動がおかしいとき，標準入力があるかどうか（ssh接続中など？わからない）を確認せよ．
+
 * ファイルシステムをデータベースにする
 ** データの置き方
 ** データの連結や集計
