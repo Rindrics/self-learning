@@ -1047,6 +1047,75 @@ auto-async-byte-compile.el
 
 * バッファ・ファイル
 バッファは，Emacs ではテキストを入れる器として重要．
+
+** バッファ
+*** テキストを入れる器
+バッファを制するものが Emacs を制す
+*** バッファとファイル
+ローカル変数 buffer-file-name
+#+BEGIN_SRC elisp
+buffer-file-name
+#+END_SRC
+
+#+RESULTS:
+: /Users/ahayashi/Documents/GitHub/study/ELISP/EmacsLISP_tech_bible.org
+
+*** 表示用・作業用バッファ
+ファイルと関連付けられていないバッファ
+- Help
+- scratch
+- Completions
+- etc...
+Emacs 終了で内容は失われる
+*** カレントバッファとは
+ユーザーレベルでは入力中のバッファ．
+ただしEmacs レベルでは表示されていないものもカレントバッファになりうる
+#+BEGIN_SRC elisp
+(current-buffer)
+#+END_SRC
+
+#+RESULTS:
+: #<buffer EmacsLISP_tech_bible.org>
+
+#<buffer から始まるのはバッファオブジェクト．
+
+*** バッファオブジェクトを得る
+#+BEGIN_SRC elisp
+(get-buffer "gtd.txt")
+#+END_SRC
+
+#+RESULTS:
+: #<buffer gtd.txt>
+
+#+BEGIN_SRC elisp
+(buffer-list)
+#+END_SRC
+
+#+RESULTS:
+| EmacsLISP_tech_bible.org | *Minibuf-1* | magit: study | gtd.txt | *Org Agenda* | *Org todo* | *init log* | *scratch* | *Minibuf-0* | *Messages* | *code-conversion-work* | *Echo Area 0* | *Echo Area 1* | *Compile-Log* | *straight-process* | *migemo* | *autoload* | *mh-temp* | home.txt | daily.txt | gcal.txt | journal.txt | reform_oldr.org | diary | *org-src-fontification:sh-mode* | *org-src-fontification:s-mode* | *Org-Babel Error* | *server* | *org-src-fontification:emacs-lisp-mode* | *helm candidates:Emacs Commands* | *helm M-x* | *helm mini* |
+
+*** カレントバッファを切り替える
+#+BEGIN_SRC elisp
+  (switch-to-buffer "gtd.txt")
+#+END_SRC
+
+#+RESULTS:
+: #<buffer gtd.txt>
+
+** バッファの作成・削除
+
+** バッファ出力
+
+** バッファ情報の取得
+
+** バッファ編集
+
+** ミニバッファ
+
+** リージョンとマーカー
+
+** ファイル
+
 * ウィンドウ
 * 様々な関数
 * Emacs Lisp 応用
