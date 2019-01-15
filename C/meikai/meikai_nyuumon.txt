@@ -1982,6 +1982,7 @@ size_t strlen(const char *s)
     return len;
 }
 
+
 #+END_SRC
 **** 解答を見て理解できた 演習 11-4
 文字列 s を表示する関数を作成せよ．添字演算子を使わずに実現すること
@@ -2033,6 +2034,59 @@ size_t strlen(const char *s)
       return 0;
   }
 #+END_SRC
+**** 解答を見て理解できた 演習 11-6
+***** 林解答
+#+BEGIN_SRC C
+  #include <stdio.h>
+  #include <string.h>
+
+  char *str_chr(const char *s, int c) {
+      if (*s == c)
+          return("%p", *s);
+      else
+          return NULL;
+  }
+
+  int main(void) {
+      character s[256];
+
+      printf("Enter string s:");
+      scanf("&s", s);
+      printtf("Pointer of the string is %p", str_chr(s, 'c'))
+
+      return 0;
+  }
+#+END_SRC
+***** 模範解答
+#+BEGIN_SRC C :tangle ex1106.c
+  #include <stdio.h>
+  #include <string.h>
+
+  char *str_chr(char *s, int c) {
+
+      int i;
+      char *address = NULL;       /* なるほど，NULLで初期化すればいいのか */
+
+      for (i = 0; i < strlen(s); i++) { /* 添字演算子を使わないためにはstrlen()が必要 */
+          if (c == *(s + i)) {
+              address = (s + i);
+              break;
+          }
+      }
+      return address;
+  }
+
+  int main(void) {
+      char s[256];
+      printf("入力: "); scanf("%s", s);
+      printf("cはアドレス%pにあります", str_chr(s, 'c'));
+
+      return 0;
+  }
+#+END_SRC
+
+#+RESULTS:
+
 *** strcpy 関数・strncpy 関数: 文字列をコピーする
 *** strcat 関数・strncat 関数: 文字列を連結する
 *** strcmp 関数・strncmp 関数: 文字列の大小関係を求める
