@@ -15,6 +15,7 @@ clean:
 
 .PHONY: compile
 compile:
+	find executables/${f} -type f | xargs rm
 	gcc -o ${APP} ${f}.c
 
 .PHONY: run
