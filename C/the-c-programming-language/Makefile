@@ -7,7 +7,7 @@ APP = ${OUTDIR}/${f}
 .PHONY: help
 help:
 	@echo 'Usage: make [exercise number]'
-	@echo 'Example: make 1-3'
+	@echo 'Example: make f=1-3'
 
 .PHONY: clean
 clean:
