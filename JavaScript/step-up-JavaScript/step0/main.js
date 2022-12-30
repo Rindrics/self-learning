@@ -13,3 +13,12 @@ buttonElm.addEventListener('click', function() {
         alert('奇数です');
     }
 });
+
+var fruits = ['りんご', 'もも', 'みかん'];
+var fruitsStr = '';
+for(var i = 0; i < fruits.length; i++) {
+    fruitsStr += '<li class="fruit">' + fruits[i] + '</li>';
+}
+
+var arrayElm = document.getElementById('arrayTest');
+arrayElm.innerHTML = fruitsStr;
