@@ -22,3 +22,9 @@ for(var i = 0; i < fruits.length; i++) {
 
 var arrayElm = document.getElementById('arrayTest');
 arrayElm.innerHTML = fruitsStr;
+
+var fruitElms = document.getElementsByClassName('fruit');
+for(var i = 0; i < fruitElms.length; i++) {
+    var fruitElm = fruitElms[i];
+    console.log(fruitElm.textContent);
+}
