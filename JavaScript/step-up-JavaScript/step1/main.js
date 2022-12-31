@@ -5,6 +5,7 @@ var timer = null;
 startButton.addEventListener('click', function() {
     console.log('start');
     var seconds = 0;
+    displayElm.innerText = seconds;
     timer = setInterval(
         function(){
             seconds++;
