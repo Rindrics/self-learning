@@ -15,6 +15,12 @@ startButton.addEventListener('click', function() {
             },
             1000
         );
+
+        var message = '開始';
+        var messageElm = document.createElement('div');
+        messageElm.innerText = message;
+        var logElm = document.querySelector('.log');
+        logElm.appendChild(messageElm);
     }
 });
 
