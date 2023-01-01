@@ -3,21 +3,25 @@ var startButton = document.getElementsByClassName('startButton')[0];
 var timer = null;
 
 startButton.addEventListener('click', function() {
-    console.log('start');
-    var seconds = 0;
-    displayElm.innerText = seconds;
-    timer = setInterval(
-        function(){
-            seconds++;
-            displayElm.innerText = seconds;
-            console.log(seconds);
-        },
-        1000
-    );
+    if(timer === null) {
+        console.log('start');
+        var seconds = 0;
+        displayElm.innerText = seconds;
+        timer = setInterval(
+            function(){
+                seconds++;
+                displayElm.innerText = seconds;
+                console.log(seconds);
+            },
+            1000
+        );
+    }
 });
 
 var stopButton = document.getElementsByClassName('stopButton')[0];
 stopButton.addEventListener('click', function() {
-    clearInterval(timer);
-    timer = null;
+    if(timer !== null) {
+        clearInterval(timer);
+        timer = null;
+    }
 })
