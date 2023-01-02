@@ -33,5 +33,7 @@ stopButton.addEventListener('click', function() {
     if(timer !== null) {
         clearInterval(timer);
         timer = null;
+
+        addMessage('終了');
     }
 })
