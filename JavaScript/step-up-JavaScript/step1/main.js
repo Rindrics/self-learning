@@ -7,12 +7,10 @@ const StopWatch = (options = {}) => {
         logElm.appendChild(messageElm);
     }
 
-    options = options;
-    const color = options.color || 'lightblue';
-    const backgroundColor = options.backgroundColor || 'black';
+    let {color, backgroundColor} = options;
     const displayElm = document.getElementsByClassName('display')[0];
-    displayElm.style.color = color;
-    displayElm.style.backgroundColor = backgroundColor;
+    displayElm.style.color = color || 'lightblue';
+    displayElm.style.backgroundColor = backgroundColor || 'black';
 
     const logElm = document.querySelector('.log');
     let timer = null;
