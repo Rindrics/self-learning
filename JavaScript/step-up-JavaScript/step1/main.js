@@ -1,4 +1,4 @@
-const StopWatch = (options) => {
+const StopWatch = (options = {}) => {
     const addMessage = (message) => {
         const messageElm = document.createElement('div');
         const now = new Date();
@@ -7,7 +7,7 @@ const StopWatch = (options) => {
         logElm.appendChild(messageElm);
     }
 
-    options = options || {};
+    options = options;
     const color = options.color || 'lightblue';
     const backgroundColor = options.backgroundColor || 'black';
     const displayElm = document.getElementsByClassName('display')[0];
