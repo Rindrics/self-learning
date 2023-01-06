@@ -1,28 +1,28 @@
 function StopWatch(options) {
     function addMessage(message) {
-        var messageElm = document.createElement('div');
-        var now = new Date();
+        const messageElm = document.createElement('div');
+        const now = new Date();
         messageElm.innerText = now.getHours() + '時' + now.getMinutes() + '分' + now.getSeconds() + '秒 ' + message;
         messageElm.classList = ['message'];
         logElm.appendChild(messageElm);
     }
 
     options = options || {};
-    var color = options.color || 'lightblue';
-    var backgroundColor = options.backgroundColor || 'black';
-    var displayElm = document.getElementsByClassName('display')[0];
+    const color = options.color || 'lightblue';
+    const backgroundColor = options.backgroundColor || 'black';
+    const displayElm = document.getElementsByClassName('display')[0];
     displayElm.style.color = color;
     displayElm.style.backgroundColor = backgroundColor;
 
-    var logElm = document.querySelector('.log');
-    var timer = null;
+    const logElm = document.querySelector('.log');
+    let timer = null;
 
-    var startButton = document.getElementsByClassName('startButton')[0];
+    const startButton = document.getElementsByClassName('startButton')[0];
 
     startButton.addEventListener('click', function() {
         if(timer === null) {
             console.log('start');
-            var seconds = 0;
+            let seconds = 0;
             displayElm.innerText = seconds;
             timer = setInterval(
                 function(){
@@ -37,7 +37,7 @@ function StopWatch(options) {
         }
     });
 
-    var stopButton = document.getElementsByClassName('stopButton')[0];
+    const stopButton = document.getElementsByClassName('stopButton')[0];
     stopButton.addEventListener('click', function() {
         if(timer !== null) {
             clearInterval(timer);
