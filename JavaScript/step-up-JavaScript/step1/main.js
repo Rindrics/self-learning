@@ -1,5 +1,5 @@
-function StopWatch(options) {
-    function addMessage(message) {
+const StopWatch = (options) => {
+    const addMessage = (message) => {
         const messageElm = document.createElement('div');
         const now = new Date();
         messageElm.innerText = `${now.getHours()}時${now.getMinutes()}分${now.getSeconds()}秒 ${message}`;
@@ -19,7 +19,7 @@ function StopWatch(options) {
 
     const startButton = document.getElementsByClassName('startButton')[0];
 
-    startButton.addEventListener('click', function() {
+    startButton.addEventListener('click', () => {
         if(timer === null) {
             console.log('start');
             let seconds = 0;
@@ -38,7 +38,7 @@ function StopWatch(options) {
     });
 
     const stopButton = document.getElementsByClassName('stopButton')[0];
-    stopButton.addEventListener('click', function() {
+    stopButton.addEventListener('click', () => {
         if(timer !== null) {
             clearInterval(timer);
             timer = null;
