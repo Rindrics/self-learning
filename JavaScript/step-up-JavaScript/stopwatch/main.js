@@ -9,7 +9,7 @@ class StopWatch {
         displayElm.style.color = color || 'lightblue';
         displayElm.style.backgroundColor = backgroundColor || 'black';
 
-        logElm.appendChild(messageElm);
+        this.logElm = document.querySellector('.log');
 
         let timer = null;
 
@@ -54,7 +54,6 @@ const StopWatch = (options = {}) => {
     }
 
 
-    const logElm = document.querySelector('.log');
 }
 
 var options = {
