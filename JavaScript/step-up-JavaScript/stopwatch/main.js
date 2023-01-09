@@ -2,6 +2,11 @@ class StopWatch {
     constructor(options = {}) {
         this.options = options;
     }
+
+    let {color, backgroundColor} = options;
+    const displayElm = document.getElementsByClassName('display')[0];
+    displayElm.style.color = color || 'lightblue';
+    displayElm.style.backgroundColor = backgroundColor || 'black';
 }
 
 const StopWatch = (options = {}) => {
@@ -13,10 +18,6 @@ const StopWatch = (options = {}) => {
         logElm.appendChild(messageElm);
     }
 
-    let {color, backgroundColor} = options;
-    const displayElm = document.getElementsByClassName('display')[0];
-    displayElm.style.color = color || 'lightblue';
-    displayElm.style.backgroundColor = backgroundColor || 'black';
 
     const logElm = document.querySelector('.log');
     let timer = null;
