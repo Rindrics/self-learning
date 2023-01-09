@@ -14,7 +14,6 @@ class StopWatch {
         let timer = null;
 
         const startButton = document.getElementsByClassName('startButton')[0];
-
         startButton.addEventListener('click', () => {
             if(timer === null) {
                 console.log('start');
@@ -29,7 +28,7 @@ class StopWatch {
                     1000
                 );
 
-                addMessage('開始')
+                this.addMessage('開始')
             }
         });
 
@@ -39,7 +38,7 @@ class StopWatch {
                 clearInterval(timer);
                 timer = null;
 
-                addMessage('終了');
+                this.addMessage('終了');
             }
         })
     }
