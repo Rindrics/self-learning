@@ -8,7 +8,6 @@ class StopWatch {
         const displayElm = document.getElementsByClassName('display')[0];
         displayElm.style.color = color || 'lightblue';
         displayElm.style.backgroundColor = backgroundColor || 'black';
-        logElm.appendChild(messageElm);
 
         this.logElm = document.querySellector('.log');
 
@@ -43,15 +42,18 @@ class StopWatch {
             }
         })
     }
-}
 
-const StopWatch = (options = {}) => {
-    const addMessage = (message) => {
+    addMessage(message) {
         const messageElm = document.createElement('div');
         const now = new Date();
         messageElm.innerText = `${now.getHours()}時${now.getMinutes()}分${now.getSeconds()}秒 ${message}`;
         messageElm.classList = ['message'];
+        this.logElm.appendChild(messageElm);
     }
+
+}
+
+const StopWatch = (options = {}) => {
 
 
 }
