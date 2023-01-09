@@ -8,6 +8,7 @@ class StopWatch {
         const displayElm = document.getElementsByClassName('display')[0];
         displayElm.style.color = color || 'lightblue';
         displayElm.style.backgroundColor = backgroundColor || 'black';
+        logElm.appendChild(messageElm);
 
         this.logElm = document.querySellector('.log');
 
