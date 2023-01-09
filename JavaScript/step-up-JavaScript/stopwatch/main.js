@@ -28,7 +28,7 @@ class StopWatch {
                     1000
                 );
 
-                this.addMessage('開始')
+                this.addMessage('開始');
             }
         });
 
@@ -40,7 +40,7 @@ class StopWatch {
 
                 this.addMessage('終了');
             }
-        })
+        });
     }
 
     addMessage(message) {
