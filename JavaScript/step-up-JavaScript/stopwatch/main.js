@@ -53,14 +53,10 @@ class StopWatch {
 
 }
 
-const StopWatch = (options = {}) => {
-
-
-}
-
-var options = {
+const options = {
     color: 'limegreen',
     backgroundColor: '#333'
 };
 
-StopWatch(options);
+const stopWatch = new StopWatch(options);
+stopWatch.init();
