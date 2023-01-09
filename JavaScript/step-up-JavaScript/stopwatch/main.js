@@ -8,6 +8,9 @@ class StopWatch {
         const displayElm = document.getElementsByClassName('display')[0];
         displayElm.style.color = color || 'lightblue';
         displayElm.style.backgroundColor = backgroundColor || 'black';
+
+        logElm.appendChild(messageElm);
+
         let timer = null;
 
         const startButton = document.getElementsByClassName('startButton')[0];
@@ -48,7 +51,6 @@ const StopWatch = (options = {}) => {
         const now = new Date();
         messageElm.innerText = `${now.getHours()}時${now.getMinutes()}分${now.getSeconds()}秒 ${message}`;
         messageElm.classList = ['message'];
-        logElm.appendChild(messageElm);
     }
 
 
