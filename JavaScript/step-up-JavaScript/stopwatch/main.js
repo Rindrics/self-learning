@@ -3,10 +3,12 @@ class StopWatch {
         this.options = options;
     }
 
-    let {color, backgroundColor} = options;
-    const displayElm = document.getElementsByClassName('display')[0];
-    displayElm.style.color = color || 'lightblue';
-    displayElm.style.backgroundColor = backgroundColor || 'black';
+    init() {
+        let {color, backgroundColor} = this.options;
+        const displayElm = document.getElementsByClassName('display')[0];
+        displayElm.style.color = color || 'lightblue';
+        displayElm.style.backgroundColor = backgroundColor || 'black';
+    }
 }
 
 const StopWatch = (options = {}) => {
