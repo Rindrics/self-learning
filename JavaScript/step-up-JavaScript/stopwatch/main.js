@@ -1,3 +1,9 @@
+class StopWatch {
+    constructor(options = {}) {
+        this.options = options;
+    }
+}
+
 const StopWatch = (options = {}) => {
     const addMessage = (message) => {
         const messageElm = document.createElement('div');
