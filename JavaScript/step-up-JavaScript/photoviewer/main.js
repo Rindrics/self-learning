@@ -6,6 +6,10 @@ class PhotoViewer {
     }
 
     init() {
+        this.updatePhoto();
+    }
+
+    updatePhoto() {
         const frameElm = this.rootElm.querySelector('.frame');
         const image = this.images[this.currentIndex];
 
