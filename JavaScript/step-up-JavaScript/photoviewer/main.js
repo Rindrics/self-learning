@@ -6,6 +6,16 @@ class PhotoViewer {
     }
 
     init() {
+        const nextButtonElm = this.rootElm.querySelector('.nextButton');
+        nextButtonElm.addEventListener('click', () => {
+            this.next();
+        });
+
+        const prevButtonElm = this.rootElm.querySelector('.prevButton');
+        prevButtonElm.addEventListener('click', () => {
+            this.prev();
+        });
+
         this.updatePhoto();
     }
 
@@ -18,6 +28,16 @@ class PhotoViewer {
                 <img src="${image}" />
             </div>
         `;
+    }
+
+    next() {
+        this.currentIndex++;
+        this.updatePhoto();
+    }
+
+    prev() {
+        this.currentIndex--;
+        this.updatePhoto();
     }
 }
 
