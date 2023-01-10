@@ -1,8 +1,13 @@
 class PhotoViewer {
+    constructor(rootElm, images) {
+        this.rootElm = rootElm;
+        this.images = images;
+        this.currentIndex = 0;
+    }
+
     init() {
-        const rootElm = document.getElementById('photoViewer');
-        const frameElm = rootElm.querySelector('.frame');
-        const image = 'https://fakeimg.pl/250x150/81DAF5';
+        const frameElm = this.rootElm.querySelector('.frame');
+        const image = this.images[this.currentIndex];
 
         frameElm.innerHTML = `
             <div class="currentImage">
@@ -11,4 +16,10 @@ class PhotoViewer {
         `;
     }
 }
-new PhotoViewer().init();
+
+const images = [
+    'https://fakeimg.pl/250x150/81DAF5',
+    'https://fakeimg.pl/250x150/F781F3',
+    'https://fakeimg.pl/250x150/81F7D8'
+];
+new PhotoViewer(document.getElementById('photoViewer'), images).init();
