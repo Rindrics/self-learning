@@ -31,12 +31,22 @@ class PhotoViewer {
     }
 
     next() {
+        const lastIndex = this.images.length - 1;
+        if (lastIndex === this.currentIndex) {
+            this.currentIndex = 0;
+        } else {
         this.currentIndex++;
+        }
         this.updatePhoto();
     }
 
     prev() {
+        const lastIndex = this.images.length - 1;
+        if (this.currentIndex === 0) {
+            this.currentIndex = lastIndex;
+        } else {
         this.currentIndex--;
+        }
         this.updatePhoto();
     }
 }
