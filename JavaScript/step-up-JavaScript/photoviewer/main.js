@@ -16,6 +16,7 @@ class PhotoViewer {
             this.prev();
         });
 
+        this.renderImageUrls();
         this.updatePhoto();
     }
 
@@ -60,6 +61,15 @@ class PhotoViewer {
         this.timerKey = setTimeout(() => {
             this.next();
         }, 3000);
+    }
+
+    renderImageUrls() {
+        const imagesElm = this.rootElm.querySelector('.images');
+        let imageUrlsHtml = '';
+        for (const image of this.images) {
+            imageUrlsHtml += `<li><a href="${image}" target="_blank">${image}</li>`;
+        }
+        imagesElm.innerHTML = imageUrlsHtml;
     }
 }
 
