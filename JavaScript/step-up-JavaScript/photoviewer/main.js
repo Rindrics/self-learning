@@ -29,6 +29,7 @@ class PhotoViewer {
                 <img src="${this.images[this.currentIndex]}" />
             </div>
         `;
+        this.startTimer();
     }
 
     next() {
@@ -49,6 +50,16 @@ class PhotoViewer {
         this.currentIndex--;
         }
         this.updatePhoto();
+    }
+
+    startTimer() {
+        if (this.timerKey) {
+            clearTimeout(this.timerKey);
+        }
+
+        this.timerKey = setTimeout(() => {
+            this.next();
+        }, 3000);
     }
 }
 
