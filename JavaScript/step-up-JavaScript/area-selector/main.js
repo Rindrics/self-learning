@@ -5,9 +5,23 @@ async function getPrefs() {
     return await prefResponse.json();
 }
 
-async function displayPrefs() {
-    const result = await getPrefs();
-    console.log(result);
+async function updatePref() {
+    const prefs = await getPrefs();
+    createPrefOptionsHtml(prefs);
 }
 
-displayPrefs();
+function createPrefOptionsHtml(prefs) {
+    const optionStrs = [];
+    for(const pref of prefs) {
+        optionStrs.push(`
+          <option name="${pref.name}" value="${pref.code}">
+            ${pref.name}
+          </option>
+        `);
+    }
+
+    const prefSelectorElm = rootElm.querySelector('.prefectures');
+    prefSelectorElm.innerHTML = optionStrs.join('');
+}
+
+updatePref();
