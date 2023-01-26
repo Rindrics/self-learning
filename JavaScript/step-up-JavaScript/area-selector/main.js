@@ -1,8 +1,11 @@
 const rootElm = document.getElementById('areaSelector');
 
-async function initAreaSelector() {
-    await updatePref();
-    await updateCity();
+class AreaSelector {
+
+    async init() {
+        await updatePref();
+        await updateCity();
+    }
 }
 
 async function getPrefs() {
