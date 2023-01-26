@@ -1,6 +1,12 @@
 const rootElm = document.getElementById('areaSelector');
 
 class AreaSelector {
+    constructor(rootElm) {
+        this.rootElm = rootElm;
+        this.prefectures = [];
+        this.cities = [];
+        this.prefCode = null;
+    }
 
     async init() {
         await updatePref();
