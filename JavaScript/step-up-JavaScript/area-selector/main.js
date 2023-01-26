@@ -9,8 +9,8 @@ class AreaSelector {
     }
 
     async init() {
-        await updatePref();
-        await updateCity();
+        await this.updatePref();
+        await this.updateCity();
     }
 
     async getPrefs() {
@@ -24,28 +24,29 @@ class AreaSelector {
     }
 
     async updatePref() {
-        const prefs = await getPrefs();
-        createPrefOptionsHtml(prefs);
+        this.prefectures = await this.getPrefs();
+        this.prefCode = this.prefectures[0].code;
+        this.createPrefOptionsHtml();
     }
 
     async updateCity() {
-        const prefSelectorElm = rootElm.querySelector('.prefectures');
-        const cities = await getCities(prefSelectorElm.value);
-        createCityOptionsHtml(cities);
+        this.cities = await this.getCities(this.prefCode);
+        this.createCityOptionsHtml();
     }
 
-    createPrefOptionsHtml(prefs) {
+    createPrefOptionsHtml() {
         const prefSelectorElm = rootElm.querySelector('.prefectures');
-        prefSelectorElm.innerHTML = toOptionsHtml(prefs);
+        prefSelectorElm.innerHTML = this.toOptionsHtml(this.prefectures);
 
         prefSelectorElm.addEventListener('change', (event) => {
-            updateCity();
+            this.prefCode = event.target.value;
+            this.updateCity();
         });
     }
 
-    createCityOptionsHtml(cities) {
-        const citySelectorElm = rootElm.querySelector('.cities');
-        citySelectorElm.innerHTML = toOptionsHtml(cities);
+    createCityOptionsHtml() {
+        const citySelectorElm = this.rootElm.querySelector('.cities');
+        citySelectorElm.innerHTML = this.toOptionsHtml(this.cities);
     }
 
     toOptionsHtml(records) {
@@ -59,4 +60,5 @@ class AreaSelector {
     }
 }
 
-initAreaSelector();
+const areaSelector = new AreaSelector(document.getElementById('areaSelector'));
+areaSelector.init();
