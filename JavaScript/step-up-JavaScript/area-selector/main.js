@@ -38,6 +38,10 @@ function createPrefOptionsHtml(prefs) {
 
     const prefSelectorElm = rootElm.querySelector('.prefectures');
     prefSelectorElm.innerHTML = optionStrs.join('');
+
+    prefSelectorElm.addEventListener('change', (event) => {
+        updateCity();
+    });
 }
 
 function createCityOptionsHtml(cities) {
