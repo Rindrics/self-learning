@@ -27,17 +27,8 @@ async function updateCity() {
 }
 
 function createPrefOptionsHtml(prefs) {
-    const optionStrs = [];
-    for(const pref of prefs) {
-        optionStrs.push(`
-          <option name="${pref.name}" value="${pref.code}">
-            ${pref.name}
-          </option>
-        `);
-    }
-
     const prefSelectorElm = rootElm.querySelector('.prefectures');
-    prefSelectorElm.innerHTML = optionStrs.join('');
+    prefSelectorElm.innerHTML = toOptionsHtml(prefs);
 
     prefSelectorElm.addEventListener('change', (event) => {
         updateCity();
@@ -45,17 +36,18 @@ function createPrefOptionsHtml(prefs) {
 }
 
 function createCityOptionsHtml(cities) {
-    const optionStrs = [];
-    for(const city of cities) {
-        optionStrs.push(`
-          <option name="${city.name}" value="${city.code}">
-            ${city.name}
-          </option>
-        `);
-    }
-
     const citySelectorElm = rootElm.querySelector('.cities');
-    citySelectorElm.innerHTML = optionStrs.join('');
+    citySelectorElm.innerHTML = toOptionsHtml(cities);
+}
+
+function toOptionsHtml(records) {
+    return records.map((record) => {
+        return `
+          <option name="${record.name}" value="${record.code}">
+            ${record.name}
+          </option>
+        `;
+    }).join('');
 }
 
 initAreaSelector();
