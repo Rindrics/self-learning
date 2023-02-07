@@ -1,6 +1,6 @@
 class WordQuiz {
-    constructor() {
-        console.log('instance created');
+    constructor(rootElm) {
+        this.rootElm = rootElm;
     }
 
     async init() {
@@ -9,5 +9,4 @@ class WordQuiz {
         console.log(this.quizData);
     }
 }
-
-new WordQuiz().init();
+new WordQuiz(document.getElementById('app')).init();
