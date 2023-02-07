@@ -4,6 +4,10 @@ class WordQuiz {
     }
 
     async init() {
+        await this.fetchQuizData();
+    }
+
+    async fetchQuizData() {
         try {
             const response = await fetch('quiz.json');
             this.quizData = await response.json();
