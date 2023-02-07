@@ -4,9 +4,13 @@ class WordQuiz {
     }
 
     async init() {
-        const response = await fetch('quiz.json');
-        this.quizData = await response.json();
-        console.log(this.quizData);
+        try {
+            const response = await fetch('quiz.json');
+            this.quizData = await response.json();
+        } catch(e) {
+            this.rootElm.innerText = 'Failed to load quiz';
+            console.log(e);
+        }
     }
 }
 new WordQuiz(document.getElementById('app')).init();
