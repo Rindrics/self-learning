@@ -35,9 +35,22 @@ class WordQuiz {
 
         const startBtnElm = parentElm.querySelector('.startBtn');
         startBtnElm.addEventListener('click', () => {
-            console.log('スタートボタンがクリックされました');
+            this.displayQuestionView();
         });
 
+        this.rootElm.appendChild(parentElm);
+    }
+
+    displayQuestionView() {
+        const html = `
+        <p>ゲームを開始しました</p>
+        `;
+
+        const parentElm = document.createElement('div');
+        parentElm.className = 'question';
+        parentElm.innerHTML = html;
+
+        this.rootElm.innerHTML = '';
         this.rootElm.appendChild(parentElm);
     }
 }
