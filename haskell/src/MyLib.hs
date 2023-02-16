@@ -1,4 +1,5 @@
-module MyLib (someFunc) where
+module MyLib
+(calculate) where
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+calculate :: String -> String
+calculate input = input
