@@ -1,6 +1,6 @@
 import Test.Hspec (Spec, hspec, describe, it, shouldBe)
 import Test.Hspec.Expectations
-import MyLib (parseToken, push, pop)
+import MyLib (Stack(..), parseToken, push, pop)
 
 main :: IO ()
 main = hspec $ do
@@ -11,8 +11,8 @@ main = hspec $ do
       it "returns operator" $ fst (parseToken "+" "") `shouldBe` "+"
 
   describe "stack" $ do
-      it "can push" $ push 1 [2, 3] `shouldBe` [1, 2, 3]
-      it "can push (start from empty)" $ push 1 [] `shouldBe` [1]
-      it "can pop (3 elements)" $ pop [1, 2, 3] `shouldBe` Just (1, [2, 3])
-      it "can pop (1 element)" $ pop [3] `shouldBe` Just (3, [])
-      it "can't pop (no element)" $ pop [] `shouldBe` (Nothing :: Maybe (Int, [Int]))
+      it "can push" $ push 1 (Push 2 (Push 3 EmptyStack)) `shouldBe` Push 1 (Push 2 (Push 3 EmptyStack))
+      it "can push (start from empty)" $ push 1 EmptyStack `shouldBe` Push 1 EmptyStack
+      it "can pop (3 elements)" $ pop (push 1 (Push 2 (Push 3 EmptyStack))) `shouldBe`  Just (1, Push 2 (Push 3 EmptyStack))
+      it "can pop (1 element)" $ pop (push 1  EmptyStack) `shouldBe`  Just (1, EmptyStack)
+      it "can't pop (no element)" $ pop EmptyStack `shouldBe` (Nothing :: Maybe (Int, Stack Int))
