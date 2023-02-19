@@ -11,9 +11,6 @@ parseToken (' ':_) frag = (frag, "")
 parseToken [] frag = (frag, "")
 parseToken (x:xs) frag = parseToken xs (frag ++ [x])
 
--- rpn :: String -> [String] -> [String]
--- rpn x stack = push x stack
-
 data Stack a = EmptyStack | Push a (Stack a)
 instance Show a => Show (Stack a) where
   show EmptyStack = "EmptyStack"
