@@ -5,7 +5,7 @@ import MyLib (parseToken, push)
 main :: IO ()
 main = hspec $ do
 
-  describe "parseToken works" $ do
+  describe "parseToken" $ do
       it "returns lhs" $ fst (parseToken "1 2 +" "") `shouldBe` "1"
       it "returns rhs" $ fst (parseToken "2 +" "") `shouldBe` "2"
       it "returns operator" $ fst (parseToken "+" "") `shouldBe` "+"
