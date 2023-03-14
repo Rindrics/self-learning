@@ -51,21 +51,32 @@ class WordQuiz {
     }
 
     displayQuestionView() {
+        console.log(this.gameStatus);
         console.log(`選択中のレベル: ${this.gameStatus.level}`);
+        const stepKey = 'step1';
+        const currentQuestion = this.quizData[this.gameStatus.level][stepKey];
+
+        const choiceStrs = [];
+        for (const choice of currentQuestion.choices) {
+            choiceStrs.push(`<label>
+                                 <input type="radio" name="choice" value="${choice}" />
+                                 ${choice}
+                             </label>`);
+        }
+
         const html = `
-        <p>ゲームを開始しました</p>
-        <button class="retireBtn">ゲームを終了する</button>
+        <p>${currentQuestion.word}</p>
+        <div>
+            ${choiceStrs.join('')}
+        </div>
+        <div class="actions">
+          <button class="nextBtn">解答する</button>
+        </div>
         `;
 
         const parentElm = document.createElement('div');
         parentElm.className = 'question';
         parentElm.innerHTML = html;
-
-        const retireBtnElm = parentElm.querySelector('.retireBtn');
-        console.log(retireBtnElm);
-        retireBtnElm.addEventListener('click', () => {
-            this.displayResultView();
-        });
 
         this.replaceView(parentElm);
     }
