@@ -2,7 +2,8 @@ class WordQuiz {
     constructor(rootElm) {
         this.rootElm = rootElm;
         this.gameStatus = {
-            level: null
+            level: null,
+            step: 1
         }
     }
 
@@ -19,6 +20,11 @@ class WordQuiz {
             this.rootElm.innerText = 'Failed to load quiz';
             console.log(e);
         }
+    }
+
+    nextStep() {
+        this.gameStatus.step++;
+        this.displayQuestionView();
     }
 
     displayStartView() {
@@ -53,7 +59,7 @@ class WordQuiz {
     displayQuestionView() {
         console.log(this.gameStatus);
         console.log(`選択中のレベル: ${this.gameStatus.level}`);
-        const stepKey = 'step1';
+        const stepKey = `step${this.gameStatus.step}`;
         const currentQuestion = this.quizData[this.gameStatus.level][stepKey];
 
         const choiceStrs = [];
@@ -77,6 +83,11 @@ class WordQuiz {
         const parentElm = document.createElement('div');
         parentElm.className = 'question';
         parentElm.innerHTML = html;
+
+        const nextBtnElm = parentElm.querySelector('.nextBtn');
+        nextBtnElm.addEventListener('click', () => {
+            this.nextStep();
+        });
 
         this.replaceView(parentElm);
     }
