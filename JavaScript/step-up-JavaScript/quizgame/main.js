@@ -1,10 +1,8 @@
 class WordQuiz {
     constructor(rootElm) {
         this.rootElm = rootElm;
-        this.gameStatus = {
-            level: null,
-            step: 1
-        }
+        this.gameStatus = {}
+        this.resetGame();
     }
 
     async init() {
@@ -34,6 +32,11 @@ class WordQuiz {
             this.gameStatus.step++;
             this.displayQuestionView();
         }
+    }
+
+    resetGame() {
+        this.gameStatus.level = null;
+        this.gameStatus.step = 1;
     }
 
     displayStartView() {
