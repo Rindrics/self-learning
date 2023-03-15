@@ -26,6 +26,7 @@ class WordQuiz {
     }
 
     nextStep() {
+        this.addResult();
         if (this.isLastStep()) {
             this.displayResultView();
         } else {
@@ -34,9 +35,23 @@ class WordQuiz {
         }
     }
 
+    addResult() {
+        const checkedElm = this.rootElm.querySelector('input[name="choice"]:checked');
+        const answer = checkedElm ? checkedElm.value : '';
+        const currentQuestion = this.quizData[this.gameStatus.level][`step${this.gameStatus.step}`];
+
+        this.gameStatus.results.push({
+            question: currentQuestion,
+            selectedAnswer: answer
+        });
+
+        console.log(`解答結果: ${answer}`);
+    }
+
     resetGame() {
         this.gameStatus.level = null;
         this.gameStatus.step = 1;
+        this.gameStatus.results = [];
     }
 
     displayStartView() {
