@@ -48,6 +48,20 @@ class WordQuiz {
         console.log(`解答結果: ${answer}`);
     }
 
+    calcScore() {
+        let correctNum = 0;
+        const results = this.gameStatus.results;
+
+        for (const result of results) {
+            const selected = result.selectedAnswer;
+            const correct = result.question.answer;
+            if (selected === correct) {
+                correctNum++;
+            }
+        }
+        return Math.floor((correctNum / results.length) * 100);
+    }
+
     resetGame() {
         this.gameStatus.level = null;
         this.gameStatus.step = 1;
@@ -120,8 +134,11 @@ class WordQuiz {
     }
 
     displayResultView() {
+        const score = this.calcScore();
+
         const html = `
           <p>ゲーム終了</p>
+          <p>正解率: ${score}%</p>
           <button class="resetBtn">開始画面に戻る</button>
         `;
 
