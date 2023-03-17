@@ -66,6 +66,20 @@ class WordQuiz {
         this.gameStatus.level = null;
         this.gameStatus.step = 1;
         this.gameStatus.results = [];
+        this.gameStatus.timeLimit = 0;
+        this.gameStatus.intervalKey = null;
+    }
+
+    setTimer() {
+        if(this.gameStatus.intervalKey !== null) {
+            console.log(this.gameStatus.invervalKey);
+            throw new Error('timer still working');
+        }
+        this.gameStatus.timeLimit = 10;
+        this.gameStatus.intervalKey = setInterval(() => {
+            this.gameStatus.timeLimit--;
+            console.log(`${this.gameStatus.timeLimit} seconds remaining to answer`);
+        }, 1000);
     }
 
     displayStartView() {
@@ -99,6 +113,7 @@ class WordQuiz {
 
     displayQuestionView() {
         console.log(this.gameStatus);
+        this.setTimer();
         console.log(`選択中のレベル: ${this.gameStatus.level}`);
         const stepKey = `step${this.gameStatus.step}`;
         const currentQuestion = this.quizData[this.gameStatus.level][stepKey];
