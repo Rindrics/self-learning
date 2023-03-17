@@ -26,6 +26,7 @@ class WordQuiz {
     }
 
     nextStep() {
+        this.clearTimer();
         this.addResult();
         if (this.isLastStep()) {
             this.displayResultView();
@@ -80,6 +81,11 @@ class WordQuiz {
             this.gameStatus.timeLimit--;
             console.log(`${this.gameStatus.timeLimit} seconds remaining to answer`);
         }, 1000);
+    }
+
+    clearTimer() {
+        clearInterval(this.gameStatus.intervalKey);
+        this.gameStatus.intervalKey = null;
     }
 
     displayStartView() {
