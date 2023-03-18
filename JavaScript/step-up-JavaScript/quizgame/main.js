@@ -71,7 +71,7 @@ class WordQuiz {
         this.gameStatus.intervalKey = null;
     }
 
-    setTimer() {
+     setTimer() {
         if(this.gameStatus.intervalKey !== null) {
             console.log(this.gameStatus.invervalKey);
             throw new Error('timer still working');
@@ -79,7 +79,11 @@ class WordQuiz {
         this.gameStatus.timeLimit = 10;
         this.gameStatus.intervalKey = setInterval(() => {
             this.gameStatus.timeLimit--;
-            this.renderTimeLimitStr();
+            if(this.gameStatus.timeLimit === 0) {
+                this.nextStep();
+            } else {
+                this.renderTimeLimitStr();
+            }
         }, 1000);
     }
 
