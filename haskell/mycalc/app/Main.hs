@@ -1,8 +1,8 @@
 module Main where
 
-import qualified MyLib (parseToken)
+import qualified MyLib (parseStringToTokenList)
 
 main :: IO ()
 main = do
   line <- getLine
-  putStrLn $ fst $ MyLib.parseToken line ""
+  print $ MyLib.parseStringToTokenList line "" []
