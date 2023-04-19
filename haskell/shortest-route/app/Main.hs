@@ -1,6 +1,6 @@
 module Main (main) where
 
-import Lib (RoadSystem, Section(..))
+import Lib (RoadSystem, Section(..), roadStep)
 
 main :: IO ()
 main = do
@@ -10,4 +10,4 @@ main = do
                          , Section 40 2 25
                          , Section 10 8 0
                          ]
-  print heathrowToLondon
+  print (roadStep ([], []) (head heathrowToLondon))
