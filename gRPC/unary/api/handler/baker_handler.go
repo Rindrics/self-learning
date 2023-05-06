@@ -17,6 +17,7 @@ func init() {
 }
 
 type BakerHandler struct {
+	api.UnimplementedPancakeBakerServiceServer
 	report *report
 }
 
