@@ -2,6 +2,7 @@ module Lib
     (  Section(..)
     ,  RoadSystem
     ,  optimalPath
+    ,  groupsOf
     ,  roadStep
     ) where
 
@@ -35,3 +36,8 @@ roadStep (pathA, pathB) (Section a b c) =
                       then (B, b):pathB
                       else (C, c):(A, a):pathA
   in  (newPathToA, newPathToB)
+
+groupsOf :: Int -> [a] -> [[a]]
+groupsOf 0 _ = undefined
+groupsOf _ [] = []
+groupsOf n xs = take n xs : groupsOf n  (drop n xs)
