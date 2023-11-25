@@ -1,0 +1,9 @@
+class Main {
+    public static void main(String[] args) {
+        int a = 3;
+        int b = 5;
+        int c = a * b;
+
+        System.out.format("縦幅 %d 横幅 %d の長方形の面積は、%d\n", a, b, c);
+    }
+}
