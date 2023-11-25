@@ -2,18 +2,20 @@ class Main {
     public static void main(String[] args) {
        System.out.print("[メニュー] 1:検索 2:登録 3:削除 4:変更>");
        int selected = new java.util.Scanner(System.in).nextInt();
+       String action;
        switch (selected) {
        case 1:
-           System.out.println("検索します");
-           break;
+           action = "検索";
+           // FALLTHROUGH
        case 2:
-           System.out.println("登録します");
-           break;
+           action = "登録";
+           // FALLTHROUGH
        case 3:
-           System.out.println("削除します");
-           break;
+           action = "削除";
+           // FALLTHROUGH
        case 4:
-           System.out.println("変更します");
+           action = "変更";
+           System.out.format("%sします\n", action);
            break;
        default:
            break;
