@@ -1,5 +1,5 @@
 DIR := 1-2
 
 run:
-	javac $(DIR)/Main.java
+	find $(DIR) -name "*.java" | xargs javac
 	java -cp $(DIR) Main
