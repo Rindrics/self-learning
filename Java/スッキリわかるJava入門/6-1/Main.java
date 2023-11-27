@@ -1,17 +1,11 @@
+import comment.Zenhan;
+
 public class Main {
     public static void main(String[] args) {
-        doWarusa();
-        doTogame();
+        Zenhan.doWarusa();
+        Zenhan.doTogame();
         callDeae();
         showMondokoro();
-    }
-
-    public static void doWarusa() {
-        System.out.println("きなこでござる。食えませんがの。");
-    }
-
-    public static void doTomage() {
-        System.out.println("この老いぼれの目はごまかせませんぞ。");
     }
 
     public static void callDeae() {
