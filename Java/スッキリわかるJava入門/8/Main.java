@@ -5,6 +5,12 @@ public class Main {
         h.hp = 100;
         System.out.println("勇者" + h.name + "を生み出しました！");
 
+        Cleric c = new Cleric();
+        c.name = "アサカ";
+        c.hp = 50;
+        c.mp = 10;
+        System.out.println("聖職者" + c.name + "を生み出しました！");
+
         Matango m1 = new Matango();
         m1.hp = 50;
         m1.suffix = 'A';
