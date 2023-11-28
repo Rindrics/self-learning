@@ -20,6 +20,7 @@ public class Main {
         m2.suffix = 'B';
 
         h.slip();
+        c.selfAid();
         m1.run();
         m2.run();
         h.run();
