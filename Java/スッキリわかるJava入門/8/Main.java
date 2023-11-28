@@ -13,9 +13,9 @@ public class Main {
         m2.hp = 48;
         m2.suffix = 'B';
 
-        h.sit(5);
         h.slip();
-        h.sit(25);
+        m1.run();
+        m2.run();
         h.run();
     }
 }
