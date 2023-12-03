@@ -1,4 +1,4 @@
-public class TangibleAsset {
+public class TangibleAsset implements Asset {
     String name;
     int price;
     String color;
