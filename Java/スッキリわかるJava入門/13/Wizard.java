@@ -4,6 +4,17 @@ public class Wizard {
     String name;
     Wand wand;
 
+    public Wizard(String name) {
+        this.setName(name);
+    }
+
+    public void setName(String name) {
+        if (name == null || name.length() < 3) {
+            throw new IllegalArgumentException("名前が短すぎます。");
+        }
+        this.name = name;
+    }
+
     void heal(Hero h) {
         int basePoint = 10;
         int recovPoint =
