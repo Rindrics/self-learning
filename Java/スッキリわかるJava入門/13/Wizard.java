@@ -4,8 +4,11 @@ public class Wizard {
     String name;
     Wand wand;
 
-    public Wizard(String name) {
+    public Wizard(String name, int hp, int mp) {
         this.setName(name);
+        this.setHp(hp);
+        this.setMp(mp);
+        this.wand = new Wand();
     }
 
     public void setName(String name) {
@@ -13,6 +16,21 @@ public class Wizard {
             throw new IllegalArgumentException("名前が短すぎます。");
         }
         this.name = name;
+    }
+
+    public void setHp(int hp) {
+        if (hp < 0) {
+            this.hp = 0;
+        } else {
+            this.hp = hp;
+        }
+    }
+
+    public void setMp(int mp) {
+        if (mp < 0) {
+            throw new IllegalArgumentException("MPが負の数です。");
+        }
+        this.mp = mp;
     }
 
     void heal(Hero h) {
