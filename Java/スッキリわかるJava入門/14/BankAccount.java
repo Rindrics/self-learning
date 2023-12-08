@@ -12,10 +12,15 @@ public class BankAccount {
     }
 
     public boolean equals(BankAccount other) {
-        if (this.accountNumber.trim().equals(other.accountNumber.trim())) {
+        if (this == other) {
             return true;
-        } else {
-            return false;
         }
+
+        if (other instanceof BankAccount) {
+            if (this.accountNumber.trim().equals(other.accountNumber.trim())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
