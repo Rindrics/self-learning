@@ -10,4 +10,12 @@ public class BankAccount {
     public String toString() {
         return "¥" + this.balance + "(口座番号: " + this.accountNumber + ")";
     }
+
+    public boolean equals(BankAccount other) {
+        if (this.accountNumber.trim().equals(other.accountNumber.trim())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
