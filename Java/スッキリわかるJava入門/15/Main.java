@@ -12,4 +12,9 @@ public class Main {
         String[] numbers = sb.toString().split(",");
         System.out.println(Arrays.toString(numbers));
     }
+
+    public String ConstructFiledir(String folder, String file) {
+        String folderWithoutTrailingSlash = folder.replaceAll("/$", "");
+        return folderWithoutTrailingSlash + "/" + file;
+    }
 }
