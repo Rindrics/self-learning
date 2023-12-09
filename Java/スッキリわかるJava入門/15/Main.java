@@ -14,7 +14,7 @@ public class Main {
         String[] numbers = sb.toString().split(",");
         System.out.println(Arrays.toString(numbers));
 
-        String mydata = "some string with 'the data i want' inside";
+        String mydata = "A1234";
         MatchString(mydata);
     }
 
@@ -24,11 +24,18 @@ public class Main {
     }
 
     public static void MatchString(String str) {
-        Pattern all = Pattern.compile(".*");
-        Matcher matcherAll = all.matcher(str);
-        if (matcherAll.find())
+        Pattern one = Pattern.compile(".*");
+        Matcher matcher1 = one.matcher(str);
+        if (matcher1.find())
         {
-            System.out.println(matcherAll.group(0));
+            System.out.println(matcher1.group(0));
+        }
+
+        Pattern two = Pattern.compile("^A[0-9][0-r]?");
+        Matcher matcher2 = two.matcher(str);
+        if (matcher2.find())
+        {
+            System.out.println(matcher2.group(0));
         }
     }
 }
