@@ -14,8 +14,9 @@ public class Main {
         String[] numbers = sb.toString().split(",");
         System.out.println(Arrays.toString(numbers));
 
-        String mydata = "A1234";
-        MatchString(mydata);
+        MatchString("A1234");
+        MatchString("UABCD");
+        MatchString("U1BCD");
     }
 
     public String ConstructFiledir(String folder, String file) {
@@ -28,14 +29,21 @@ public class Main {
         Matcher matcher1 = one.matcher(str);
         if (matcher1.find())
         {
-            System.out.println(matcher1.group(0));
+            System.out.println("matcher1: " + matcher1.group(0));
         }
 
         Pattern two = Pattern.compile("^A[0-9][0-r]?");
         Matcher matcher2 = two.matcher(str);
         if (matcher2.find())
         {
-            System.out.println(matcher2.group(0));
+            System.out.println("matcher2: " + matcher2.group(0));
+        }
+
+        Pattern three = Pattern.compile("^U[A-Z]{3}");
+        Matcher matcher3 = three.matcher(str);
+        if (matcher3.find())
+        {
+            System.out.println("matcher3: " + matcher3.group(0));
         }
     }
 }
