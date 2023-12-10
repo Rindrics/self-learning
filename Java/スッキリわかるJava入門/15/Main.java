@@ -1,9 +1,8 @@
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Date;
-import java.util.Calendar;
-import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 public class Main {
     public static void main(String[] args) {
@@ -21,18 +20,13 @@ public class Main {
         MatchString("UABCD");
         MatchString("U1BCD");
 
-        Date now = new Date();
-        System.out.println(now);
-        Calendar c = Calendar.getInstance();
-        c.setTime(now);
+        ZonedDateTime z = ZonedDateTime.now();
+        System.out.println(z);
 
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        c.set(Calendar.DAY_OF_MONTH, day + 100);
-        System.out.println(c.getTime());
+        ZonedDateTime future = z.plusDays(100);
+        System.out.println(future);
 
-        Date d = c.getTime();
-        SimpleDateFormat f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        System.out.println(f.format(d));
+        System.out.println(future.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
     }
 
     public String ConstructFiledir(String folder, String file) {
