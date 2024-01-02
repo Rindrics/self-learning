@@ -5,12 +5,13 @@ public class Main {
         Hero h1 = new Hero("鈴木");
         Hero h2 = new Hero("斎藤");
 
-        List<Hero> heroes = new ArrayList<>();
-        heroes.add(h1);
-        heroes.add(h2);
+        HashMap<Hero, Integer> heroes = new HashMap<>();
+        heroes.put(h1, 3);
+        heroes.put(h2, 7);
 
-        for (Hero h : heroes) {
-            System.out.println(h.getName());
+        for (Hero key : heroes.keySet()) {
+            int value = heroes.get(key);
+            System.out.println(key.getName() + "が倒した敵 = " + value);
         }
     }
 }
