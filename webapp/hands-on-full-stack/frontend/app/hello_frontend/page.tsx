@@ -1,13 +1,14 @@
 'use client'
 
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 
 export default function Page() {
   const [data, setData] = useState({ name: '' })
 
   useEffect(() => {
-    fetch('/api/hello')
-      .then((res) => res.json())
+    axios.get('/api/hello')
+      .then((res) => res.data)
       .then((data) => {
         setData(data)
       })
