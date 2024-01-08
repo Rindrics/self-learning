@@ -43,5 +43,20 @@
         "postCreateCommand": "pip3 install -r requirements.lock",
 
         // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-        "remoteUser": "vscode"
+        "remoteUser": "vscode",
+        // Configure tool-specific properties.
+        "customizations": {
+            // Configure properties specific to VS Code.
+            "vscode": {
+                    // Set default container specific settings.json values on container create.
+                    "settings": {
+                        "pylint.args": [
+                            "--load-plugins",
+                            "pylint_django",
+                            "--django-settings-module",
+                            "config.settings.development",
+                        ]
+                    }
+                }
+        }
 }
