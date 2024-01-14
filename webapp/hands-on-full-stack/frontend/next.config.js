@@ -6,7 +6,7 @@ module.exports = {
         return [
             {
                 source: '/api/:path*',
-                destination: 'http://host.docker.internal:3000/api/:path*',
+                destination: 'http://host.docker.internal:8000/api/:path*/',
             },
         ]
     },
