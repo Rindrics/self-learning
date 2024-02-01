@@ -8,7 +8,7 @@
 - [ ] header
 - [ ] sidebar
 - [ ] login page `https://localhost:3000/login`
-- [ ] inventory list page `https://localhost:3000/inventory/product`
+- [x] inventory list page `https://localhost:3000/inventory/product`
 - [ ] inventory page `https://localhost:3000/inventory/product/[id]`
 - [ ] bulk sales registration page `https://localhost:3000/inventory/import_sales`
 
