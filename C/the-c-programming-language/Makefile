@@ -7,7 +7,7 @@ APP = ${OUTDIR}/${f}
 .PHONY: help
 help:
 	@echo 'Usage: make [exercise number]'
-	@echo 'Example: make 1-3'
+	@echo 'Example: make f=1-3'
 
 .PHONY: clean
 clean:
@@ -15,6 +15,7 @@ clean:
 
 .PHONY: compile
 compile:
+	find executables/${f} -type f | xargs rm
 	gcc -o ${APP} ${f}.c
 
 .PHONY: run
