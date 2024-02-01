@@ -30,3 +30,15 @@
 | register inventory [sync]  | POST   | http://localhost:8000/api/inventory/sync/             |
 | register inventory [async] | POST   | http://localhost:8000/api/inventory/async/            |
 | see sales summary          | POST   | http://localhost:8000/api/inventory/inventory/summary |
+
+## how to start local env
+
+frontend:
+```bash
+yarn dev
+```
+
+backend:
+```bash
+python manage.py runserver --settings config.settings.development
+```
