@@ -11,8 +11,26 @@ type ProductData = {
   description: string;
 };
 
+type InputData = {
+  id: string;
+  name: string;
+  price: string;
+  description: string;
+};
+
 export default function Page() {
   const [data, setData] = useState<Array<ProductData>>([])
+
+  const [input, setInput] = useState<InputData>({
+    id: "",
+    name: "",
+    price: "",
+    description: "",
+  });;
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = event.target;
+    setInput({ ...input, [name]: value });
+  };
 
   useEffect(() => {
     setData(productsData)
@@ -38,6 +56,13 @@ export default function Page() {
   const handleEditRow: any = (id: number) => {
     setShownNewRow(false);
     setEditingRow(id);
+    const selectedProduct: ProductData = data.find((v) => v.id === id) as ProductData;
+    setInput({
+      id: id.toString(),
+      name: selectedProduct.name,
+      price: selectedProduct.price.toString(),
+      description: selectedProduct.description,
+    });
   }
   const handleEditCancel: any = (id: number) => {
     event.preventDefault();
@@ -69,9 +94,9 @@ export default function Page() {
                 {shownNewRow ? (
                   <tr>
                       <td></td>
-                      <td><input type="text" /></td>
-                      <td><input type="number" /></td>
-                      <td><input type="text" /></td>
+                      <td><input type="text" name="name" onChange={handleInput} /></td>
+                      <td><input type="number" name="price" onChange={handleInput} /></td>
+                      <td><input type="text" name="description" onChange={handleInput} /></td>
                       <td></td>
                       <td>
                           <button onClick={() => handleAddCancel}>キャンセル</button>
@@ -83,9 +108,9 @@ export default function Page() {
                   editingRow === data.id ? (
                     <tr key={data.id}>
                         <td>{data.id}</td>
-                        <td><input type="text" defaultValue={data.name} /></td>
-                        <td><input type="number" defaultValue={data.price} /></td>
-                        <td><input type="text" defaultValue={data.description} /></td>
+                        <td><input type="text" defaultValue={input.name} name="name" onChange={handleInput} /></td>
+                        <td><input type="number" defaultValue={input.price} name="name" onChange={handleInput} /></td>
+                        <td><input type="text" defaultValue={input.description} name="name" onChange={handleInput} /></td>
                         <td></td>
                         <td>
                             <button onClick={() => handleEditCancel(data.id)}>キャンセル</button>
