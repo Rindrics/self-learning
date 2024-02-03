@@ -66,19 +66,19 @@ export default function Page() {
                     <th>在庫数</th>
                 </tr>
             </thead>
+            <tbody>
+                {data.map((data: InventoryData) => (
+                    <tr key={data.id}>
+                        <td>{data.type}</td>
+                        <td>{data.date}</td>
+                        <td>{data.unit}</td>
+                        <td>{data.quantity}</td>
+                        <td>{data.price}</td>
+                        <td>{data.inventory}</td>
+                    </tr>
+                ))}
+            </tbody>
         </table>
-        <tbody>
-            {data.map((data: InventoryData) => (
-                <tr key={data.id}>
-                    <td>{data.type}</td>
-                    <td>{data.date}</td>
-                    <td>{data.unit}</td>
-                    <td>{data.quantity}</td>
-                    <td>{data.price}</td>
-                    <td>{data.inventory}</td>
-                </tr>
-            ))}
-        </tbody>
     </>
   )
 }
