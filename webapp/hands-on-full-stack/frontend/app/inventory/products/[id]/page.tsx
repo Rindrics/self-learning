@@ -23,6 +23,9 @@ type InventoryData = {
 }
 
 export default function Page({ params }: { params: { id: number }, }) {
+  const {
+    register,
+  } = useForm();
 
   const [product, setProduct] = useState<ProductData>({ id: 0, name: "", price: 0, description: "" });
   const [data, setData] = useState<Array<InventoryData>>([]);
@@ -49,7 +52,7 @@ export default function Page({ params }: { params: { id: number }, }) {
             </div>
             <div>
                 <label>数量:</label>
-                <input type="text" />
+                <input type="number" id="quantity" {...register("quantity", { required: true, min: 1, max: 99999999 })} />
             </div>
             <button>商品を仕入れる</button>
             <button>商品を卸す</button>
